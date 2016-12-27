@@ -1,4 +1,4 @@
-#include "imageLoader.h"
+#include "imageloader.h"
 
 SDL_Surface* loadImage(char *filename)
 {
