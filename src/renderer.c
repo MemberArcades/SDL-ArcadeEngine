@@ -46,3 +46,31 @@ void draw_line(SDL_Surface *surface, int x0, int y0, int x1, int y1, Uint32 colo
 		y += addy;
 	}
 }
+
+void draw_image(char *filename, int x, int y, SDL_Rect *iM, SDL_Surface* screen)
+{
+	SDL_Surface *image = NULL;
+
+	if ((image = load_image(filename)) == NULL)
+	{
+		printf("Error loading image %s\nForce quit.\n", filename);
+
+		exit(1);
+	}
+
+	SDL_Rect offset;
+
+	offset.x = x;
+	offset.y = y;
+
+	if (iM == NULL)
+	{
+		SDL_BlitSurface(image, NULL, screen, &offset);
+	}
+	else
+	{
+		SDL_BlitSurface(image, iM, screen, &offset);
+	}
+
+	SDL_FreeSurface(image);
+}
