@@ -20,8 +20,8 @@ void draw_image_coord_offset(SDL_Surface *surface, Point dst, Point offset)
 {
 	SDL_Rect dstrect;
 
-	dstrect.x = (int)dst.x + (int)offset.x;
-	dstrect.y = (int)dst.y + (int)offset.y;
+	dstrect.x = dst.x + offset.x;
+	dstrect.y = dst.y + offset.y;
 
 	SDL_BlitSurface(surface, NULL, get_screen(), &dstrect);
 }
