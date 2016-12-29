@@ -9,23 +9,21 @@
 
 void draw_image_coord(SDL_Surface *surface, Point dst) 
 {
-	Point nullDst;
-	
-	nullDst.x = 0;
-	nullDst.y = 0;
+	Point nulOffset;
+	nulOffset.x = 0;
+	nulOffset.y = 0;
 
-	draw_image_coord_offset(surface, dst, nullDst);
+	draw_image_coord_offset(surface, dst, nulOffset);
 }
 
 void draw_image_coord_offset(SDL_Surface *surface, Point dst, Point offset)
-{	/* TODO: решить с оформлением и доделать */
-	/*SDL_Rect dstrect;
+{
+	SDL_Rect dstrect;
 
-	dstrect.x = (int)dst.x;
-	dstrect.y = (int)dst.y;
+	dstrect.x = (int)dst.x + (int)offset.x;
+	dstrect.y = (int)dst.y + (int)offset.y;
 
-	SDL_BlitSurface(surface, NULL, get_screen(), &dstrect);*/
-
+	SDL_BlitSurface(surface, NULL, get_screen(), &dstrect);
 }
 
 void draw_point(SDL_Surface *surface, Point dst, Uint32 color)
