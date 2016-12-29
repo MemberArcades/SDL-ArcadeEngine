@@ -7,42 +7,49 @@
 
 #include "window.h"
 
-/* выводит изображение по заданым координатам */
-void draw_image_coord(SDL_Surface *surface, int x, int y);
-void draw_image_coord_offset(SDL_Surface *surface, int x, int y, int xOffset, int yOffset);
-
-void draw_image_coord(SDL_Surface *surface, int x, int y)
+void draw_image_coord(SDL_Surface *surface, Point dst) 
 {
-	draw_image_coord_offset(surface, x, y, 0, 0);
+	Point nulOffset;
+	nulOffset.x = 0;
+	nulOffset.y = 0;
+
+	draw_image_coord_offset(surface, dst, nulOffset);
 }
 
-void draw_image_coord_offset(SDL_Surface *surface, int x, int y, int xOffset, int yOffset)
+void draw_image_coord_offset(SDL_Surface *surface, Point dst, Point offset)
 {
-	int pixPerTile = 16;
-	apply_surface(pixPerTile * x + xOffset, pixPerTile * y + yOffset, surface);
+	SDL_Rect dstrect;
+
+	dstrect.x = (int)dst.x + (int)offset.x;
+	dstrect.y = (int)dst.y + (int)offset.y;
+
+	SDL_BlitSurface(surface, NULL, get_screen(), &dstrect);
 }
 
-void draw_point(SDL_Surface *surface, int x, int y, Uint32 color)
+void draw_point(SDL_Surface *surface, Point dst, Uint32 color)
 {
-	SDL_Rect fillRect = { x, y, 1, 1 };
+	SDL_Rect fillRect = { dst.x, dst.y, 1, 1 };
 	SDL_FillRect(surface, &fillRect, color);
 }
 
-void draw_line(SDL_Surface *surface, int x0, int y0, int x1, int y1, Uint32 color) {
+void draw_line(SDL_Surface *surface, Point begin, Point end, Uint32 color) 
+{
+	Point point;
+	point.x = end.x - begin.x;
+	point.y = end.y - begin.y;
+	double length = sqrt(point.x * point.x + point.y * point.y);
 
-	double x = x1 - x0;
-	double y = y1 - y0;
-	double length = sqrt(x * x + y * y);
-	double addx = x / length;
-	double addy = y / length;
+	Point add;
+	add.x = point.x / length;
+	add.y = point.y / length;
 
-	x = x0;
-	y = y0;
+	point.x = begin.x;
+	point.y = begin.y;
 
 	for (int i = 0; i < length; i += 1) 
 	{
-		draw_point(surface, x, y, color);
-		x += addx;
-		y += addy;
+		draw_point(surface, point, color);
+		point.x += add.x;
+		point.y += add.y;
 	}
 }

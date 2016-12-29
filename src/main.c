@@ -93,18 +93,19 @@ static void internal_render(void)
 
 	/* Тест renderer: draw_point() */
 	/*int tick = SDL_GetTicks();
-	for (size_t r = 0; r < 0xFF; ++r)
+	Point rg;
+	for (rg.x = 0; rg.x < 0xFF; ++rg.x)
 	{
-		for (size_t g = 0; g < 0xFF; ++g)
+		for (rg.y = 0; rg.y < 0xFF; ++rg.y)
 		{ 
-			draw_point(get_screen(), r, g, SDL_MapRGBA(get_screen()->format, r, g, tick, 255));
+			draw_point(get_screen(), rg, SDL_MapRGBA(get_screen()->format, rg.x, rg.y, tick, 255));
 		}
 	}*/
 
 	/* Тест renderer: draw_line() */
-	/*draw_line(get_screen(), 10, 128, 250, 128, SDL_MapRGBA(get_screen()->format, 0xFF, 0x00, 0x00, 0xFF));
-	draw_line(get_screen(), 10, 256, 250, 256, SDL_MapRGBA(get_screen()->format, 0x00, 0xFF, 0x00, 0xFF));
-	draw_line(get_screen(), 10, 384, 250, 384, SDL_MapRGBA(get_screen()->format, 0x00, 0x00, 0xFF, 0xFF));*/
+	/*draw_line(get_screen(), (Point) { 10, 128 }, (Point) { 250, 128 }, SDL_MapRGBA(get_screen()->format, 0xFF, 0x00, 0x00, 0xFF));
+	draw_line(get_screen(), (Point) { 10, 256 }, (Point) { 250, 256 }, SDL_MapRGBA(get_screen()->format, 0x00, 0xFF, 0x00, 0xFF));
+	draw_line(get_screen(), (Point) { 10, 384 }, (Point) { 250, 384 }, SDL_MapRGBA(get_screen()->format, 0x00, 0x00, 0xFF, 0xFF));*/
 	
 	
 
