@@ -5,11 +5,11 @@
 #define SCREEN_HEIGHT 640
 
 
-/* состояния, в которых может быть программа */
+/* Состояния, в которых может быть игра */
 typedef enum
 {
 	Menu, 
-	Game, 
-	Intermission,
+	Play, 
+	Pause,
 } ProgramState;
 
