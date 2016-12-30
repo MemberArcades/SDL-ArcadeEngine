@@ -2,10 +2,12 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_gfxPrimitives.h"
 
 #include <math.h>
 
 #include "window.h"
+#include "player.h"
 
 void draw_image_coord(SDL_Surface *surface, Point dst) 
 {
@@ -52,4 +54,9 @@ void draw_line(SDL_Surface *surface, Point begin, Point end, Uint32 color)
 		point.x += add.x;
 		point.y += add.y;
 	}
+}
+
+void draw_player(SDL_Surface *surface, Player player)
+{
+	lineRGBA(surface, player.body.position.x, player.body.position.y, player.body.position.x + player.body.direction.x * 16, player.body.position.y + player.body.direction.y * 16, 0xFF, 0xFF, 0xFF, 0xFF);
 }
