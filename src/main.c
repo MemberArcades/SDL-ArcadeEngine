@@ -7,29 +7,26 @@
 
 #include "window.h"
 #include "renderer.h"
+#include "imageloader.h"
+#include "fpsmanager.h"
+#include "input.h"
 
 /* Иницализация всех ресурсов */
 static void resource_init(void);
 
-/* Инициализация всех внутренних структур, необхдимых при запуске игры */
-static void game_init(void);
-
-/* Вызывается, когда игра начинается */
-static void startgame_init(void);
-
-/* Освобождает все ресурсы */
+/* Освобождение выделенной памяти */
 static void clean_up(void);
 
-/* ... */
+/* Основой цикл игры */
 static void main_loop(void);
 
-/* В зависимости от текущего состояния, ссылается на соответсвующий обработчик */
+/* Вся игровая логика */
 static void internal_tick(void);
 
-/* В зависимости от текущего состояния, рендерит соответствующую картинку*/
+/* Вся графика */
 static void internal_render(void);
 
-/* Обработка всех SDL событий */
+/* Обработка ввода */
 static void process_events(void);
 
 static ProgramState state;
@@ -53,14 +50,17 @@ static void main_loop(void)
 	{
 		process_events();
 
-		/* TODO: internal_tick(); */
+		internal_tick();
+
 		internal_render();
 
 		/* TODO: fps_sleep(); */
 	}
 }
 
-static void internal_tick(void) {
+static void internal_tick(void) 
+{
+
 	switch (state)
 	{
 	case Menu:
@@ -75,46 +75,8 @@ static void internal_tick(void) {
 static void internal_render(void)
 {
 	clear_screen(0xFF, 0xFF, 0xFF, 0xFF);
-		
-	/* Тест window: get_screen() */
-	int tick = SDL_GetTicks();
-	int i, j, yofs, ofs;
 
-	yofs = 0;
-	for (i = 0; i < SCREEN_HEIGHT; ++i)
-	{
-		for (j = 0, ofs = yofs; j < SCREEN_WIDTH; ++j, ++ofs)
-		{
-			((unsigned int*)get_screen()->pixels)[ofs] = i * i + j * j + tick;
-		}
-		yofs += get_screen()->pitch / 4;
-	}
-
-
-	/* Тест renderer: draw_point() */
-	/*int tick = SDL_GetTicks();
-	Point rg;
-	for (rg.x = 0; rg.x < 0xFF; ++rg.x)
-	{
-		for (rg.y = 0; rg.y < 0xFF; ++rg.y)
-		{ 
-			draw_point(get_screen(), rg, SDL_MapRGBA(get_screen()->format, rg.x, rg.y, tick, 255));
-		}
-	}*/
-
-	/* Тест renderer: draw_line() */
-	/*draw_line(get_screen(), (Point) { 10, 128 }, (Point) { 250, 128 }, SDL_MapRGBA(get_screen()->format, 0xFF, 0x00, 0x00, 0xFF));
-	draw_line(get_screen(), (Point) { 10, 256 }, (Point) { 250, 256 }, SDL_MapRGBA(get_screen()->format, 0x00, 0xFF, 0x00, 0xFF));
-	draw_line(get_screen(), (Point) { 10, 384 }, (Point) { 250, 384 }, SDL_MapRGBA(get_screen()->format, 0x00, 0x00, 0xFF, 0xFF));*/
-	
-	
-
-	/* TODO: [Menu|Game|Pause]_render. 
-	*  В main по минимуму SDL кода, 
-	*  в особенности графики. 
-	**/
-
-	/*switch (state)
+	switch (state)
 	{
 	case Menu:
 		break;
@@ -122,7 +84,7 @@ static void internal_render(void)
 		break;
 	case Intermission:
 		break;
-	}*/
+	}
 
 	flip_screen();
 }
@@ -130,14 +92,23 @@ static void internal_render(void)
 static void process_events(void)
 {
 	static SDL_Event event;
-	
+
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
 		{
 		case SDL_QUIT:
 			gameRunning = false;
-			break; 
+
+			break;
+		case SDL_KEYDOWN:
+			handle_keydown(event.key.keysym.sym);
+
+			break;
+		case SDL_KEYUP:
+			handle_keyup(event.key.keysym.sym);
+
+			break;
 		}
 	}
 }
