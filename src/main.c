@@ -11,7 +11,6 @@
 #include "fpsmanager.h"
 #include "input.h"
 
-
 /* Иницализация всех ресурсов */
 static void resource_init(void);
 
@@ -76,16 +75,6 @@ static void internal_tick(void)
 static void internal_render(void)
 {
 	clear_screen(0xFF, 0xFF, 0xFF, 0xFF);
-
-	int tick = SDL_GetTicks();
-	Point rg;
-	for (rg.x = 0; rg.x < 0xFF; ++rg.x)
-	{
-	for (rg.y = 0; rg.y < 0xFF; ++rg.y)
-	{
-	draw_point(get_screen(), rg, SDL_MapRGBA(get_screen()->format, rg.x, rg.y, tick, 255));
-	}
-	}
 
 	switch (state)
 	{
