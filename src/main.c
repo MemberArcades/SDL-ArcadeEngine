@@ -4,12 +4,15 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_gfxPrimitives.h"
 
 #include "window.h"
 #include "renderer.h"
 #include "imageloader.h"
 #include "fpsmanager.h"
 #include "input.h"
+#include "player.h"
+#include "game.h"
 
 /* Иницализация всех ресурсов */
 static void resource_init(void);
@@ -29,13 +32,16 @@ static void internal_render(void);
 /* Обработка ввода */
 static void process_events(void);
 
-static ProgramState state;
+static ProgramState state = Play;
+static Game game;
 
 static bool gameRunning = true;
 
 int main(int argc, char* args[])
 {
 	resource_init();
+
+	game_init(&game);
 
 	main_loop();
 
@@ -60,29 +66,32 @@ static void main_loop(void)
 
 static void internal_tick(void) 
 {
-
 	switch (state)
 	{
 	case Menu:
 		break;
-	case Game:
+	case Play:
+		game_tick(&game);
+
 		break;
-	case Intermission:
+	case Pause:
 		break;
 	}
 }
 
 static void internal_render(void)
 {
-	clear_screen(0xFF, 0xFF, 0xFF, 0xFF);
+	clear_screen(0x00, 0x00, 0x00, 0xFF);
 
 	switch (state)
 	{
 	case Menu:
 		break;
-	case Game:
+	case Play:
+		game_render(&game);
+
 		break;
-	case Intermission:
+	case Pause:
 		break;
 	}
 
@@ -117,7 +126,7 @@ static void resource_init(void)
 {
 	init_window(SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	fps_init(60);
+	fps_init(200);
 
 	/* TODO: load_images(), load_sounds(), load_text().*/
 }
