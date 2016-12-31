@@ -1,15 +1,15 @@
 #pragma once
 
-#define SCREEN_TITLE "Asteroids"
+#define SCREEN_TITLE "SDL-ArcadeEngine"
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 640
 
 
-/* состояния, в которых может быть программа */
+/* Состояния, в которых может быть игра */
 typedef enum
 {
 	Menu, 
-	Game, 
-	Intermission,
+	Play, 
+	Pause,
 } ProgramState;
 

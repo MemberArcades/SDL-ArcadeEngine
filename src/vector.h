@@ -21,5 +21,3 @@ double  magnitude_vector(Vector v);
 void normalise_vector(Vector *v);
 
 void rotate_vector(Vector *v, double degrees);
-
-
