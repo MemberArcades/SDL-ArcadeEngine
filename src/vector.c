@@ -25,7 +25,7 @@ void mul_vector(Vector *v, double n)
 	v->y *= n;
 }
 
-double  magnitude_vector(Vector v)
+double magnitude_vector(Vector v)
 {
 	return sqrt(v.x * v.x + v.y * v.y);
 }
@@ -41,14 +41,13 @@ void rotate_vector(Vector *v, double degrees)
 {
 	double angle = degrees * M_PI / 180;
 	double rot_matrix[2][2] = {
-		{cos(angle), -sin(angle)},
-		{sin(angle), cos(angle)}
+		{ cos(angle), -sin(angle) },
+		{ sin(angle), cos(angle) }
 	};
-	
+
 	double x = v->x;
 	double y = v->y;
 
 	v->x = x * rot_matrix[0][0] + y * rot_matrix[0][1];
 	v->y = x * rot_matrix[1][0] + y * rot_matrix[1][1];
 }
-

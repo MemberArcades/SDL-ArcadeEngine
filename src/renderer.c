@@ -58,5 +58,7 @@ void draw_line(SDL_Surface *surface, Point begin, Point end, Uint32 color)
 
 void draw_player(SDL_Surface *surface, Player player)
 {
-	lineRGBA(surface, player.body.position.x, player.body.position.y, player.body.position.x + player.body.direction.x * 16, player.body.position.y + player.body.direction.y * 16, 0xFF, 0xFF, 0xFF, 0xFF);
+	Point a = { player.body.position.x,  player.body.position.y };
+	Point b = { a.x + player.body.direction.x * 16, a.y + player.body.direction.y * 16 };
+	draw_line(surface, a, b, SDL_MapRGBA(surface->format, 0xFF, 0xFF, 0xFF, 0xFF));
 }

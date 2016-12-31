@@ -1,6 +1,6 @@
 #pragma once
 
-#define SCREEN_TITLE "Asteroids"
+#define SCREEN_TITLE "SDL-ArcadeEngine"
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 640
 
