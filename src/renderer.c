@@ -69,5 +69,6 @@ void draw_player(SDL_Surface *surface, Player player)
 
 void draw_enemy(SDL_Surface *surface, Enemy enemy)
 {
-	draw_physics_body(surface, enemy.body);
+	if (enemy.alive)
+		draw_physics_body(surface, enemy.body);
 }

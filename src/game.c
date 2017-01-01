@@ -104,6 +104,9 @@ static void process_enemies(Game *game, int n)
 	{
 		Enemy *enemy = &game->enemy[i];
 
+		if (!enemy->alive)
+			continue;
+
 		add_vector(&enemy->body.position, enemy->body.direction);
 
 		inf_screen(&enemy->body);

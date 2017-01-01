@@ -12,6 +12,8 @@ Vector bodies[3][12] = {
 
 void enemy_init(Enemy *enemy, Vector position, Vector direction, double velocity, int body_type)
 {
+	enemy->alive = true;
+
 	enemy->body.position = position;
 	enemy->body.direction = direction;
 	enemy->body.velocity = velocity;
@@ -36,4 +38,20 @@ void enemies_init(Enemy enemies[], int n)
 
 		enemy_init(&enemies[i], pos, dir, 1, body_type);
 	}
+}
+
+void enemy_reset_to_position(Enemy enemies[], Vector position)
+{
+	/* Найти первую свободную ячейку */
+	int i = 0;
+	for (i = 0; enemies[i].alive && i < 16; ++i); 
+
+	/* Вернуть астероид в указаное место */
+	enemies[i].alive = true;
+	enemies[i].body.position = position;
+}
+
+void enemy_remove(Enemy enemies[], int number)
+{
+	enemies[number].alive = false;
 }
