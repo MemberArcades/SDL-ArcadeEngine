@@ -4,6 +4,8 @@
 
 typedef struct
 {
+	bool thrust;
+	double angle;
 	PhysicsBody body;
 	/* ... */
 } Player;

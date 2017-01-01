@@ -4,6 +4,9 @@
 
 void player_init(Player *player)
 {
+	player->thrust = false;
+	player->angle = 0;
+
 	player->body.position = (Vector) { 15, 15 };
 	player->body.direction = (Vector) { 0, 1 };
 	player->body.velocity = 1;
@@ -21,5 +24,6 @@ void move_player(Player *player, double pwr)
 
 void rotate_player(Player *player, double degrees)
 {
-	rotate_physics_body(&player->body, degrees);
+	player->angle += degrees;
+	rotate_collider(&player->body, degrees);
 }

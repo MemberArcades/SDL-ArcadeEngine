@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <math.h>
+
 #include "window.h"
 #include "renderer.h"
 #include "player.h"
@@ -60,14 +62,38 @@ static void process_player(Game *game)
 {
 	Player *player = &game->player;
 
+	player->thrust = false;
+
 	if (key_held(SDLK_UP))
-		move_player(player, 1.0);
+		player->thrust = true;
 
 	if (key_held(SDLK_LEFT))
-		rotate_player(player, -1.0);
+		rotate_player(player, -2.0);
 
 	if (key_held(SDLK_RIGHT))
-		rotate_player(player, 1.0);
+		rotate_player(player, 2.0);
+
+	if (player->thrust)
+	{ 
+		Vector punch = { 0, 1 };
+		rotate_vector(&punch, player->angle);
+		mul_vector(&punch, 0.2);
+
+		add_vector(&player->body.direction, punch);
+	}
+	else {
+		mul_vector(&player->body.direction, 0.99);
+	}
+
+	double max_speed = 2.1;
+	double speed = sqrt(player->body.direction.x * player->body.direction.x + player->body.direction.y * player->body.direction.y);
+
+	if (speed > max_speed)
+	{
+		mul_vector(&player->body.direction, max_speed / speed);
+	}
+
+	add_vector(&player->body.position, player->body.direction);
 
 	inf_screen(&player->body);
 }
