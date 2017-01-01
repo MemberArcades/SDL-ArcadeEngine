@@ -7,6 +7,8 @@
 
 static void process_player(Game *game);
 
+static void process_enemies(Game *game, int n);
+
 void game_tick(Game *game)
 {
 	switch (game->game_state)
@@ -16,6 +18,7 @@ void game_tick(Game *game)
 
 	case GamePlayState:
 		process_player(game);
+		process_enemies(game, MAX_ENEMIES);
 
 		break;
 
@@ -34,6 +37,9 @@ void game_render(Game *game)
 	case GamePlayState:
 		draw_player(get_screen(), game->player);
 
+		for (int i = 0; i < MAX_ENEMIES; ++i)
+			draw_enemy(get_screen(), game->enemy[i]);
+
 		break;
 
 	case GameOverState:
@@ -45,6 +51,8 @@ void game_init(Game *game)
 {
 	player_init(&game->player);
 
+	enemies_init(&game->enemy, MAX_ENEMIES);
+
 	game->game_state = GamePlayState;
 }
 
@@ -53,11 +61,25 @@ static void process_player(Game *game)
 	Player *player = &game->player;
 
 	if (key_held(SDLK_UP))
-		add_vector(&player->body.position, player->body.direction);
+		move_player(player, 1.0);
 
 	if (key_held(SDLK_LEFT))
-		rotate_vector(&player->body.direction, -1);
+		rotate_player(player, -1.0);
 
 	if (key_held(SDLK_RIGHT))
-		rotate_vector(&player->body.direction, 1);
+		rotate_player(player, 1.0);
+
+	inf_screen(&player->body);
+}
+
+static void process_enemies(Game *game, int n)
+{
+	for (int i = 0; i < n; ++i)
+	{
+		Enemy *enemy = &game->enemy[i];
+
+		add_vector(&enemy->body.position, enemy->body.direction);
+
+		inf_screen(&enemy->body);
+	}
 }

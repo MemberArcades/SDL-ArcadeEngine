@@ -1,6 +1,9 @@
 #pragma once
 
 #include "player.h"
+#include "enemy.h"
+
+#define MAX_ENEMIES 16
 
 typedef enum
 {
@@ -13,6 +16,7 @@ typedef struct
 {
 	GameState game_state;
 	Player player;
+	Enemy enemy[16];
 } Game;
 
 void game_init(Game *game);
