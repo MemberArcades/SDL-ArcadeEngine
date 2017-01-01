@@ -1,8 +1,8 @@
 #pragma once
 
-#define SCREEN_TITLE "SDL-ArcadeEngine"
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 640
+#define SCREEN_TITLE "Tetris"
+#define SCREEN_WIDTH 540
+#define SCREEN_HEIGHT 742
 
 
 /* Состояния, в которых может быть игра */
