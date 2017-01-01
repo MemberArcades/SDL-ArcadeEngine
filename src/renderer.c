@@ -7,15 +7,10 @@
 #include <math.h>
 
 #include "window.h"
-#include "player.h"
 
 void draw_image_coord(SDL_Surface *surface, Point dst) 
 {
-	Point nulOffset;
-	nulOffset.x = 0;
-	nulOffset.y = 0;
-
-	draw_image_coord_offset(surface, dst, nulOffset);
+	draw_image_coord_offset(surface, dst, (Point) { 0, 0 });
 }
 
 void draw_image_coord_offset(SDL_Surface *surface, Point dst, Point offset)
@@ -56,9 +51,56 @@ void draw_line(SDL_Surface *surface, Point begin, Point end, Uint32 color)
 	}
 }
 
-void draw_player(SDL_Surface *surface, Player player)
+void draw_background()
 {
-	Point a = { player.body.position.x,  player.body.position.y };
-	Point b = { a.x + player.body.direction.x * 16, a.y + player.body.direction.y * 16 };
-	draw_line(surface, a, b, SDL_MapRGBA(surface->format, 0xFF, 0xFF, 0xFF, 0xFF));
+	clear_screen(0x00, 0x00, 0x00, 0xFF);
+	draw_image_coord(get_background_image(), (Point) { 0, 0 });
+}
+
+void draw_block_offset(BlockColor blockColor, Point dst, Point offset)
+{
+	dst.x += offset.x;
+	dst.y += offset.y;
+
+	if (blockColor == BackgroundColor)
+	{
+		draw_image_coord(get_block_image(BackgroundImage), dst);
+	}
+	else
+	{
+		SDL_Rect dstrect = { dst.x, dst.y };
+
+		SDL_Rect imgrect = { 0, 0, 32, 32 };
+
+		switch (blockColor)
+		{
+		case RedColor:
+			imgrect.x = 32;
+
+			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
+
+			break;
+		case BlueColor:
+			imgrect.x = 32;
+			imgrect.y = 32;
+
+			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
+
+			break;
+		case GreenColor:
+			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
+
+			break;
+		case PurpleColor:
+			imgrect.y = 32;
+
+			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
+			break;
+		}
+	}
+}
+
+void draw_block(BlockColor blockColor, Point dst)
+{
+	draw_block_offset(blockColor, dst, (Point) { 0, 0 });
 }

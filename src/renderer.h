@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "SDL.h"
 
-#include "player.h"
+#include "imageloader.h"
 
 typedef struct
 {
@@ -19,4 +19,8 @@ void draw_point(SDL_Surface *surface, Point dst, Uint32 color);
 
 void draw_line(SDL_Surface *surface, Point begin, Point end, Uint32 color);
 
-void draw_player(SDL_Surface *surface, Player player);
+void draw_background();
+
+void draw_block_offset(BlockColor blockColor, Point dst, Point offset);
+
+void draw_block(BlockColor blockColor, Point dst);
