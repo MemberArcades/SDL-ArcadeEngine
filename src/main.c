@@ -11,7 +11,6 @@
 #include "imageloader.h"
 #include "fpsmanager.h"
 #include "input.h"
-#include "player.h"
 #include "game.h"
 
 /* Иницализация всех ресурсов */
@@ -81,8 +80,6 @@ static void internal_tick(void)
 
 static void internal_render(void)
 {
-	clear_screen(0x00, 0x00, 0x00, 0xFF);
-
 	switch (state)
 	{
 	case Menu:
@@ -125,6 +122,8 @@ static void process_events(void)
 static void resource_init(void)
 {
 	init_window(SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	load_images();
 
 	fps_init(200);
 

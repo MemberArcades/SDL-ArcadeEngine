@@ -1,7 +1,5 @@
 #pragma once
 
-#include "player.h"
-
 typedef enum
 {
 	GameBeginState,
@@ -12,7 +10,6 @@ typedef enum
 typedef struct
 {
 	GameState game_state;
-	Player player;
 } Game;
 
 void game_init(Game *game);
