@@ -126,7 +126,7 @@ static void resource_init(void)
 {
 	init_window(SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	fps_init(200);
+	fps_init(125);
 
 	/* TODO: load_images(), load_sounds(), load_text().*/
 }
