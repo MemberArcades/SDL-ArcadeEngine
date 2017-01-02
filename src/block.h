@@ -11,6 +11,8 @@
 
 #define SQARE_SIZE 2
 
+#define NUMBER_OF_COLORS 4
+
 typedef enum
 {
 	BackgroundImage,
@@ -20,10 +22,11 @@ typedef enum
 typedef enum
 {
 	BackgroundColor,
+	RandomColor,
 	RedColor,
 	BlueColor,
 	GreenColor,
-	PurpleColor
+	PurpleColor,
 } BlockColor;
 
 typedef enum

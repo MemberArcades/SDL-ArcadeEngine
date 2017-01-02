@@ -16,7 +16,7 @@ void game_tick(Game *game)
 	case GamePlayState:
 		if (!check_movement())
 		{
-			generation_blocks(BlueColor, Square);
+			generation_blocks(RandomColor, Square);
 		}
 
 		movement_dir_button();

@@ -4,6 +4,8 @@
 #include "renderer.h"
 #include "window.h"
 
+#include <stdlib.h>
+
 BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
 static bool opportunity_create_block;
@@ -55,6 +57,11 @@ void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, in
 
 void generation_blocks(BlockColor blockColor, BlockType blockType)
 {
+	if (blockColor == RandomColor)
+	{
+		blockColor = rand() % NUMBER_OF_COLORS + 2;
+	}
+
 	switch (blockType)
 	{
 	case Square:
