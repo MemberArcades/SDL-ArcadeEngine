@@ -21,9 +21,10 @@ void game_tick(Game *game)
 			generation_blocks(RandomColor, RandomType);
 		}
 
+		key_rotation();
 		movement_dir_button();
 		move_toward(Down);
-		destroy_full_line();
+		destroy_full_line(game);
 
 		break;
 
@@ -55,6 +56,7 @@ void game_init(Game *game)
 	init_keys_state();
 
 	game->game_state = GamePlayState;
+	game->game_score = 0;
 }
 
 bool game_over(Game *game)

@@ -4,6 +4,8 @@
 
 #include "movement.h"
 #include "figure.h"
+#include "rotation.h"
+#include "game.h"
 
 #define X_MAIN_FIELD 12
 #define Y_MAIN_FIELD 90
@@ -54,18 +56,10 @@ typedef enum
 	Line
 } BlockType;
 
-typedef struct
-{
-	BlockType type;
-	enum Direction direction;
-} BlockState;
-
 
 void init_main_field();
 
 BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE];
-
-BlockState* get_state_rotation();
 
 void recolor_main_field();
 
@@ -73,6 +67,4 @@ void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, in
 
 void moves_to_basis();
 
-void block_rotation();
-
-void destroy_full_line();
+void destroy_full_line(Game *game);

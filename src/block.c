@@ -8,7 +8,6 @@
 
 BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
-static BlockState stateRotation;
 
 static bool check_full_line(int *y);
 
@@ -30,11 +29,6 @@ void init_main_field()
 BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE]
 {
 	return mainField;
-}
-
-BlockState* get_state_rotation()
-{
-	return &stateRotation;
 }
 
 void recolor_main_field()
@@ -70,17 +64,6 @@ void moves_to_basis()
 	}
 }
 
-void block_rotation()
-{
-	switch (stateRotation.type)
-	{
-	case Square:
-		break;
-	case Line:
-		break;
-	}
-}
-
 static bool check_full_line(int *y)
 {
 	int line;
@@ -107,9 +90,11 @@ static bool check_full_line(int *y)
 	return false;
 }
 
-void destroy_full_line()
+void destroy_full_line(Game *game)
 {
 	int j;
+
+	int score = 100;
 
 	while (check_full_line(&j))
 	{
@@ -120,9 +105,18 @@ void destroy_full_line()
 
 		blocks_to_moves(j);
 
-		while (!check_move(Down))
+		while (check_move(Down))
 		{
 			move_toward(Down);
 		}
+
+		moves_to_basis();
+
+		game->game_score += score;
+
+		printf("Score: %d\n", game->game_score);
+
+		score += 100;
 	}
+
 }

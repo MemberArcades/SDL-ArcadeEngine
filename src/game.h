@@ -12,6 +12,7 @@ typedef enum
 typedef struct
 {
 	GameState game_state;
+	int game_score;
 } Game;
 
 void game_init(Game *game);

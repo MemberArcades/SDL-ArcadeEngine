@@ -25,14 +25,23 @@ void generation_blocks(BlockColor blockColor, BlockType blockType)
 
 	get_state_rotation()->direction = Up;
 	get_state_rotation()->type = blockType;
+	get_state_rotation()->color = blockColor;
 
 	switch (blockType)
 	{
 	case Square:
 		create_square(blockColor, SQARE_SIZE, 4, 0);
+
+		get_state_rotation()->i = 4;
+		get_state_rotation()->j = 0;
+
 		break;
 	case Line:
 		create_line(blockColor, 2, 0);
+
+		get_state_rotation()->i = 2;
+		get_state_rotation()->j = 0;
+
 		break;
 	}
 }

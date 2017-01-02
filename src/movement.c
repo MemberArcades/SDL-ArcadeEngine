@@ -1,5 +1,6 @@
 #include "movement.h"
 #include "input.h"
+#include "rotation.h"
 
 extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
@@ -57,21 +58,27 @@ bool check_move(Direction direction)
 	Move move = { 0, 0, 0, 0 };
 	dir_move(&move, direction);
 
+	bool flag = false;
+
 	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
 	{
 		for (int j = 0; j < Y_MAIN_FIELD_SIZE; ++j)
 		{
-			if ((mainField[i][j].status == Moves) &&
-				((i - move.l < 0) || (i + move.r > X_MAIN_FIELD_SIZE - 1) || (j - move.u < 0) || (j + move.d > Y_MAIN_FIELD_SIZE - 1) ||
-				((mainField[i + move.r - move.l][j + move.d - move.u].status != Moves) &&
-				(mainField[i + move.r - move.l][j + move.d - move.u].status != Background))))
+			if (mainField[i][j].status == Moves)
 			{
-				return false;
+				flag = true;
+
+				if (((i - move.l < 0) || (i + move.r > X_MAIN_FIELD_SIZE - 1) || (j - move.u < 0) || (j + move.d > Y_MAIN_FIELD_SIZE - 1) ||
+					((mainField[i + move.r - move.l][j + move.d - move.u].status != Moves) &&
+					(mainField[i + move.r - move.l][j + move.d - move.u].status != Background))))
+				{
+					return false;
+				}
 			}
 		}
 	}
 
-	return true;
+	return flag;
 }
 
 void move_toward(Direction direction)
@@ -100,12 +107,22 @@ void move_toward(Direction direction)
 		{
 		case Up:
 		case Left:
-			for (int i = move.l; i < X_MAIN_FIELD_SIZE; ++i)
+		{
+			bool flag = true;
+
+			for (int j = move.u; j < Y_MAIN_FIELD_SIZE; ++j)
 			{
-				for (int j = move.u; j < Y_MAIN_FIELD_SIZE; ++j)
+				for (int i = move.l; i < X_MAIN_FIELD_SIZE; ++i)
 				{
 					if (mainField[i][j].status == Moves)
 					{
+						if (flag)
+						{
+							get_state_rotation()->i = i - move.l;
+							get_state_rotation()->j = j;
+							flag = false;
+						}
+
 						recolor_block_main_field(mainField[i][j].color, Moves, i - move.l, j - move.u);
 						recolor_block_main_field(BackgroundColor, Background, i, j);
 					}
@@ -113,21 +130,27 @@ void move_toward(Direction direction)
 			}
 
 			break;
+		}
 		case Right:
 		case Down:
-			for (int i = X_MAIN_FIELD_SIZE - 1 - move.r; i >= 0; --i)
+		{
+			for (int j = Y_MAIN_FIELD_SIZE - 1 - move.d; j >= 0; --j)
 			{
-				for (int j = Y_MAIN_FIELD_SIZE - 1 - move.d; j >= 0; --j)
+				for (int i = X_MAIN_FIELD_SIZE - 1 - move.r; i >= 0; --i)
 				{
 					if (mainField[i][j].status == Moves)
 					{
 						recolor_block_main_field(mainField[i][j].color, Moves, i + move.r, j + move.d);
 						recolor_block_main_field(BackgroundColor, Background, i, j);
+
+						get_state_rotation()->i = i + move.r;
+						get_state_rotation()->j = j + move.d;
 					}
 				}
 			}
 
 			break;
+		}
 		}
 	}
 
@@ -244,14 +267,15 @@ void movement_dir_button()
 
 void blocks_to_moves(int border)
 {
-	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+	for (int j = 0; j < border; ++j)
 	{
-		for (int j = 0; j < border; ++j)
+		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
 		{
 			if (mainField[i][j].status != Background)
 			{
 				mainField[i][j].status = Moves;
 			}
+
 		}
 	}
 }
