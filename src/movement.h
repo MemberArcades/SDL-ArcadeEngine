@@ -25,6 +25,10 @@ typedef struct
 
 bool check_movement();
 
+bool check_move(Direction direction);
+
 void move_toward(Direction direction);
 
 void movement_dir_button();
+
+void blocks_to_moves(int j);

@@ -10,6 +10,9 @@ BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
 static BlockState stateRotation;
 
+static bool check_full_line(int *y);
+
+
 void init_main_field()
 {
 	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
@@ -74,7 +77,52 @@ void block_rotation()
 	case Square:
 		break;
 	case Line:
-
 		break;
+	}
+}
+
+static bool check_full_line(int *y)
+{
+	int line;
+
+	for (int j = Y_MAIN_FIELD_SIZE - 1; j >= 0 ; --j)
+	{
+		line = 0;
+
+		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+		{
+			if (mainField[i][j].status == Basis)
+			{
+				++line;
+			}
+		}
+
+		if (line == X_MAIN_FIELD_SIZE)
+		{
+			*y = j;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void destroy_full_line()
+{
+	int j;
+
+	while (check_full_line(&j))
+	{
+		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+		{
+			recolor_block_main_field(BackgroundColor, Background, i, j);
+		}
+
+		blocks_to_moves(j);
+
+		while (!check_move(Down))
+		{
+			move_toward(Down);
+		}
 	}
 }

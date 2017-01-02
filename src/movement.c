@@ -3,12 +3,6 @@
 
 extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
-static bool check_move(Direction direction);
-
-static Direction get_movement_dir_button();
-
-static void dir_move(Move *move, Direction direction);
-
 static int downSpeed = 0;
 
 static int leftSpeed = 0;
@@ -16,6 +10,12 @@ static int leftSpeed = 0;
 static int rightSpeed = 0;
 
 static int speed = 1;
+
+
+static Direction get_movement_dir_button();
+
+static void dir_move(Move *move, Direction direction);
+
 
 bool check_movement()
 {
@@ -52,7 +52,7 @@ static void dir_move(Move *move, Direction direction)
 	}
 }
 
-static bool check_move(Direction direction)
+bool check_move(Direction direction)
 {
 	Move move = { 0, 0, 0, 0 };
 	dir_move(&move, direction);
@@ -239,5 +239,19 @@ void movement_dir_button()
 			move_toward(Down);
 		}
 		//move_toward(get_movement_dir_button());
+	}
+}
+
+void blocks_to_moves(int border)
+{
+	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+	{
+		for (int j = 0; j < border; ++j)
+		{
+			if (mainField[i][j].status != Background)
+			{
+				mainField[i][j].status = Moves;
+			}
+		}
 	}
 }

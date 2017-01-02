@@ -74,3 +74,5 @@ void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, in
 void moves_to_basis();
 
 void block_rotation();
+
+void destroy_full_line();

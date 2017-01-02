@@ -6,6 +6,8 @@
 #include "movement.h"
 #include "block.h"
 
+static int delaySize = 0;
+
 void game_tick(Game *game)
 {
 	switch (game->game_state)
@@ -21,6 +23,7 @@ void game_tick(Game *game)
 
 		movement_dir_button();
 		move_toward(Down);
+		destroy_full_line();
 
 		break;
 
@@ -71,4 +74,20 @@ bool game_over(Game *game)
 void game_quit()
 {
 	destroy_image();
+}
+
+bool gmae_delay()
+{
+	if (delaySize <= 100)
+	{
+		++delaySize;
+
+		return false;
+	}
+	else
+	{
+		delaySize = 0;
+
+		return true;
+	}
 }

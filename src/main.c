@@ -82,10 +82,11 @@ static void internal_tick(void)
 	case Pause:
 		break;
 	case End:
-		SDL_Delay(1500);
-
-		game_init(&game);
-		state = Play;
+		if (gmae_delay())
+		{
+			game_init(&game);
+			state = Play;
+		}
 
 		break;
 	}
