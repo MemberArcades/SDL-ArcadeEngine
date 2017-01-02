@@ -37,6 +37,14 @@ void load_images()
 	gaveOverImg = load_image(DIR_IMAGE "tetris_game_over.png");
 }
 
+void destroy_image()
+{
+	SDL_FreeSurface(background);
+	SDL_FreeSurface(blocks[BackgroundImage]);
+	SDL_FreeSurface(blocks[OtherImage]);
+	SDL_FreeSurface(gaveOverImg);
+}
+
 SDL_Surface* get_block_image(BlockImage block)
 {
 	return blocks[block];

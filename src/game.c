@@ -67,3 +67,8 @@ bool game_over(Game *game)
 		return false;
 	}
 }
+
+void game_quit()
+{
+	destroy_image();
+}

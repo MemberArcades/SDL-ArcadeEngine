@@ -117,6 +117,7 @@ static void process_events(void)
 		switch (event.type)
 		{
 		case SDL_QUIT:
+			game_quit();
 			gameRunning = false;
 
 			break;

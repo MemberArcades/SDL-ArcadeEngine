@@ -21,3 +21,5 @@ void game_tick(Game *game);
 void game_render(Game *game);
 
 bool game_over(Game *game);
+
+void game_quit();
