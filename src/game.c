@@ -56,7 +56,7 @@ void game_init(Game *game)
 
 bool game_over(Game *game)
 {
-	if (!check_opportunity_create_block())
+	if (!*get_opportun_create_blocks())
 	{
 		draw_image_coord(get_game_over_image(), (Point) { 23, 101 });
 

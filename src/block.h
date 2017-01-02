@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "movement.h"
+#include "figure.h"
 
 #define X_MAIN_FIELD 12
 #define Y_MAIN_FIELD 90
@@ -64,17 +65,11 @@ void init_main_field();
 
 BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE];
 
-bool check_opportunity_create_block();
+BlockState* get_state_rotation();
 
 void recolor_main_field();
 
 void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, int i, int j);
-
-void generation_blocks(BlockColor blockColor, BlockType blockType);
-
-void create_square(BlockColor blockColor, int sqareSize, int i, int j);
-
-void create_line(BlockColor blockColor, int i, int j);
 
 void moves_to_basis();
 
