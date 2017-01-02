@@ -5,6 +5,15 @@
 
 #define MAX_KEYS 323
 
+typedef enum
+{
+	KeyUp,
+	KeyDown,
+	KeyUsed
+} KeyState;
+
+void init_keys_state();
+
 /* Обработчик нажатия кнопки */
 void handle_keydown(int keycode);
 
@@ -12,6 +21,6 @@ void handle_keydown(int keycode);
 void handle_keyup(int keycode);
 
 /* Проверяет, нажата ли заданная кнопка. */
-bool key_held(int keycode);
+KeyState key_held(int keycode);
 
-bool check_key_movement_pressed();
+KeyState check_key_movement_pressed();

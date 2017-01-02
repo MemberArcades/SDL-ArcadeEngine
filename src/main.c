@@ -83,7 +83,9 @@ static void internal_tick(void)
 		break;
 	case End:
 		SDL_Delay(1500);
-		gameRunning = false;
+
+		game_init(&game);
+		state = Play;
 
 		break;
 	}

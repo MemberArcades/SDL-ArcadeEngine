@@ -2,6 +2,8 @@
 
 #include <stdbool.h>
 
+#include "movement.h"
+
 #define X_MAIN_FIELD 12
 #define Y_MAIN_FIELD 90
 
@@ -12,6 +14,7 @@
 #define SQARE_SIZE 2
 
 #define NUMBER_OF_COLORS 4
+#define NUMBER_OF_TYPE 2
 
 typedef enum
 {
@@ -45,9 +48,16 @@ typedef struct
 
 typedef enum
 {
+	RandomType,
 	Square,
 	Line
 } BlockType;
+
+typedef struct
+{
+	BlockType type;
+	enum Direction direction;
+} BlockState;
 
 
 void init_main_field();
@@ -64,4 +74,8 @@ void generation_blocks(BlockColor blockColor, BlockType blockType);
 
 void create_square(BlockColor blockColor, int sqareSize, int i, int j);
 
+void create_line(BlockColor blockColor, int i, int j);
+
 void moves_to_basis();
+
+void block_rotation();

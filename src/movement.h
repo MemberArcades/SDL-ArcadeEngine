@@ -5,6 +5,8 @@
 
 #include <stdbool.h>
 
+#define SIDES_SPEED 2
+
 typedef enum
 {
 	Up,

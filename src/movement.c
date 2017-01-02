@@ -9,6 +9,14 @@ static Direction get_movement_dir_button();
 
 static void dir_move(Move *move, Direction direction);
 
+static int downSpeed = 0;
+
+static int leftSpeed = 0;
+
+static int rightSpeed = 0;
+
+static int speed = 1;
+
 bool check_movement()
 {
 	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
@@ -58,7 +66,6 @@ static bool check_move(Direction direction)
 				((mainField[i + move.r - move.l][j + move.d - move.u].status != Moves) &&
 				(mainField[i + move.r - move.l][j + move.d - move.u].status != Background))))
 			{
-				printf("%d %d move: %d %d %d %d;\n ", i, j, move.u, move.r, move.d, move.l);
 				return false;
 			}
 		}
@@ -69,6 +76,21 @@ static bool check_move(Direction direction)
 
 void move_toward(Direction direction)
 {
+	if (direction == Down)
+	{
+		if (downSpeed < 20)
+		{
+			downSpeed += speed;
+
+			return;
+		}
+		else
+		{
+			downSpeed = 0;
+		}
+	}
+
+
 	if (check_move(direction))
 	{
 		Move move = { 0, 0, 0, 0 };
@@ -117,27 +139,62 @@ void move_toward(Direction direction)
 
 static Direction get_movement_dir_button()
 {
-	if (key_held(SDLK_w) || key_held(SDLK_UP))
+	if (key_held(SDLK_w) == KeyDown || key_held(SDLK_UP) == KeyDown)
 	{
-		printf("Up pressed\n");
+		if (key_held(SDLK_w) == KeyDown)
+		{
+			handle_keydown(SDLK_w);
+		}
+		else
+		{
+			handle_keydown(SDLK_UP);
+		}
+
 		return Up;
 	}
 
-	if (key_held(SDLK_d) || key_held(SDLK_RIGHT))
+	if (key_held(SDLK_d) == KeyDown || key_held(SDLK_RIGHT) == KeyDown)
 	{
-		printf("Right pressed\n");
+		if (key_held(SDLK_d) == KeyDown)
+		{
+			handle_keydown(SDLK_d);
+		}
+		else
+		{
+			handle_keydown(SDLK_RIGHT);
+		}
+
 		return Right;
 	}
 
-	if (key_held(SDLK_a) || key_held(SDLK_LEFT))
+	if (key_held(SDLK_a) == KeyDown || key_held(SDLK_LEFT) == KeyDown)
 	{
-		printf("Left pressed\n");
+		if (key_held(SDLK_a) == KeyDown)
+		{
+			handle_keydown(SDLK_a);
+		}
+		else
+		{
+			handle_keydown(SDLK_LEFT);
+		}
+
 		return Left;
 	}
 
-	if (key_held(SDLK_s) || key_held(SDLK_DOWN))
+	if (key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown)
 	{
-		printf("Down pressed\n");
+		/* Отключение ограничение на движение вниз */
+		/*if (key_held(SDLK_s) == KeyDown)
+		{
+			handle_keydown(SDLK_s);
+		}
+		else
+		{
+			handle_keydown(SDLK_DOWN);
+		}*/
+
+		downSpeed += speed * 5;
+
 		return Down;
 	}
 
@@ -149,6 +206,38 @@ void movement_dir_button()
 {
 	if (check_key_movement_pressed())
 	{
-		move_toward(get_movement_dir_button());
+		if (key_held(SDLK_d) == KeyDown || key_held(SDLK_RIGHT) == KeyDown)
+		{
+			if (rightSpeed <= SIDES_SPEED)
+			{
+				++rightSpeed;
+			}
+			else
+			{
+				rightSpeed = 0;
+				move_toward(Right);
+			}
+		}
+
+		if (key_held(SDLK_a) == KeyDown || key_held(SDLK_LEFT) == KeyDown)
+		{
+			if (leftSpeed <= SIDES_SPEED)
+			{
+				++leftSpeed;
+			}
+			else
+			{
+				leftSpeed = 0;
+				move_toward(Left);
+			}
+		}
+
+		if (key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown)
+		{
+			downSpeed += speed * 5;
+
+			move_toward(Down);
+		}
+		//move_toward(get_movement_dir_button());
 	}
 }

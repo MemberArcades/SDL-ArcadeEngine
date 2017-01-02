@@ -8,7 +8,9 @@
 
 BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
-static bool opportunity_create_block;
+static BlockState stateRotation;
+
+static bool opportunityCreateBlock;
 
 static bool check_create(int i0, int j0, int i1, int j1);
 
@@ -23,7 +25,7 @@ void init_main_field()
 		}
 	}
 
-	opportunity_create_block = true;
+	opportunityCreateBlock = true;
 }
 
 BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE]
@@ -33,7 +35,7 @@ BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE]
 
 bool check_opportunity_create_block()
 {
-	return opportunity_create_block;
+	return opportunityCreateBlock;
 }
 
 void recolor_main_field()
@@ -57,15 +59,29 @@ void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, in
 
 void generation_blocks(BlockColor blockColor, BlockType blockType)
 {
+	/* Сделано для того, чтобы кнопки не продолжали действовать для новых блоков */
+	/*init_keys_state();*/
+
 	if (blockColor == RandomColor)
 	{
 		blockColor = rand() % NUMBER_OF_COLORS + 2;
 	}
 
+	if (blockType == RandomType)
+	{
+		blockType = rand() % NUMBER_OF_TYPE + 1;
+	}
+
+	stateRotation.direction = Up;
+	stateRotation.type = blockType;
+
 	switch (blockType)
 	{
 	case Square:
 		create_square(blockColor, SQARE_SIZE, 4, 0);
+		break;
+	case Line:
+		create_line(blockColor, 2, 0);
 		break;
 	}
 }
@@ -74,7 +90,7 @@ void create_square(BlockColor blockColor, int sqareSize, int i, int j)
 {
 	if ((0 <= i) && (i + sqareSize - 1 < X_MAIN_FIELD_SIZE) &&
 		(0 <= j) && (j + sqareSize - 1 < Y_MAIN_FIELD_SIZE) &&
-		check_create(i, j, i + sqareSize - 1, j + sqareSize - 1))
+		check_create(i, j, i + sqareSize, j + sqareSize))
 	{
 		for (int x = 0; x < sqareSize; ++x)
 		{
@@ -82,6 +98,19 @@ void create_square(BlockColor blockColor, int sqareSize, int i, int j)
 			{
 				recolor_block_main_field(blockColor, Moves, i + x, j + y);
 			}
+		}
+	}
+}
+
+void create_line(BlockColor blockColor, int i, int j)
+{
+	if ((0 <= i) && (i + 4 < X_MAIN_FIELD_SIZE) &&
+		(0 <= j) && (j < Y_MAIN_FIELD_SIZE) &&
+		check_create(i, j, i + 5, j))
+	{
+		for (int x = 0; x < 5; ++x)
+		{
+			recolor_block_main_field(blockColor, Moves, i + x, j);
 		}
 	}
 }
@@ -108,7 +137,7 @@ static bool check_create(int i0, int j0, int i1, int j1)
 		{
 			if (mainField[i0][j0].status != Background)
 			{
-				opportunity_create_block = false;
+				opportunityCreateBlock = false;
 
 				return false;
 			}
@@ -116,4 +145,16 @@ static bool check_create(int i0, int j0, int i1, int j1)
 	}
 
 	return true;
+}
+
+void block_rotation()
+{
+	switch (stateRotation.type)
+	{
+	case Square:
+		break;
+	case Line:
+
+		break;
+	}
 }

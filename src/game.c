@@ -16,11 +16,11 @@ void game_tick(Game *game)
 	case GamePlayState:
 		if (!check_movement())
 		{
-			generation_blocks(RandomColor, Square);
+			generation_blocks(RandomColor, RandomType);
 		}
 
 		movement_dir_button();
-		//move_toward(Down);
+		move_toward(Down);
 
 		break;
 
@@ -49,6 +49,7 @@ void game_init(Game *game)
 {
 	draw_background();
 	init_main_field();
+	init_keys_state();
 
 	game->game_state = GamePlayState;
 }

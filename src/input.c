@@ -2,36 +2,56 @@
 
 static void check_keycode(int keycode);
 
-static bool keysHeld[MAX_KEYS] = { false };
+static KeyState keysHeld[MAX_KEYS];
+
+void init_keys_state()
+{
+	for (int k = 0; k < MAX_KEYS; ++k)
+	{
+		keysHeld[k] = KeyUp;
+	}
+}
 
 void handle_keydown(int keycode)
 {
 	check_keycode(keycode);
-	keysHeld[keycode] = true;
+
+	switch (keysHeld[keycode])
+	{
+	case KeyUp:
+		keysHeld[keycode] = KeyDown;
+		break;
+	case KeyDown:
+		keysHeld[keycode] = KeyUsed;
+		break;
+	case KeyUsed:
+		break;
+	}
 }
 
 void handle_keyup(int keycode)
 {
 	check_keycode(keycode);
-	keysHeld[keycode] = false;
+
+	keysHeld[keycode]= KeyUp;
 }
 
-bool key_held(int keycode)
+KeyState key_held(int keycode)
 {
 	return  keysHeld[keycode];
 }
 
-bool check_key_movement_pressed()
+KeyState check_key_movement_pressed()
 {
-	if (key_held(SDLK_w) || key_held(SDLK_UP) ||
-		key_held(SDLK_d) || key_held(SDLK_RIGHT) ||
-		key_held(SDLK_s) || key_held(SDLK_DOWN) ||
-		key_held(SDLK_a) || key_held(SDLK_LEFT))
+	if (/*key_held(SDLK_w) == KeyDown || key_held(SDLK_UP) == KeyDown ||*/
+		key_held(SDLK_d) == KeyDown || key_held(SDLK_RIGHT) == KeyDown ||
+		key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown ||
+		key_held(SDLK_a) == KeyDown || key_held(SDLK_LEFT) == KeyDown)
 	{
-		return true;
+		return KeyDown;
 	}
 
-	return false;
+	return KeyUp;
 }
 
 static void check_keycode(int keycode)

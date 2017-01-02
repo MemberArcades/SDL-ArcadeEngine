@@ -17,15 +17,15 @@ void draw_image_coord_offset(SDL_Surface *surface, Point dst, Point offset)
 {
 	SDL_Rect dstrect;
 
-	dstrect.x = dst.x + offset.x;
-	dstrect.y = dst.y + offset.y;
+	dstrect.x = (int)dst.x + (int)offset.x;
+	dstrect.y = (int)dst.y + (int)offset.y;
 
 	SDL_BlitSurface(surface, NULL, get_screen(), &dstrect);
 }
 
 void draw_point(SDL_Surface *surface, Point dst, Uint32 color)
 {
-	SDL_Rect fillRect = { dst.x, dst.y, 1, 1 };
+	SDL_Rect fillRect = { (int)dst.x, (int)dst.y, 1, 1 };
 	SDL_FillRect(surface, &fillRect, color);
 }
 
@@ -68,7 +68,7 @@ void draw_block_offset(BlockColor blockColor, Point dst, Point offset)
 	}
 	else
 	{
-		SDL_Rect dstrect = { dst.x, dst.y };
+		SDL_Rect dstrect = { (int)dst.x, (int)dst.y };
 
 		SDL_Rect imgrect = { 0, 0, 32, 32 };
 
