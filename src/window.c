@@ -38,16 +38,6 @@ void clear_screen(int r, int g, int b, int a)
 	SDL_FillRect(screen, NULL, col);
 }
 
-void apply_surface(int x, int y, SDL_Surface* source)
-{
-	SDL_Rect offset;
-
-	offset.x = x;
-	offset.y = y;
-
-	SDL_BlitSurface(source, NULL, screen, &offset);
-}
-
 void flip_screen(void)
 {
 	SDL_Flip(screen);

@@ -125,7 +125,7 @@ static void resource_init(void)
 
 	load_images();
 
-	fps_init(200);
+	fps_init(60);
 
 	/* TODO: load_images(), load_sounds(), load_text().*/
 }

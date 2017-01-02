@@ -4,30 +4,98 @@
 #include "renderer.h"
 #include "window.h"
 
-static BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
+BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
+
+static bool check_create(int i0, int j0, int i1, int j1);
 
 void init_main_field()
 {
 	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+	{
 		for (int j = 0; j < Y_MAIN_FIELD_SIZE; ++j)
 		{
 			mainField[i][j].color = BackgroundColor;
-			mainField[i][j].status = Normal;
+			mainField[i][j].status = Background;
 		}
+	}
 }
 
-void restructure_main_field()
+BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE]
+{
+	return mainField;
+}
+
+void recolor_main_field()
 {
 	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+	{
 		for (int j = 0; j < Y_MAIN_FIELD_SIZE; ++j)
 		{
-			if (mainField[i][j].status == Restructure)
-				draw_block_offset(mainField[i][j].color, (Point) { i * 32, j * 32 }, (Point) { X_MAIN_FIELD, Y_MAIN_FIELD });
+			draw_block_offset(mainField[i][j].color, (Point) { i * 32, j * 32 }, (Point) { X_MAIN_FIELD, Y_MAIN_FIELD });
 		}
+	}
 }
 
-void recolor_block_main_field(BlockColor blockColor, int i, int j)
+void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, int i, int j)
 {
 	mainField[i][j].color = blockColor;
-	mainField[i][j].status = Restructure;
+	mainField[i][j].status = blockStatus;
+
+	draw_block_offset(blockColor, (Point) { i * 32, j * 32 }, (Point) { X_MAIN_FIELD, Y_MAIN_FIELD });
+}
+
+void generation_blocks(BlockColor blockColor, BlockType blockType)
+{
+	switch (blockType)
+	{
+	case Square:
+		create_square(blockColor, SQARE_SIZE, 4, 0);
+		break;
+	}
+}
+
+void create_square(BlockColor blockColor, int sqareSize, int i, int j)
+{
+	if ((0 <= i) && (i + sqareSize - 1 < X_MAIN_FIELD_SIZE) &&
+		(0 <= j) && (j + sqareSize - 1 < Y_MAIN_FIELD_SIZE) &&
+		check_create(i, j, i + sqareSize - 1, j + sqareSize - 1))
+	{
+		for (int x = 0; x < sqareSize; ++x)
+		{
+			for (int y = 0; y < sqareSize; ++y)
+			{
+				recolor_block_main_field(blockColor, Moves, i + x, j + y);
+			}
+		}
+	}
+}
+
+void moves_to_basis()
+{
+	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+	{
+		for (int j = 0; j < Y_MAIN_FIELD_SIZE; ++j)
+		{
+			if (mainField[i][j].status == Moves)
+			{
+				mainField[i][j].status = Basis;
+			}
+		}
+	}
+}
+
+static bool check_create(int i0, int j0, int i1, int j1)
+{
+	for (i0; i0 < i1; ++i0)
+	{
+		for (j0; j0 < j1; ++j0)
+		{
+			if (mainField[i0][j0].status != Background)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
 }

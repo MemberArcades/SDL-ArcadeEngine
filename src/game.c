@@ -3,6 +3,8 @@
 #include "window.h"
 #include "renderer.h"
 #include "input.h"
+#include "movement.h"
+#include "block.h"
 
 void game_tick(Game *game)
 {
@@ -12,7 +14,13 @@ void game_tick(Game *game)
 		break;
 
 	case GamePlayState:
-		
+		if (!check_movement())
+		{
+			generation_blocks(GreenColor, Square);
+		}
+
+		movement_dir_button();
+		//move_toward(Down);
 
 		break;
 
@@ -29,7 +37,7 @@ void game_render(Game *game)
 		break;
 
 	case GamePlayState:
-		restructure_main_field();
+		
 		break;
 
 	case GameOverState:
