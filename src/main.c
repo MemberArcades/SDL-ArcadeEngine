@@ -72,8 +72,19 @@ static void internal_tick(void)
 	case Play:
 		game_tick(&game);
 
+
+		if (game_over(&game))
+		{
+			state = End;
+		}
+
 		break;
 	case Pause:
+		break;
+	case End:
+		SDL_Delay(1500);
+		gameRunning = false;
+
 		break;
 	}
 }

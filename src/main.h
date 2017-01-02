@@ -11,5 +11,6 @@ typedef enum
 	Menu, 
 	Play, 
 	Pause,
+	End
 } ProgramState;
 

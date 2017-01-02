@@ -6,6 +6,8 @@
 
 BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
+static bool opportunity_create_block;
+
 static bool check_create(int i0, int j0, int i1, int j1);
 
 void init_main_field()
@@ -18,11 +20,18 @@ void init_main_field()
 			mainField[i][j].status = Background;
 		}
 	}
+
+	opportunity_create_block = true;
 }
 
 BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE]
 {
 	return mainField;
+}
+
+bool check_opportunity_create_block()
+{
+	return opportunity_create_block;
 }
 
 void recolor_main_field()
@@ -92,6 +101,8 @@ static bool check_create(int i0, int j0, int i1, int j1)
 		{
 			if (mainField[i0][j0].status != Background)
 			{
+				opportunity_create_block = false;
+
 				return false;
 			}
 		}

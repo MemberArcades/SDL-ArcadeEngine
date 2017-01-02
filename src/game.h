@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 typedef enum
 {
 	GameBeginState,
@@ -17,3 +19,5 @@ void game_init(Game *game);
 void game_tick(Game *game);
 
 void game_render(Game *game);
+
+bool game_over(Game *game);

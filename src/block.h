@@ -51,6 +51,8 @@ void init_main_field();
 
 BlockArr (* get_main_field())[Y_MAIN_FIELD_SIZE];
 
+bool check_opportunity_create_block();
+
 void recolor_main_field();
 
 void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, int i, int j);

@@ -16,7 +16,7 @@ void game_tick(Game *game)
 	case GamePlayState:
 		if (!check_movement())
 		{
-			generation_blocks(GreenColor, Square);
+			generation_blocks(BlueColor, Square);
 		}
 
 		movement_dir_button();
@@ -51,4 +51,18 @@ void game_init(Game *game)
 	init_main_field();
 
 	game->game_state = GamePlayState;
+}
+
+bool game_over(Game *game)
+{
+	if (!check_opportunity_create_block())
+	{
+		draw_image_coord(get_game_over_image(), (Point) { 23, 101 });
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
