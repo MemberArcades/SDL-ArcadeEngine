@@ -137,7 +137,7 @@ static bool check_create(int i0, int j0, int i1, int j1)
 	{
 		for (j0; j0 <= j1; ++j0)
 		{
-			if (mainField[i0][j0].status == Basis)
+			if (mainField[i0][j0].status != Background)
 			{
 				opportunityCreateBlock = false;
 
