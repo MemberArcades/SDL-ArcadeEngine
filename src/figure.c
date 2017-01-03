@@ -39,7 +39,7 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 	switch (blockType)
 	{
 	case Square:
-		if (!create_square(blockColor, SQARE_SIZE, 4, 0))
+		if (!create_square(blockColor, Moves, SQARE_SIZE, 4, 0))
 		{
 			opportunityCreateBlock = false;
 
@@ -59,7 +59,7 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 			++i;
 		}
 
-		if (!create_line(blockColor, i, 0, direction))
+		if (!create_line(blockColor, Moves, i, 0, direction))
 		{
 			opportunityCreateBlock = false;
 
@@ -72,7 +72,7 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 		break;
 	}
 	case JL:
-		if (!create_j_l(blockColor, 4, 0, direction))
+		if (!create_j_l(blockColor, Moves, 4, 0, direction))
 		{
 			opportunityCreateBlock = false;
 
@@ -91,7 +91,7 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 		{
 			i = 6;
 		}
-		if (!create_j_r(blockColor, i, 0, direction))
+		if (!create_j_r(blockColor, Moves, i, 0, direction))
 		{
 			opportunityCreateBlock = false;
 
@@ -131,7 +131,7 @@ static bool check_create(int i0, int j0, int i1, int j1)
 	return true;
 }
 
-bool create_square(BlockColor blockColor, int sqareSize, int i, int j)
+bool create_square(BlockColor blockColor, BlockType blockType, int sqareSize, int i, int j)
 {
 	if (check_create(i, j, i + sqareSize - 1, j + sqareSize - 1))
 	{
@@ -149,7 +149,7 @@ bool create_square(BlockColor blockColor, int sqareSize, int i, int j)
 	return false;
 }
 
-bool create_line(BlockColor blockColor, int i, int j, Direction direction)
+bool create_line(BlockColor blockColor, BlockType blockType, int i, int j, Direction direction)
 {
 	switch (direction)
 	{
@@ -184,7 +184,7 @@ bool create_line(BlockColor blockColor, int i, int j, Direction direction)
 	return false;
 }
 
-bool create_j_l(enum BlockColor blockColor, int i, int j, enum Direction direction)
+bool create_j_l(enum BlockColor blockColor, BlockType blockType, int i, int j, enum Direction direction)
 {
 	switch (direction)
 	{
@@ -247,7 +247,7 @@ bool create_j_l(enum BlockColor blockColor, int i, int j, enum Direction directi
 	return false;
 }
 
-bool create_j_r(enum BlockColor blockColor, int i, int j, enum Direction direction)
+bool create_j_r(enum BlockColor blockColor, BlockType blockType, int i, int j, enum Direction direction)
 {
 	switch (direction)
 	{
