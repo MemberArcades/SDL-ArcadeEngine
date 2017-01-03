@@ -43,6 +43,7 @@ static void rotation_line()
 			}
 
 			stateRotation.direction = Right;
+			
 		}
 		else
 		{
@@ -64,7 +65,7 @@ static bool check_rotation_line(int *i, int *j)
 	case Up:
 	case Down:
 	{
-		int size = 0;
+		/*int size = 0;
 		for (int k = 0; (stateRotation.j + k < Y_MAIN_FIELD_SIZE) && (size <= 3); ++k)
 		{
 			if (size == 3)
@@ -82,14 +83,26 @@ static bool check_rotation_line(int *i, int *j)
 			}
 		}
 
-		return false;
+		return false;*/
+		for (int k = 0; stateRotation.j + k < Y_MAIN_FIELD_SIZE; ++k)
+		{
+			if ((mainField[stateRotation.i][stateRotation.j + k].status != Background) && (mainField[stateRotation.i][stateRotation.j + k].status != Moves))
+			{
+				return false;
+			}
+
+			if (k == 4)
+			{
+				return true;
+			}
+		}
 
 		break;
 	}
 	case Right:
 	case Left:
 	{
-		int size = 0;
+		/*int size = 0;
 
 		for (int k = 0; (stateRotation.i + k < X_MAIN_FIELD_SIZE) && (size <= 3); ++k)
 		{
@@ -108,7 +121,19 @@ static bool check_rotation_line(int *i, int *j)
 			}
 		}
 
-		return false;
+		return false;*/
+		for (int k = 0; stateRotation.i + k < X_MAIN_FIELD_SIZE; ++k)
+		{
+			if ((mainField[stateRotation.i + k][stateRotation.j].status != Background) && (mainField[stateRotation.i + k][stateRotation.j].status != Moves))
+			{
+				return false;
+			}
+
+			if (k == 4)
+			{
+				return true;
+			}
+		}
 
 		break;
 	}

@@ -1,4 +1,6 @@
 #include "figure.h"
+#include "randomizer.h"
+#include "rotation.h"
 
 extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
@@ -78,7 +80,7 @@ bool create_square(BlockColor blockColor, int sqareSize, int i, int j)
 {
 	if ((0 <= i) && (i + sqareSize - 1 < X_MAIN_FIELD_SIZE) &&
 		(0 <= j) && (j + sqareSize - 1 < Y_MAIN_FIELD_SIZE) &&
-		check_create(i, j, i + sqareSize, j + sqareSize))
+		check_create(i, j, i + sqareSize - 1, j + sqareSize - 1))
 	{
 		for (int x = 0; x < sqareSize; ++x)
 		{
@@ -98,7 +100,7 @@ bool create_line(BlockColor blockColor, int i, int j, Direction direction)
 	case Down:
 		if ((0 <= i) && (i + 4 < X_MAIN_FIELD_SIZE) &&
 			(0 <= j) && (j < Y_MAIN_FIELD_SIZE) &&
-			check_create(i, j, i + 5, j))
+			check_create(i, j, i + 4, j))
 		{
 			for (int x = 0; x < 5; ++x)
 			{
@@ -113,7 +115,7 @@ bool create_line(BlockColor blockColor, int i, int j, Direction direction)
 	case Left:
 		if ((0 <= i) && (i < X_MAIN_FIELD_SIZE) &&
 			(0 <= j) && (j + 4 < Y_MAIN_FIELD_SIZE) &&
-			check_create(i, j, i, j + 5))
+			check_create(i, j, i, j + 4))
 		{
 			for (int y = 0; y < 5; ++y)
 			{
@@ -131,11 +133,11 @@ bool create_line(BlockColor blockColor, int i, int j, Direction direction)
 
 static bool check_create(int i0, int j0, int i1, int j1)
 {
-	for (i0; i0 < i1; ++i0)
+	for (i0; i0 <= i1; ++i0)
 	{
-		for (j0; j0 < j1; ++j0)
+		for (j0; j0 <= j1; ++j0)
 		{
-			if (mainField[i0][j0].status != Background)
+			if (mainField[i0][j0].status == Basis)
 			{
 				opportunityCreateBlock = false;
 

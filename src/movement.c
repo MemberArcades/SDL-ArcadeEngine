@@ -60,9 +60,9 @@ bool check_move(Direction direction)
 
 	bool flag = false;
 
-	for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+	for (int j = 0; j < Y_MAIN_FIELD_SIZE; ++j)
 	{
-		for (int j = 0; j < Y_MAIN_FIELD_SIZE; ++j)
+		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
 		{
 			if (mainField[i][j].status == Moves)
 			{
@@ -77,6 +77,7 @@ bool check_move(Direction direction)
 			}
 		}
 	}
+	
 
 	return flag;
 }

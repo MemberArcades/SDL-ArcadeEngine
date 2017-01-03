@@ -1,6 +1,8 @@
 #include "randomizer.h"
+#include "fieldnextblock.h"
+#include "block.h"
 
-static BlockState nextBlock = { RandomType, RandomDirection, 0, 0, RandomColor };
+static NextBlock nextBlock;
 
 
 static void randomized();
@@ -9,7 +11,8 @@ static void randomized();
 void generation_random_block()
 {
 	generation_blocks(nextBlock.color, nextBlock.type, nextBlock.direction);
-	randomized();
+	randomized(); 
+	draw_next_block();
 };
 
 static void randomized()
@@ -19,17 +22,17 @@ static void randomized()
 	random_direction(&nextBlock.direction);
 }
 
-void random_color(BlockColor *blockColor)
+void random_color(enum BlockColor *blockColor)
 {
 	*blockColor = rand() % NUMBER_OF_COLORS + 2;
 }
 
-void random_type(BlockType *blockType)
+void random_type(enum BlockType *blockType)
 {
 	*blockType = rand() % NUMBER_OF_TYPE + 1;
 }
 
-void random_direction(Direction *direction)
+void random_direction(enum Direction *direction)
 {
 	*direction = rand() % NUMBER_OF_DIRECTION + 1;
 }
@@ -38,4 +41,10 @@ void init_generation_block()
 {
 	generation_blocks(RandomColor, RandomType, RandomDirection);
 	randomized();
+	draw_next_block();
+}
+
+NextBlock* get_next_block()
+{
+	return &nextBlock;
 }

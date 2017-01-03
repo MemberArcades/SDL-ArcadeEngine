@@ -12,7 +12,6 @@
 #define Y_MAIN_FIELD 90
 
 #define X_MAIN_FIELD_SIZE 10
-
 #define Y_MAIN_FIELD_SIZE 20
 
 #define SQARE_SIZE 2

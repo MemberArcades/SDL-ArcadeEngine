@@ -5,6 +5,8 @@
 #include "input.h"
 #include "movement.h"
 #include "block.h"
+#include "fieldnextblock.h"
+#include "randomizer.h"
 
 static int delaySize = 0;
 
