@@ -7,9 +7,6 @@ extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 static bool opportunityCreateBlock;
 
 
-static bool check_create(int i0, int j0, int i1, int j1);
-
-
 bool* get_opportun_create_blocks()
 {
 	return &opportunityCreateBlock;
@@ -108,7 +105,7 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 	return true;
 }
 
-static bool check_create(int i0, int j0, int i1, int j1)
+bool check_create(int i0, int j0, int i1, int j1)
 {
 	if ((0 > i0) || (i1 >= X_MAIN_FIELD_SIZE) ||
 		(0 > j0) || (j1 >= Y_MAIN_FIELD_SIZE))
@@ -139,7 +136,7 @@ bool create_square(BlockColor blockColor, BlockType blockType, int sqareSize, in
 		{
 			for (int y = 0; y < sqareSize; ++y)
 			{
-				recolor_block_main_field(blockColor, Moves, i + x, j + y);
+				recolor_block_main_field(blockColor, blockType, i + x, j + y);
 			}
 		}
 
@@ -159,7 +156,7 @@ bool create_line(BlockColor blockColor, BlockType blockType, int i, int j, Direc
 		{
 			for (int x = 0; x < 4; ++x)
 			{
-				recolor_block_main_field(blockColor, Moves, i + x, j);
+				recolor_block_main_field(blockColor, blockType, i + x, j);
 			}
 
 			return true;
@@ -172,7 +169,7 @@ bool create_line(BlockColor blockColor, BlockType blockType, int i, int j, Direc
 		{
 			for (int y = 0; y < 4; ++y)
 			{
-				recolor_block_main_field(blockColor, Moves, i, j + y);
+				recolor_block_main_field(blockColor, blockType, i, j + y);
 			}
 
 			return true;

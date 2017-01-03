@@ -4,11 +4,10 @@ extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
 static BlockState stateRotation;
 
-static void rotation_line();
-
-static bool check_rotation_line();
 
 static void block_rotation();
+
+static void rotation_line();
 
 static void rotation_j_l();
 
@@ -40,29 +39,30 @@ static void block_rotation()
 
 static void rotation_line()
 {
-	if (check_rotation_line())
+	switch (stateRotation.direction)
 	{
-		if ((stateRotation.direction == Up) || (stateRotation.direction == Down))
+	case Up:
+	case Down:
+		if (check_create(stateRotation.i, stateRotation.j, stateRotation.i, stateRotation.j + 3))
 		{
-			for (int k = 0; k < 4; ++k)
-			{
-				recolor_block_main_field(BackgroundColor, Background, stateRotation.i + k, stateRotation.j);
-				recolor_block_main_field(stateRotation.color, Moves, stateRotation.i, stateRotation.j + k);
-			}
+			create_line(BackgroundColor, Background, stateRotation.i, stateRotation.j, Up);
+			create_line(stateRotation.color, Moves, stateRotation.i, stateRotation.j, Right);
 
 			stateRotation.direction = Right;
-			
 		}
-		else
+
+		break;
+	case Right:
+	case Left:
+		if (check_create(stateRotation.i, stateRotation.j, stateRotation.i + 3, stateRotation.j))
 		{
-			for (int k = 0; k < 4; ++k)
-			{
-				recolor_block_main_field(BackgroundColor, Background, stateRotation.i, stateRotation.j + k);
-				recolor_block_main_field(stateRotation.color, Moves, stateRotation.i + k, stateRotation.j);
-			}
+			create_line(BackgroundColor, Background, stateRotation.i, stateRotation.j, Right);
+			create_line(stateRotation.color, Moves, stateRotation.i, stateRotation.j, Up);
 
 			stateRotation.direction = Up;
 		}
+
+		break;
 	}
 }
 
@@ -83,53 +83,6 @@ void reboot_rotatoin_index(Direction direction)
 		stateRotation.i -= 1;
 		break;
 	}
-}
-
-static bool check_rotation_line()
-{
-	switch (stateRotation.direction)
-	{
-	case Up:
-	case Down:
-	{
-		for (int k = 0; stateRotation.j + k < Y_MAIN_FIELD_SIZE; ++k)
-		{
-			if ((mainField[stateRotation.i][stateRotation.j + k].status != Background) && 
-				(mainField[stateRotation.i][stateRotation.j + k].status != Moves))
-			{
-				return false;
-			}
-
-			if (k == 3)
-			{
-				return true;
-			}
-		}
-
-		break;
-	}
-	case Right:
-	case Left:
-	{
-		for (int k = 0; stateRotation.i + k < X_MAIN_FIELD_SIZE; ++k)
-		{
-			if ((mainField[stateRotation.i + k][stateRotation.j].status != Background) && 
-				(mainField[stateRotation.i + k][stateRotation.j].status != Moves))
-			{
-				return false;
-			}
-
-			if (k == 3)
-			{
-				return true;
-			}
-		}
-
-		break;
-	}
-	}
-
-	return false;
 }
 
 void key_rotation()
