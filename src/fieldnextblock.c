@@ -1,6 +1,7 @@
 #include "fieldnextblock.h"
 #include "renderer.h"
 #include "randomizer.h"
+#include "figure.h"
 
 static void cleaned_field();
 

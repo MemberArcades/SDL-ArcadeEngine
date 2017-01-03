@@ -1,8 +1,7 @@
 #include "figure.h"
 #include "randomizer.h"
 #include "rotation.h"
-
-extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
+#include "block.h"
 
 static bool opportunityCreateBlock;
 
@@ -82,20 +81,14 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 		break;
 	case JR:
 	{		
-		int i = 4;
-		
-		if (direction == Up)
-		{
-			i = 6;
-		}
-		if (!create_j_r(blockColor, Moves, i, 0, direction))
+		if (!create_j_r(blockColor, Moves, 4, 0, direction))
 		{
 			opportunityCreateBlock = false;
 
 			return false;
 		}
 
-		get_state_rotation()->i = i;
+		get_state_rotation()->i = 4;
 		get_state_rotation()->j = 0;
 
 		break;
@@ -105,21 +98,20 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 	return true;
 }
 
-bool check_create(int i0, int j0, int i1, int j1)
+bool check_create(int beginI, int beginJ, int endI, int endJ)
 {
-	if ((0 > i0) || (i1 >= X_MAIN_FIELD_SIZE) ||
-		(0 > j0) || (j1 >= Y_MAIN_FIELD_SIZE))
+	if ((0 > beginI) || (endI >= X_MAIN_FIELD_SIZE) ||
+		(0 > beginJ) || (endJ >= Y_MAIN_FIELD_SIZE))
 	{
 		return false;
 	}
 
-	for (i0; i0 <= i1; ++i0)
+	for (int i = beginI; i <= endI; ++i)
 	{
-		for (j0; j0 <= j1; ++j0)
+		for (int j = beginJ; j <= endJ; ++j)
 		{
-			if (mainField[i0][j0].status != Background && mainField[i0][j0].status != Moves)
+			if (get_main_field()[i][j].status == Basis)
 			{
-
 				return false;
 			}
 		}
@@ -128,7 +120,7 @@ bool check_create(int i0, int j0, int i1, int j1)
 	return true;
 }
 
-bool create_square(BlockColor blockColor, BlockType blockType, int sqareSize, int i, int j)
+bool create_square(BlockColor blockColor, BlockStatus blockStatus, int sqareSize, int i, int j)
 {
 	if (check_create(i, j, i + sqareSize - 1, j + sqareSize - 1))
 	{
@@ -136,7 +128,7 @@ bool create_square(BlockColor blockColor, BlockType blockType, int sqareSize, in
 		{
 			for (int y = 0; y < sqareSize; ++y)
 			{
-				recolor_block_main_field(blockColor, blockType, i + x, j + y);
+				recolor_block_main_field(blockColor, blockStatus, i + x, j + y);
 			}
 		}
 
@@ -146,7 +138,7 @@ bool create_square(BlockColor blockColor, BlockType blockType, int sqareSize, in
 	return false;
 }
 
-bool create_line(BlockColor blockColor, BlockType blockType, int i, int j, Direction direction)
+bool create_line(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
 {
 	switch (direction)
 	{
@@ -156,7 +148,7 @@ bool create_line(BlockColor blockColor, BlockType blockType, int i, int j, Direc
 		{
 			for (int x = 0; x < 4; ++x)
 			{
-				recolor_block_main_field(blockColor, blockType, i + x, j);
+				recolor_block_main_field(blockColor, blockStatus, i + x, j);
 			}
 
 			return true;
@@ -169,7 +161,7 @@ bool create_line(BlockColor blockColor, BlockType blockType, int i, int j, Direc
 		{
 			for (int y = 0; y < 4; ++y)
 			{
-				recolor_block_main_field(blockColor, blockType, i, j + y);
+				recolor_block_main_field(blockColor, blockStatus, i, j + y);
 			}
 
 			return true;
@@ -181,7 +173,7 @@ bool create_line(BlockColor blockColor, BlockType blockType, int i, int j, Direc
 	return false;
 }
 
-bool create_j_l(enum BlockColor blockColor, BlockType blockType, int i, int j, enum Direction direction)
+bool create_j_l(enum BlockColor blockColor, BlockStatus blockStatus, int i, int j, enum Direction direction)
 {
 	switch (direction)
 	{
@@ -191,20 +183,20 @@ bool create_j_l(enum BlockColor blockColor, BlockType blockType, int i, int j, e
 		{
 			if (direction == Up)
 			{
-				recolor_block_main_field(blockColor, Moves, i, j);
+				recolor_block_main_field(blockColor, blockStatus, i, j);
 
 				for (int x = 0; x < 3; ++x)
 				{
-					recolor_block_main_field(blockColor, Moves, i + x, j + 1);
+					recolor_block_main_field(blockColor, blockStatus, i + x, j + 1);
 				}
 			}
 			else
 			{
-				recolor_block_main_field(blockColor, Moves, i + 2, j + 1);
+				recolor_block_main_field(blockColor, blockStatus, i + 2, j + 1);
 
 				for (int x = 0; x < 3; ++x)
 				{
-					recolor_block_main_field(blockColor, Moves, i + x, j);
+					recolor_block_main_field(blockColor, blockStatus, i + x, j);
 				}
 			}
 
@@ -215,11 +207,11 @@ bool create_j_l(enum BlockColor blockColor, BlockType blockType, int i, int j, e
 	case Right:
 		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(blockColor, Moves, i + 1, j);
+			recolor_block_main_field(blockColor, blockStatus, i + 1, j);
 
 			for (int y = 0; y < 3; ++y)
 			{
-				recolor_block_main_field(blockColor, Moves, i, j + y);
+				recolor_block_main_field(blockColor, blockStatus, i, j + y);
 			}
 
 			return true;
@@ -227,11 +219,11 @@ bool create_j_l(enum BlockColor blockColor, BlockType blockType, int i, int j, e
 	case Left:
 		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(blockColor, Moves, i, j + 2);
+			recolor_block_main_field(blockColor, blockStatus, i, j + 2);
 
 			for (int y = 0; y < 3; ++y)
 			{
-				recolor_block_main_field(blockColor, Moves, i + 1, j + y);
+				recolor_block_main_field(blockColor, blockStatus, i + 1, j + y);
 			}
 
 
@@ -244,18 +236,18 @@ bool create_j_l(enum BlockColor blockColor, BlockType blockType, int i, int j, e
 	return false;
 }
 
-bool create_j_r(enum BlockColor blockColor, BlockType blockType, int i, int j, enum Direction direction)
+bool create_j_r(enum BlockColor blockColor, BlockStatus blockStatus, int i, int j, enum Direction direction)
 {
 	switch (direction)
 	{
 	case Up:
 		if (check_create(i, j, i + 2, j + 1))
 		{
-			recolor_block_main_field(blockColor, Moves, i + 2, j);
+			recolor_block_main_field(blockColor, blockStatus, i + 2, j);
 
 			for (int x = 0; x < 3; ++x)
 			{
-				recolor_block_main_field(blockColor, Moves, i + x, j + 1);
+				recolor_block_main_field(blockColor, blockStatus, i + x, j + 1);
 			}
 			
 			return true;
@@ -265,11 +257,11 @@ bool create_j_r(enum BlockColor blockColor, BlockType blockType, int i, int j, e
 	case Down:
 		if (check_create(i, j, i + 2, j + 1))
 		{
-			recolor_block_main_field(blockColor, Moves, i, j + 1);
+			recolor_block_main_field(blockColor, blockStatus, i, j + 1);
 
 			for (int x = 0; x < 3; ++x)
 			{
-				recolor_block_main_field(blockColor, Moves, i + x, j);
+				recolor_block_main_field(blockColor, blockStatus, i + x, j);
 			}
 
 			return true;
@@ -280,11 +272,11 @@ bool create_j_r(enum BlockColor blockColor, BlockType blockType, int i, int j, e
 		
 		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(blockColor, Moves, i + 1, j + 2);
+			recolor_block_main_field(blockColor, blockStatus, i + 1, j + 2);
 
 			for (int y = 0; y < 3; ++y)
 			{
-				recolor_block_main_field(blockColor, Moves, i, j + y);
+				recolor_block_main_field(blockColor, blockStatus, i, j + y);
 			}
 
 			return true;
@@ -292,11 +284,11 @@ bool create_j_r(enum BlockColor blockColor, BlockType blockType, int i, int j, e
 	case Left:
 		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(blockColor, Moves, i, j);
+			recolor_block_main_field(blockColor, blockStatus, i, j);
 
 			for (int y = 0; y < 3; ++y)
 			{
-				recolor_block_main_field(blockColor, Moves, i + 1, j + y);
+				recolor_block_main_field(blockColor, blockStatus, i + 1, j + y);
 			}
 
 			return true;

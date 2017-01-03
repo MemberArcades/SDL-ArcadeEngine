@@ -26,7 +26,7 @@ void game_tick(Game *game)
 
 		key_rotation();
 		movement_dir_button();
-		//move_toward(Down);
+		move_toward(Down);
 		destroy_full_line(game);
 
 		break;

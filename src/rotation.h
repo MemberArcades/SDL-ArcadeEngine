@@ -6,9 +6,9 @@ typedef struct
 {
 	enum BlockType type;
 	enum Direction direction;
+	enum BlockColor color;
 	int i;
 	int j;
-	enum BlockColor color;
 } BlockState;
 
 

@@ -1,6 +1,7 @@
 #include "rotation.h"
-
-extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
+#include "block.h"
+#include "fieldnextblock.h"
+#include "figure.h"
 
 static BlockState stateRotation;
 
@@ -39,14 +40,17 @@ static void block_rotation()
 
 static void rotation_line()
 {
+	int i = stateRotation.i;
+	int j = stateRotation.j;
+
 	switch (stateRotation.direction)
 	{
 	case Up:
 	case Down:
-		if (check_create(stateRotation.i, stateRotation.j, stateRotation.i, stateRotation.j + 3))
+		if (check_create(i, j, i, j + 3))
 		{
-			create_line(BackgroundColor, Background, stateRotation.i, stateRotation.j, Up);
-			create_line(stateRotation.color, Moves, stateRotation.i, stateRotation.j, Right);
+			create_line(BackgroundColor, Background, i, j, Up);
+			create_line(stateRotation.color, Moves, i, j, Right);
 
 			stateRotation.direction = Right;
 		}
@@ -54,10 +58,10 @@ static void rotation_line()
 		break;
 	case Right:
 	case Left:
-		if (check_create(stateRotation.i, stateRotation.j, stateRotation.i + 3, stateRotation.j))
+		if (check_create(i, j, i + 3, j))
 		{
-			create_line(BackgroundColor, Background, stateRotation.i, stateRotation.j, Right);
-			create_line(stateRotation.color, Moves, stateRotation.i, stateRotation.j, Up);
+			create_line(BackgroundColor, Background, i, j, Right);
+			create_line(stateRotation.color, Moves, i, j, Up);
 
 			stateRotation.direction = Up;
 		}
@@ -97,99 +101,106 @@ void key_rotation()
 
 static void rotation_j_l()
 {
-	switch (get_state_rotation()->direction)
+	int i = stateRotation.i;
+	int j = stateRotation.j;
+
+	switch (stateRotation.direction)
 	{
 	case Up:
-		if (create_j_l(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Right))
+	{
+		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j + 1);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 2, get_state_rotation()->j + 1);
+			create_j_l(BackgroundColor, Background, i, j, Up);
+			create_j_l(stateRotation.color, Moves, i, j, Right);
 
-			get_state_rotation()->direction = Right;
+			stateRotation.direction = Right;
 		}
 
 		break;
+	}
 	case Right:
-		if (create_j_l(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Down))
+	{
+		if (check_create(i, j, i + 2, j + 1))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i, get_state_rotation()->j + 1);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j + 1);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i, get_state_rotation()->j + 2);
+			create_j_l(BackgroundColor, Background, i, j, Right);
+			create_j_l(stateRotation.color, Moves, i, j, Down);
 
-			get_state_rotation()->direction = Down;
+			stateRotation.direction = Down;
 		}
 
 		break;
+	}
 	case Down:
-		if (create_j_l(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Left))
+	{
+		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i, get_state_rotation()->j);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 2, get_state_rotation()->j);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 2, get_state_rotation()->j + 1);
+			create_j_l(BackgroundColor, Background, i, j, Down);
+			create_j_l(stateRotation.color, Moves, i, j, Left);
 
-			get_state_rotation()->direction = Left;
+			stateRotation.direction = Left;
 		}
 
 		break;
+	}
 	case Left:
-		if (create_j_l(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Up))
+	{
+		if (check_create(i, j, i + 2, j + 1))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i, get_state_rotation()->j + 2);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j + 2);		
+			create_j_l(BackgroundColor, Background, i, j, Left);
+			create_j_l(stateRotation.color, Moves, i, j, Up);
 
-			get_state_rotation()->direction = Up;
+			stateRotation.direction = Up;
 		}
 
 		break;
+	}
 	}
 }
 
 static void rotation_j_r()
 {
-	
+	int i = stateRotation.i;
+	int j = stateRotation.j;
+
 	switch (get_state_rotation()->direction)
 	{
 	case Up:
-		if (create_j_r(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Right))
+		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 2, get_state_rotation()->j);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 2, get_state_rotation()->j + 1);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j + 1);
+			create_j_r(BackgroundColor, Background, i, j, Up);	
+			create_j_r(stateRotation.color, Moves, i, j, Right);
 
-			get_state_rotation()->direction = Right;
+			stateRotation.direction = Right;
 		}
 
 		break;
 	case Right:
-		if (create_j_r(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Down))
+		if (check_create(i, j, i + 2, j + 1))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i, get_state_rotation()->j + 2);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j + 2);
+			create_j_r(BackgroundColor, Background, i, j, Right);
+			create_j_r(stateRotation.color, Moves, i, j, Down);
 
-			get_state_rotation()->direction = Down;
+			stateRotation.direction = Down;
 		}
 
 		break;
 	case Down:
-		
-		if (create_j_r(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Left))
+		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i, get_state_rotation()->j + 1);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 2, get_state_rotation()->j);
+			create_j_r(BackgroundColor, Background, i, j, Down);
+			create_j_r(stateRotation.color, Moves, i, j, Left);
 
-			get_state_rotation()->direction = Left;
+			stateRotation.direction = Left;
 		}
 
 		break;
 	case Left:
-		if (create_j_r(get_state_rotation()->color, Moves, get_state_rotation()->i, get_state_rotation()->j, Up))
+		if (check_create(i, j, i + 2, j + 1))
 		{
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i, get_state_rotation()->j);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j);
-			recolor_block_main_field(BackgroundColor, Background, get_state_rotation()->i + 1, get_state_rotation()->j + 2);
+			create_j_r(BackgroundColor, Background, i, j, Left);
+			create_j_r(stateRotation.color, Moves, i, j, Up);
 
-			get_state_rotation()->direction = Up;
+			stateRotation.direction = Up;
 		}
 
 		break;
