@@ -34,7 +34,7 @@ static void rotation_line()
 
 	if (check_rotation_line(&newI, &newJ))
 	{
-		if (stateRotation.direction == Up)
+		if ((stateRotation.direction == Up) || (stateRotation.direction == Down))
 		{
 			for (int k = 0; k < 5; ++k)
 			{
@@ -62,6 +62,7 @@ static bool check_rotation_line(int *i, int *j)
 	switch (stateRotation.direction)
 	{
 	case Up:
+	case Down:
 	{
 		int size = 0;
 		for (int k = 0; (stateRotation.j + k < Y_MAIN_FIELD_SIZE) && (size <= 3); ++k)
@@ -86,6 +87,7 @@ static bool check_rotation_line(int *i, int *j)
 		break;
 	}
 	case Right:
+	case Left:
 	{
 		int size = 0;
 

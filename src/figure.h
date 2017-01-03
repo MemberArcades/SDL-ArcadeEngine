@@ -7,8 +7,8 @@
 
 bool* get_opportun_create_blocks();
 
-void generation_blocks(enum BlockColor blockColor, enum BlockType blockType);
+bool generation_blocks(enum BlockColor blockColor, enum BlockType blockType, enum Direction direction);
 
-void create_square(enum BlockColor blockColor, int sqareSize, int i, int j);
+bool create_square(enum BlockColor blockColor, int sqareSize, int i, int j);
 
-void create_line(enum BlockColor blockColor, int i, int j);
+bool create_line(enum BlockColor blockColor, int i, int j, enum Direction direction);

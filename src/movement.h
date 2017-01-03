@@ -9,6 +9,7 @@
 
 typedef enum
 {
+	RandomDirection,
 	Up,
 	Right,
 	Down,

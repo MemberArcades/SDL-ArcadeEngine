@@ -18,7 +18,7 @@ void game_tick(Game *game)
 	case GamePlayState:
 		if (!check_movement())
 		{
-			generation_blocks(RandomColor, RandomType);
+			generation_random_block();
 		}
 
 		key_rotation();
@@ -54,6 +54,7 @@ void game_init(Game *game)
 	draw_background();
 	init_main_field();
 	init_keys_state();
+	init_generation_block();
 
 	game->game_state = GamePlayState;
 	game->game_score = 0;

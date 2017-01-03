@@ -2,51 +2,81 @@
 
 extern BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
+static bool opportunityCreateBlock;
+
+
 static bool check_create(int i0, int j0, int i1, int j1);
 
-static bool opportunityCreateBlock;
+static void randomizer();
+
 
 bool* get_opportun_create_blocks()
 {
 	return &opportunityCreateBlock;
 }
 
-void generation_blocks(BlockColor blockColor, BlockType blockType)
+bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction direction)
 {
 	if (blockColor == RandomColor)
 	{
-		blockColor = rand() % NUMBER_OF_COLORS + 2;
+		random_color(&blockColor);
 	}
 
 	if (blockType == RandomType)
 	{
-		blockType = rand() % NUMBER_OF_TYPE + 1;
+		random_type(&blockType);
 	}
 
-	get_state_rotation()->direction = Up;
+	if (direction == RandomDirection)
+	{
+		random_direction(&direction);
+	}
+
+	get_state_rotation()->direction = direction;
 	get_state_rotation()->type = blockType;
 	get_state_rotation()->color = blockColor;
 
 	switch (blockType)
 	{
 	case Square:
-		create_square(blockColor, SQARE_SIZE, 4, 0);
+		if (!create_square(blockColor, SQARE_SIZE, 4, 0))
+		{
+			*get_opportun_create_blocks() = false;
+
+			return false;
+		}
 
 		get_state_rotation()->i = 4;
 		get_state_rotation()->j = 0;
 
 		break;
 	case Line:
-		create_line(blockColor, 2, 0);
+	{
+		int i = 2;
+
+		if ((direction == Right) || (direction == Left))
+		{
+			i += 2;
+		}
+
+		if (!create_line(blockColor, i, 0, direction))
+		{
+			*get_opportun_create_blocks() = false;
+
+			return false;
+		}
 
 		get_state_rotation()->i = 2;
 		get_state_rotation()->j = 0;
 
 		break;
 	}
+	}
+
+	return true;
 }
 
-void create_square(BlockColor blockColor, int sqareSize, int i, int j)
+bool create_square(BlockColor blockColor, int sqareSize, int i, int j)
 {
 	if ((0 <= i) && (i + sqareSize - 1 < X_MAIN_FIELD_SIZE) &&
 		(0 <= j) && (j + sqareSize - 1 < Y_MAIN_FIELD_SIZE) &&
@@ -62,17 +92,43 @@ void create_square(BlockColor blockColor, int sqareSize, int i, int j)
 	}
 }
 
-void create_line(BlockColor blockColor, int i, int j)
+bool create_line(BlockColor blockColor, int i, int j, Direction direction)
 {
-	if ((0 <= i) && (i + 4 < X_MAIN_FIELD_SIZE) &&
-		(0 <= j) && (j < Y_MAIN_FIELD_SIZE) &&
-		check_create(i, j, i + 5, j))
+	switch (direction)
 	{
-		for (int x = 0; x < 5; ++x)
+	case Up:
+	case Down:
+		if ((0 <= i) && (i + 4 < X_MAIN_FIELD_SIZE) &&
+			(0 <= j) && (j < Y_MAIN_FIELD_SIZE) &&
+			check_create(i, j, i + 5, j))
 		{
-			recolor_block_main_field(blockColor, Moves, i + x, j);
+			for (int x = 0; x < 5; ++x)
+			{
+				recolor_block_main_field(blockColor, Moves, i + x, j);
+			}
+
+			return true;
 		}
+
+		break;
+	case Right:
+	case Left:
+		if ((0 <= i) && (i < X_MAIN_FIELD_SIZE) &&
+			(0 <= j) && (j + 4 < Y_MAIN_FIELD_SIZE) &&
+			check_create(i, j, i, j + 5))
+		{
+			for (int y = 0; y < 5; ++y)
+			{
+				recolor_block_main_field(blockColor, Moves, i, j + y);
+			}
+
+			return true;
+		}
+
+		break;
 	}
+
+	return false;
 }
 
 static bool check_create(int i0, int j0, int i1, int j1)
