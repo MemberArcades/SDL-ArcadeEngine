@@ -6,7 +6,7 @@ static BlockState stateRotation;
 
 static void rotation_line();
 
-static bool check_rotation_line(int *i, int *j);
+static bool check_rotation_line();
 
 static void block_rotation();
 
@@ -30,9 +30,7 @@ static void block_rotation()
 
 static void rotation_line()
 {
-	int newI, newJ;
-
-	if (check_rotation_line(&newI, &newJ))
+	if (check_rotation_line())
 	{
 		if ((stateRotation.direction == Up) || (stateRotation.direction == Down))
 		{
@@ -58,7 +56,7 @@ static void rotation_line()
 	}
 }
 
-static bool check_rotation_line(int *i, int *j)
+static bool check_rotation_line()
 {
 	switch (stateRotation.direction)
 	{

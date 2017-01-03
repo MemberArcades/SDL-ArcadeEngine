@@ -258,7 +258,7 @@ void movement_dir_button()
 
 		if (key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown)
 		{
-			downSpeed += speed * 5;
+			downSpeed += speed + 5;
 
 			move_toward(Down);
 		}
