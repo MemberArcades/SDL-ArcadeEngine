@@ -95,9 +95,14 @@ void destroy_full_line(Game *game)
 	int j;
 
 	int score = 100;
+	int sumScore = 0;
+
+	bool flag = false;
 
 	while (check_full_line(&j))
 	{
+		flag = true;
+
 		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
 		{
 			recolor_block_main_field(BackgroundColor, Background, i, j);
@@ -112,11 +117,15 @@ void destroy_full_line(Game *game)
 
 		moves_to_basis();
 
-		game->game_score += score;
+		add_game_score(game, score);
 
-		printf("Score: %d\n", game->game_score);
-
+		sumScore += score;
 		score += 100;
+	}
+
+	if (flag)
+	{
+		printf("Added points: %d, You score: %d\n", sumScore, game->game_score);
 	}
 
 }

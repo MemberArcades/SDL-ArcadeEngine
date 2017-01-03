@@ -41,6 +41,7 @@ int main(int argc, char* args[])
 	resource_init();
 
 	game_init(&game);
+	game_init_score(&game);
 
 	main_loop();
 
@@ -75,6 +76,7 @@ static void internal_tick(void)
 
 		if (game_over(&game))
 		{
+			printf("\nYou score: %d\nHigh score: %d\n\n", game.game_score, game.high_score);
 			state = End;
 		}
 

@@ -15,6 +15,7 @@ void game_tick(Game *game)
 	switch (game->game_state)
 	{
 	case GameBeginState:
+
 		break;
 
 	case GamePlayState:
@@ -60,6 +61,8 @@ void game_init(Game *game)
 
 	game->game_state = GamePlayState;
 	game->game_score = 0;
+
+	printf("You score: %d\n", game->game_score);
 }
 
 bool game_over(Game *game)
@@ -90,4 +93,19 @@ bool gmae_delay()
 
 		return true;
 	}
+}
+
+void add_game_score(Game *game, int score)
+{
+	game->game_score += score;
+
+	if (game->game_score > game->high_score)
+	{
+		game->high_score = game->game_score;
+	}
+}
+
+void game_init_score(Game *game)
+{
+	game->high_score = 0;
 }
