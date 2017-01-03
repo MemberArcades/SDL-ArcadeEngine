@@ -3,16 +3,16 @@
 static BlockState nextBlock = { RandomType, RandomDirection, 0, 0, RandomColor };
 
 
-static void randomizer();
+static void randomized();
 
 
 void generation_random_block()
 {
 	generation_blocks(nextBlock.color, nextBlock.type, nextBlock.direction);
-	randomizer();
+	randomized();
 };
 
-static void randomizer()
+static void randomized()
 {
 	random_color(&nextBlock.color);
 	random_type(&nextBlock.type);
@@ -37,5 +37,5 @@ void random_direction(Direction *direction)
 void init_generation_block()
 {
 	generation_blocks(RandomColor, RandomType, RandomDirection);
-	randomizer();
+	randomized();
 }

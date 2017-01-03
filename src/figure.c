@@ -7,8 +7,6 @@ static bool opportunityCreateBlock;
 
 static bool check_create(int i0, int j0, int i1, int j1);
 
-static void randomizer();
-
 
 bool* get_opportun_create_blocks()
 {
