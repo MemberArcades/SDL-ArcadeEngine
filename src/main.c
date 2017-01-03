@@ -118,7 +118,6 @@ static void process_events(void)
 		switch (event.type)
 		{
 		case SDL_QUIT:
-			game_quit();
 			gameRunning = false;
 
 			break;
@@ -142,12 +141,13 @@ static void resource_init(void)
 
 	fps_init(60);
 
-	/* TODO: load_images(), load_sounds(), load_text().*/
+	/* TODO: load_sounds(), load_text().*/
 }
 
 static void clean_up(void)
 {
 	dispose_window();
+	destroy_image();
 	/* TODO: dispose_ */
 
 	SDL_Quit();

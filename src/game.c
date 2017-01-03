@@ -74,11 +74,6 @@ bool game_over(Game *game)
 	}
 }
 
-void game_quit()
-{
-	destroy_image();
-}
-
 bool gmae_delay()
 {
 	if (delaySize <= 100)
