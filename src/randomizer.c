@@ -10,9 +10,11 @@ static void randomized();
 
 void generation_random_block()
 {
-	generation_blocks(nextBlock.color, nextBlock.type, nextBlock.direction);
-	randomized(); 
-	draw_next_block();
+	if (generation_blocks(nextBlock.color, nextBlock.type, nextBlock.direction))
+	{
+		randomized();
+		draw_next_block();
+	}
 };
 
 static void randomized()

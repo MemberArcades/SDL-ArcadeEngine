@@ -17,7 +17,7 @@
 #define SQARE_SIZE 2
 
 #define NUMBER_OF_COLORS 4
-#define NUMBER_OF_TYPE 2
+#define NUMBER_OF_TYPE 4
 #define NUMBER_OF_DIRECTION 4
 
 typedef enum
@@ -54,7 +54,9 @@ typedef enum
 {
 	RandomType,
 	Square,
-	Line
+	Line,
+	JL,
+	JR
 } BlockType;
 
 

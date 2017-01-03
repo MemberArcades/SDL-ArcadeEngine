@@ -103,27 +103,20 @@ void move_toward(Direction direction)
 	{
 		Move move = { 0, 0, 0, 0 };
 		dir_move(&move, direction);
+		
+		reboot_rotatoin_index(direction);
 
 		switch (direction)
 		{
 		case Up:
 		case Left:
 		{
-			bool flag = true;
-
 			for (int j = move.u; j < Y_MAIN_FIELD_SIZE; ++j)
 			{
 				for (int i = move.l; i < X_MAIN_FIELD_SIZE; ++i)
 				{
 					if (mainField[i][j].status == Moves)
 					{
-						if (flag)
-						{
-							get_state_rotation()->i = i - move.l;
-							get_state_rotation()->j = j;
-							flag = false;
-						}
-
 						recolor_block_main_field(mainField[i][j].color, Moves, i - move.l, j - move.u);
 						recolor_block_main_field(BackgroundColor, Background, i, j);
 					}
@@ -143,9 +136,6 @@ void move_toward(Direction direction)
 					{
 						recolor_block_main_field(mainField[i][j].color, Moves, i + move.r, j + move.d);
 						recolor_block_main_field(BackgroundColor, Background, i, j);
-
-						get_state_rotation()->i = i + move.r;
-						get_state_rotation()->j = j + move.d;
 					}
 				}
 			}
