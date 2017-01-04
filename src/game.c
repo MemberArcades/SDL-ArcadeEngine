@@ -60,6 +60,7 @@ void game_init(Game *game)
 	init_main_field();
 	init_keys_state();
 	init_generation_block();
+	*get_sum_boost() = 0;
 
 	game->game_state = GamePlayState;
 	game->game_score = 0;
