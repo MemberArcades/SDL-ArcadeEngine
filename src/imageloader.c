@@ -33,7 +33,7 @@ void load_images()
 {
 	background = load_image(DIR_IMAGE  "tetris_background.png");
 	blocks[BackgroundImage] = load_image(DIR_IMAGE "tetris_block_background.png");
-	blocks[OtherImage] = load_image(DIR_IMAGE "tetris_block.png");
+	blocks[OtherImage] = load_image(DIR_IMAGE "tetris_block_new.png");
 	gaveOverImg = load_image(DIR_IMAGE "tetris_game_over.png");
 }
 
