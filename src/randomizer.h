@@ -9,6 +9,7 @@ typedef struct
 	enum Direction direction;
 } NextBlock;
 
+
 void generation_random_block();
 
 void random_color(enum BlockColor *blockColor);

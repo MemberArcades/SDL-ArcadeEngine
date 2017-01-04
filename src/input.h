@@ -26,3 +26,5 @@ void handle_keyup(int keycode);
 KeyState key_held(int keycode);
 
 KeyState check_key_movement_pressed();
+
+void key_tick();

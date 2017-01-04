@@ -1,12 +1,21 @@
 #include "randomizer.h"
 #include "fieldnextblock.h"
 #include "block.h"
+#include <time.h>
+#include <stdlib.h>
 
 static NextBlock nextBlock;
 
 
 static void randomized();
 
+static void rand_corn();
+
+
+static void rand_corn()
+{
+	srand(time(0));
+}
 
 void generation_random_block()
 {
@@ -15,7 +24,7 @@ void generation_random_block()
 		randomized();
 		draw_next_block();
 	}
-};
+}
 
 static void randomized()
 {
@@ -24,24 +33,27 @@ static void randomized()
 	random_direction(&nextBlock.direction);
 }
 
-void random_color(enum BlockColor *blockColor)
+void random_color(BlockColor *blockColor)
 {
 	*blockColor = rand() % NUMBER_OF_COLORS + 2;
 }
 
-void random_type(enum BlockType *blockType)
+void random_type(BlockType *blockType)
 {
 	*blockType = rand() % NUMBER_OF_TYPE + 1;
 }
 
-void random_direction(enum Direction *direction)
+void random_direction(Direction *direction)
 {
 	*direction = rand() % NUMBER_OF_DIRECTION + 1;
 }
 
 void init_generation_block()
 {
+	rand_corn();
+
 	generation_blocks(RandomColor, RandomType, RandomDirection);
+
 	randomized();
 	draw_next_block();
 }

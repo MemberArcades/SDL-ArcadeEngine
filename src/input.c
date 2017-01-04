@@ -1,4 +1,6 @@
 #include "input.h"
+#include "rotation.h"
+#include "movement.h"
 
 static void check_keycode(int keycode);
 
@@ -76,4 +78,10 @@ static void check_keycode(int keycode)
 		printf("Keycode %d is out of range.\nForce quit.\n", keycode);
 		exit(1);
 	}
+}
+
+void key_tick()
+{
+	key_rotation();
+	movement_dir_button();
 }

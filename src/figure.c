@@ -259,7 +259,7 @@ bool create_j_l(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Di
 	return false;
 }
 
-bool create_j_r(enum BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
+bool create_j_r(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
 {
 	switch (direction)
 	{

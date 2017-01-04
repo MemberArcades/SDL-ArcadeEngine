@@ -25,8 +25,7 @@ void game_tick(Game *game)
 			generation_random_block();
 		}
 
-		key_rotation();
-		movement_dir_button();
+		key_tick();
 
 		move_down();
 		destroy_full_line(game);
