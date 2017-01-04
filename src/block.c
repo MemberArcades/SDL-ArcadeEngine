@@ -3,6 +3,8 @@
 #include "imageloader.h"
 #include "renderer.h"
 #include "window.h"
+#include "game.h"
+#include "main.h"
 
 #include <stdlib.h>
 
@@ -94,7 +96,7 @@ void destroy_full_line(Game *game)
 {
 	int j;
 
-	int score = 100;
+	int score = 100 + 100 * (*get_sum_boost());
 	int sumScore = 0;
 
 	bool flag = false;
@@ -120,7 +122,7 @@ void destroy_full_line(Game *game)
 		add_game_score(game, score);
 
 		sumScore += score;
-		score *= 2;
+		score += 100 + 100 * (*get_sum_boost());
 	}
 
 	if (flag)

@@ -2,19 +2,31 @@
 #include "input.h"
 #include "rotation.h"
 
-static int downSpeed = 0;
+static int speed = 0;
 
 static int leftSpeed = 0;
 
 static int rightSpeed = 0;
 
-static int speed = 1;
+static int sumSpeed = 1;
+
+static int boost = 0;
+
+static int sumBoost = 0;
 
 
 static Direction get_movement_dir_button();
 
 static void dir_move(Move *move, Direction direction);
 
+static bool add_boost();
+
+static bool add_speed();
+
+int* get_sum_boost()
+{
+	return &sumBoost;
+}
 
 bool check_movement()
 {
@@ -82,21 +94,6 @@ bool check_move(Direction direction)
 
 void move_toward(Direction direction)
 {
-	if (direction == Down)
-	{
-		if (downSpeed < 20)
-		{
-			downSpeed += speed;
-
-			return;
-		}
-		else
-		{
-			downSpeed = 0;
-		}
-	}
-
-
 	if (check_move(direction))
 	{
 		Move move = { 0, 0, 0, 0 };
@@ -149,6 +146,49 @@ void move_toward(Direction direction)
 			moves_to_basis();
 		}
 	}
+}
+
+static bool add_boost()
+{
+	if (boost < BOOST)
+	{
+		++boost;
+
+		return false;
+	}
+
+	if (sumSpeed + sumBoost < MAX_SPEED)
+	{
+		++sumBoost;
+	}
+
+	boost = 0;
+
+	return true;
+}
+
+static bool add_speed()
+{
+	if (speed < DOWN_SPEED)
+	{
+		speed += sumSpeed + sumBoost;
+
+		return false;
+	}
+
+	speed = 0;
+
+	return true;
+}
+
+void move_down()
+{
+	if (add_speed())
+	{
+		move_toward(Down);
+	}
+
+	add_boost();
 }
 
 static Direction get_movement_dir_button()
@@ -207,7 +247,7 @@ static Direction get_movement_dir_button()
 			handle_keydown(SDLK_DOWN);
 		}*/
 
-		downSpeed += speed * 5;
+		speed += sumSpeed * 5;
 
 		return Down;
 	}
@@ -248,7 +288,7 @@ void movement_dir_button()
 
 		if (key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown)
 		{
-			downSpeed += speed + 5;
+			speed += sumSpeed + 2;
 
 			move_toward(Down);
 		}

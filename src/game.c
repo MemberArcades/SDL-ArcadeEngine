@@ -21,12 +21,14 @@ void game_tick(Game *game)
 	case GamePlayState:
 		if (!check_movement())
 		{
+			unpress_keys();
 			generation_random_block();
 		}
 
 		key_rotation();
 		movement_dir_button();
-		move_toward(Down);
+
+		move_down();
 		destroy_full_line(game);
 
 		break;

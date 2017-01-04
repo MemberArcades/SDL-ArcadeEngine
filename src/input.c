@@ -12,6 +12,21 @@ void init_keys_state()
 	}
 }
 
+void unpress_keys()
+{
+	keysHeld[SDLK_w] = KeyUp;
+	keysHeld[SDLK_UP] = KeyUp;
+
+	/*keysHeld[SDLK_d] = KeyUp;
+	keysHeld[SDLK_RIGHT] = KeyUp;*/
+
+	keysHeld[SDLK_s] = KeyUp;
+	keysHeld[SDLK_DOWN] = KeyUp;
+
+	/*keysHeld[SDLK_a] = KeyUp;
+	keysHeld[SDLK_LEFT] = KeyUp;*/
+}
+
 void handle_keydown(int keycode)
 {
 	check_keycode(keycode);

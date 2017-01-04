@@ -14,6 +14,8 @@ typedef enum
 
 void init_keys_state();
 
+void unpress_keys();
+
 /* Обработчик нажатия кнопки */
 void handle_keydown(int keycode);
 
