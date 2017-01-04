@@ -84,7 +84,7 @@ static void internal_tick(void)
 	case Pause:
 		break;
 	case End:
-		if (gmae_delay())
+		if (game_delay())
 		{
 			game_init(&game);
 			state = Play;

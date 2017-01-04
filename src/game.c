@@ -85,7 +85,7 @@ bool game_over(Game *game)
 	}
 }
 
-bool gmae_delay()
+bool game_delay()
 {
 	if (delaySize <= 100)
 	{

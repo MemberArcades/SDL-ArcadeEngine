@@ -23,4 +23,4 @@ void game_render(Game *game);
 
 bool game_over(Game *game);
 
-bool gmae_delay();
+bool game_delay();
