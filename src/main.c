@@ -12,6 +12,7 @@
 #include "fpsmanager.h"
 #include "input.h"
 #include "game.h"
+#include "gamescore.h"
 
 /* Иницализация всех ресурсов */
 static void resource_init(void);
@@ -41,7 +42,6 @@ int main(int argc, char* args[])
 	resource_init();
 
 	game_init(&game);
-	game_init_score(&game);
 
 	main_loop();
 
@@ -76,7 +76,7 @@ static void internal_tick(void)
 
 		if (game_over(&game))
 		{
-			printf("\nYou score: %d\nHigh score: %d\n\n", game.game_score, game.high_score);
+			printf("\nYou score: %d\nHigh score: %d\n\n", get_score()->current, get_score()->high);
 			state = End;
 		}
 

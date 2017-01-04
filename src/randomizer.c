@@ -28,6 +28,8 @@ void generation_random_block()
 
 static void randomized()
 {
+	rand_corn();
+
 	random_color(&nextBlock.color);
 	random_type(&nextBlock.type);
 	random_direction(&nextBlock.direction);

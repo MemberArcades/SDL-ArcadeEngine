@@ -119,7 +119,7 @@ void destroy_full_line(Game *game)
 
 		moves_to_basis();
 
-		add_game_score(game, score);
+		add_game_score(score);
 
 		sumScore += score;
 		score += 100 + 100 * (*get_sum_boost());
@@ -127,7 +127,7 @@ void destroy_full_line(Game *game)
 
 	if (flag)
 	{
-		printf("Added points: %d, You score: %d\n", sumScore, game->game_score);
+		printf("Added points: %d, You score: %d\n", sumScore, get_score()->current);
 	}
 
 }

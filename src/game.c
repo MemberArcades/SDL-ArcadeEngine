@@ -7,6 +7,7 @@
 #include "block.h"
 #include "fieldnextblock.h"
 #include "randomizer.h"
+#include "gamescore.h"
 
 static int delaySize = 0;
 
@@ -59,12 +60,13 @@ void game_init(Game *game)
 	init_main_field();
 	init_keys_state();
 	init_generation_block();
+	init_game_score();
+
 	*get_sum_boost() = 0;
 
 	game->game_state = GamePlayState;
-	game->game_score = 0;
 
-	printf("You score: %d\n", game->game_score);
+	printf("You score: %d\n", get_score()->current);
 }
 
 bool game_over(Game *game)
@@ -72,6 +74,8 @@ bool game_over(Game *game)
 	if (!*get_opportun_create_blocks())
 	{
 		draw_image_coord(get_game_over_image(), (Point) { 23, 101 });
+
+		check_high_score();
 
 		return true;
 	}
@@ -97,17 +101,3 @@ bool gmae_delay()
 	}
 }
 
-void add_game_score(Game *game, int score)
-{
-	game->game_score += score;
-
-	if (game->game_score > game->high_score)
-	{
-		game->high_score = game->game_score;
-	}
-}
-
-void game_init_score(Game *game)
-{
-	game->high_score = 0;
-}
