@@ -120,7 +120,7 @@ void destroy_full_line(Game *game)
 		add_game_score(game, score);
 
 		sumScore += score;
-		score += 100;
+		score *= 2;
 	}
 
 	if (flag)

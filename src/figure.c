@@ -173,7 +173,30 @@ bool create_line(BlockColor blockColor, BlockStatus blockStatus, int i, int j, D
 	return false;
 }
 
-bool create_j_l(enum BlockColor blockColor, BlockStatus blockStatus, int i, int j, enum Direction direction)
+bool create_j(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction, BlockType blockType)
+{
+	switch (blockType)
+	{
+	case JR:
+		if (create_j_r(blockColor, blockStatus, i, j, direction))
+		{
+			return true;
+		}
+
+		break;
+	case JL:
+		if (create_j_l(blockColor, blockStatus, i, j, direction))
+		{
+			return true;
+		}
+
+		break;
+	}
+
+	return false;
+}
+
+bool create_j_l(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
 {
 	switch (direction)
 	{
@@ -236,7 +259,7 @@ bool create_j_l(enum BlockColor blockColor, BlockStatus blockStatus, int i, int 
 	return false;
 }
 
-bool create_j_r(enum BlockColor blockColor, BlockStatus blockStatus, int i, int j, enum Direction direction)
+bool create_j_r(enum BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
 {
 	switch (direction)
 	{

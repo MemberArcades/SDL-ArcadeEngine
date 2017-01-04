@@ -15,6 +15,8 @@ bool create_square(enum BlockColor blockColor, enum BlockStatus blockStatus, int
 
 bool create_line(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, int j, enum Direction direction);
 
+bool create_j(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, int j, enum Direction direction, enum BlockType blockType);
+
 bool create_j_l(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, int j, enum Direction direction);
 
 bool create_j_r(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, int j, enum Direction direction);
