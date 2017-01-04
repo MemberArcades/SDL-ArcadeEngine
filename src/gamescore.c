@@ -1,12 +1,37 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "gamescore.h"
+#include <stdio.h>
+#include <stdbool.h>
 
 
 static Score score;
 
 static bool initScore = true;
 
+static FILE *file;
 
-void add_game_score(int points)
+
+static bool open_file_score();
+
+static bool record_high_score();
+
+
+static bool open_file_score()
+{
+	if ((file = fopen(FILE_SCORE, "r")) == NULL || feof(file))
+	{
+		return false;
+	}
+
+	fscanf(file, "%llu", &score.high);
+
+	fclose(file);
+
+	return true;
+}
+
+void add_game_score(unsigned long long points)
 {
 	score.current += points;
 
@@ -22,7 +47,10 @@ void init_game_score()
 
 	if (initScore)
 	{
-		score.high = 0;
+		if (!open_file_score())
+		{
+			score.high = 0;
+		}
 
 		initScore = false;
 	}
@@ -40,5 +68,23 @@ void check_high_score()
 	if (score.newHigh)
 	{
 		score.high = score.current;
+
+		record_high_score();
 	}
+}
+
+static bool record_high_score()
+{
+	if ((file = fopen(FILE_SCORE, "w")) == NULL)
+	{
+		printf("Error create: " FILE_SCORE);
+
+		return false;
+	}
+
+	fprintf(file, "%llu", score.high);
+
+	fclose(file);
+
+	return true;
 }

@@ -96,8 +96,8 @@ void destroy_full_line(Game *game)
 {
 	int j;
 
-	int score = 100 + 100 * (*get_sum_boost());
-	int sumScore = 0;
+	unsigned long long score = 100 + 100 * (*get_sum_boost());
+	unsigned long long sumScore = 0;
 
 	bool flag = false;
 
@@ -127,7 +127,7 @@ void destroy_full_line(Game *game)
 
 	if (flag)
 	{
-		printf("Added points: %d, You score: %d\n", sumScore, get_score()->current);
+		printf("Added points: %llu, You score: %llu\n", sumScore, get_score()->current);
 	}
 
 }

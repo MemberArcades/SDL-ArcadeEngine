@@ -76,7 +76,7 @@ static void internal_tick(void)
 
 		if (game_over(&game))
 		{
-			printf("\nYou score: %d\nHigh score: %d\n\n", get_score()->current, get_score()->high);
+			printf("\nYou score: %llu\nHigh score: %llu\n\n", get_score()->current, get_score()->high);
 			state = End;
 		}
 

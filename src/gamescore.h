@@ -4,16 +4,18 @@
 
 #include <stdbool.h>
 
+#define FILE_SCORE "gamescore.txt"
+
 
 typedef struct
 {
 	bool newHigh;
-	int high;
-	int current;
+	unsigned long long current;
+	unsigned long long high;
 } Score;
 
 
-void add_game_score(int points);
+void add_game_score(unsigned long long points);
 
 void init_game_score();
 

@@ -66,7 +66,7 @@ void game_init(Game *game)
 
 	game->game_state = GamePlayState;
 
-	printf("You score: %d\n", get_score()->current);
+	printf("High score: %llu\n", get_score()->high);
 }
 
 bool game_over(Game *game)
