@@ -2,6 +2,7 @@
 #include "renderer.h"
 #include "randomizer.h"
 #include "figure.h"
+#include "movement.h"
 
 static void cleaned_field();
 

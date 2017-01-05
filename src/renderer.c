@@ -62,42 +62,43 @@ void draw_block_offset(BlockColor blockColor, Point dst, Point offset)
 	dst.x += offset.x;
 	dst.y += offset.y;
 
-	if (blockColor == BackgroundColor)
+	SDL_Rect dstrect = { (int)dst.x, (int)dst.y };
+
+	SDL_Rect imgrect = { 0, 0, 32, 32 };
+
+	switch (blockColor)
 	{
-		draw_image_coord(get_block_image(BackgroundImage), dst);
+	case BackgroundColor:
+		imgrect.x = X_MAIN_FIELD;
+		imgrect.y = Y_MAIN_FIELD;
+
+		SDL_BlitSurface(get_background_image(), &imgrect, get_screen(), &dstrect);
+
+		break;
+	case RedColor:
+		imgrect.x = 32;
+
+		SDL_BlitSurface(get_block_image(), &imgrect, get_screen(), &dstrect);
+
+		break;
+	case BlueColor:
+		imgrect.x = 32;
+		imgrect.y = 32;
+
+		SDL_BlitSurface(get_block_image(), &imgrect, get_screen(), &dstrect);
+
+		break;
+	case GreenColor:
+		SDL_BlitSurface(get_block_image(), &imgrect, get_screen(), &dstrect);
+
+		break;
+	case PurpleColor:
+		imgrect.y = 32;
+
+		SDL_BlitSurface(get_block_image(), &imgrect, get_screen(), &dstrect);
+		break;
 	}
-	else
-	{
-		SDL_Rect dstrect = { (int)dst.x, (int)dst.y };
 
-		SDL_Rect imgrect = { 0, 0, 32, 32 };
-
-		switch (blockColor)
-		{
-		case RedColor:
-			imgrect.x = 32;
-
-			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
-
-			break;
-		case BlueColor:
-			imgrect.x = 32;
-			imgrect.y = 32;
-
-			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
-
-			break;
-		case GreenColor:
-			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
-
-			break;
-		case PurpleColor:
-			imgrect.y = 32;
-
-			SDL_BlitSurface(get_block_image(OtherImage), &imgrect, get_screen(), &dstrect);
-			break;
-		}
-	}
 }
 
 void draw_block(BlockColor blockColor, Point dst)

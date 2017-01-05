@@ -1,6 +1,7 @@
 #pragma once
 
 #include "block.h"
+#include "movement.h"
 
 #define X_FIELD_NEXT_BLOCK 357
 #define Y_FIELD_NEXT_BLOCK 23

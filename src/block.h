@@ -20,11 +20,6 @@
 #define NUMBER_OF_TYPE 4
 #define NUMBER_OF_DIRECTION 4
 
-typedef enum
-{
-	BackgroundImage,
-	OtherImage
-} BlockImage;
 
 typedef enum
 {
