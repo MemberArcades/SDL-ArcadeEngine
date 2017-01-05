@@ -65,6 +65,21 @@ void draw_physics_body(SDL_Surface *surface, PhysicsBody body)
 void draw_player(SDL_Surface *surface, Player player)
 {
 	draw_physics_body(surface, player.body);
+
+	if (player.thrust)
+	{
+		PhysicsBody exhaust = (PhysicsBody) { 
+			.collider.points_count = 3,
+			.collider.points = { (Vector) { 0, -7 }, (Vector) { -3, 0 }, (Vector) { 3, 0 } },
+			.position = player.body.position		
+		};
+
+		for (int i = 0; i < 3; ++i)
+			rotate_vector(&exhaust.collider.points[i], player.angle);
+
+		draw_physics_body(surface, exhaust);
+	}
+
 }
 
 void draw_enemy(SDL_Surface *surface, Enemy enemy)
