@@ -30,6 +30,7 @@ void bullet_shot(Bullet bullets[], Vector pos, Vector dir)
 		return;
 
 	bullets[i].alive = true;
+	bullets[i].shoot_time = SDL_GetTicks();
 	bullets[i].body.position = pos;
 
 	mul_vector(&dir, bullets[i].body.velocity);

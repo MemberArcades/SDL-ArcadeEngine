@@ -126,12 +126,14 @@ static void process_bullets(Bullet *bullets)
 		}
 
 		add_vector(&bullet->body.position, bullet->body.direction);
-	
-		if (out_of_screen(bullet->body))
+
+		inf_screen(&bullet->body);
+
+		unsigned cur_time = SDL_GetTicks();
+		if (cur_time - bullet->shoot_time > 1000)
 		{
 			bullet_remove(bullet);
 		}
-	
 	}
 }
 

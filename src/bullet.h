@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SDL.h"
 #include "physicsbody.h"
 
 #define MAX_BULLETS 16
@@ -7,6 +8,7 @@
 typedef struct
 {
 	bool alive;
+	unsigned shoot_time;
 	PhysicsBody body;
 } Bullet;
 
