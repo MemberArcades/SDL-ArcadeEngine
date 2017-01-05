@@ -8,9 +8,9 @@ static BlockState stateRotation;
 
 static void block_rotation();
 
-static void rotation_line();
+static void rotation_line(Direction direction, BlockColor blockColor, int i, int j);
 
-static void rotation_jt();
+static void rotation_jt(Direction direction, BlockColor blockColor, int i, int j, BlockType blockType);
 
 
 BlockState* get_state_rotation()
@@ -25,29 +25,28 @@ static void block_rotation()
 	case Square:
 		break;
 	case Line:
-		rotation_line();
+		rotation_line(stateRotation.direction, stateRotation.color, stateRotation.i, stateRotation.j);
 		break;
 	case JL:
 	case JR:
 	case T:
-		rotation_jt();
+	case NL:
+	case NR:
+		rotation_jt(stateRotation.direction, stateRotation.color, stateRotation.i, stateRotation.j, stateRotation.type);
 		break;
 	}
 }
 
-static void rotation_line()
+static void rotation_line(Direction direction, BlockColor blockColor, int i, int j)
 {
-	int i = stateRotation.i;
-	int j = stateRotation.j;
-
-	switch (stateRotation.direction)
+	switch (direction)
 	{
 	case Up:
 	case Down:
 		if (check_create(i, j, i, j + 3))
 		{
 			create_line(BackgroundColor, Background, i, j, Up);
-			create_line(stateRotation.color, Moves, i, j, Right);
+			create_line(blockColor, Moves, i, j, Right);
 
 			stateRotation.direction = Right;
 		}
@@ -60,7 +59,7 @@ static void rotation_line()
 			if (check_create(i - k, j, i - k + 3, j))
 			{
 				create_line(BackgroundColor, Background, i, j, Right);
-				create_line(stateRotation.color, Moves, i - k, j, Up);
+				create_line(blockColor, Moves, i - k, j, Up);
 
 				stateRotation.i -= k;
 				stateRotation.direction = Up;
@@ -102,28 +101,26 @@ void key_rotation()
 	}
 }
 
-static void rotation_jt()
+static void rotation_jt(Direction direction, BlockColor blockColor, int i, int j, BlockType blockType)
 {
-	int i = stateRotation.i;
-	int j = stateRotation.j;
-
-	switch (stateRotation.direction)
+	switch (direction)
 	{
 	case Up:
 		for (int k = 0; k < 2; ++k)
 		{
 			if (check_create(i + k, j, i + 1 + k, j + 2))
 			{
-				create_jt(BackgroundColor, Background, i, j, Up, stateRotation.type);
-				create_jt(stateRotation.color, Moves, i + k, j, Right, stateRotation.type);
+				if (create_jt(BackgroundColor, Background, i, j, Up, blockType))
+				{
+					create_jt(blockColor, Moves, i + k, j, Right, blockType);
 
-				stateRotation.i += k;
-				stateRotation.direction = Right;
+					stateRotation.i += k;
+					stateRotation.direction = Right;
 
-				break;
+					break;
+				}
 			}
 		}
-		
 
 		break;
 	
@@ -132,13 +129,15 @@ static void rotation_jt()
 		{
 			if (check_create(i - k, j, i + 2 - k, j + 1))
 			{
-				create_jt(BackgroundColor, Background, i, j, Right, stateRotation.type);
-				create_jt(stateRotation.color, Moves, i - k, j, Down, stateRotation.type);
+				if (create_jt(BackgroundColor, Background, i, j, Right, blockType))
+				{
+					create_jt(blockColor, Moves, i - k, j, Down, blockType);
 
-				stateRotation.i -= k;
-				stateRotation.direction = Down;
+					stateRotation.i -= k;
+					stateRotation.direction = Down;
 
-				break;
+					break;
+				}
 			}
 		}
 
@@ -149,13 +148,15 @@ static void rotation_jt()
 		{
 			if (check_create(i + k, j, i + 1 + k, j + 2))
 			{
-				create_jt(BackgroundColor, Background, i, j, Down, stateRotation.type);
-				create_jt(stateRotation.color, Moves, i + k, j, Left, stateRotation.type);
+				if (create_jt(BackgroundColor, Background, i, j, Down, blockType))
+				{
+					create_jt(blockColor, Moves, i + k, j, Left, blockType);
 
-				stateRotation.i += k;
-				stateRotation.direction = Left;
+					stateRotation.i += k;
+					stateRotation.direction = Left;
 
-				break;
+					break;
+				}
 			}
 		}
 
@@ -166,13 +167,15 @@ static void rotation_jt()
 		{
 			if (check_create(i - k, j, i + 2 - k, j + 1))
 			{
-				create_jt(BackgroundColor, Background, i, j, Left, stateRotation.type);
-				create_jt(stateRotation.color, Moves, i - k, j, Up, stateRotation.type);
+				if (create_jt(BackgroundColor, Background, i, j, Left, blockType))
+				{
+					create_jt(blockColor, Moves, i - k, j, Up, blockType);
 
-				stateRotation.i -= k;
-				stateRotation.direction = Up;
+					stateRotation.i -= k;
+					stateRotation.direction = Up;
 
-				break;
+					break;
+				}
 			}
 		}
 

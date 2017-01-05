@@ -17,7 +17,7 @@
 #define SQARE_SIZE 2
 
 #define NUMBER_OF_COLORS 4
-#define NUMBER_OF_TYPE 5
+#define NUMBER_OF_TYPE 7
 #define NUMBER_OF_DIRECTION 4
 
 
@@ -52,7 +52,9 @@ typedef enum
 	Line,
 	JL,
 	JR,
-	T
+	T,
+	NL,
+	NR
 } BlockType;
 
 

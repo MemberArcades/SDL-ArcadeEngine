@@ -12,6 +12,8 @@ static void draw_line(Direction direction);
 
 static void draw_jt(Direction direction, BlockType type);
 
+static void draw_n(Direction direction, BlockType type);
+
 
 void draw_next_block()
 {
@@ -30,7 +32,10 @@ void draw_next_block()
 	case T:
 		draw_jt(get_next_block()->direction, get_next_block()->type);
 		break;
-
+	case NL:
+	case NR:
+		draw_n(get_next_block()->direction, get_next_block()->type);
+		break;
 	}
 }
 
@@ -183,6 +188,51 @@ static void draw_jt(Direction direction, BlockType type)
 			draw_block_offset(get_next_block()->color, (Point) { 64, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 
 			break;
+		}
+
+		break;
+	}
+}
+
+static void draw_n(Direction direction, BlockType type)
+{
+	switch (direction)
+	{
+	case Up:
+	case Down:
+		for (int j = 1; j < 3; ++j)
+		{
+			draw_block_offset(get_next_block()->color, (Point) { 64, 32 * j + 16 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		}
+
+		if (type == NL)
+		{
+			draw_block_offset(get_next_block()->color, (Point) { 32, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 96, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		}
+		else
+		{
+			draw_block_offset(get_next_block()->color, (Point) { 96, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 32, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		}
+
+		break;
+	case Right:
+	case Left:
+		for (int i = 1; i < 3; ++i)
+		{
+			draw_block_offset(get_next_block()->color, (Point) { 32 * i + 16, 64 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		}
+
+		if (type == NL)
+		{
+			draw_block_offset(get_next_block()->color, (Point) { 48, 32 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 80, 96 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		}
+		else
+		{
+			draw_block_offset(get_next_block()->color, (Point) { 48, 96 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 80, 32 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 		}
 
 		break;

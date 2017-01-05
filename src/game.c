@@ -30,6 +30,7 @@ void game_tick(Game *game)
 		key_tick();
 
 		move_down();
+
 		destroy_full_line(game);
 
 		break;

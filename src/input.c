@@ -82,6 +82,7 @@ static void check_keycode(int keycode)
 
 void key_tick()
 {
-	key_rotation();
 	movement_dir_button();
+
+	key_rotation();
 }
