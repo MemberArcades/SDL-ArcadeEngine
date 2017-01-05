@@ -72,3 +72,9 @@ void draw_enemy(SDL_Surface *surface, Enemy enemy)
 	if (enemy.alive)
 		draw_physics_body(surface, enemy.body);
 }
+
+void draw_bullet(SDL_Surface *surface, Bullet bullet)
+{
+	if (bullet.alive)
+		draw_physics_body(surface, bullet.body);
+}

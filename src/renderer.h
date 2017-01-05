@@ -18,3 +18,5 @@ void draw_line(SDL_Surface *surface, Vector begin, Vector end, Uint32 color);
 void draw_player(SDL_Surface *surface, Player player);
 
 void draw_enemy(SDL_Surface *surface, Enemy enemy);
+
+void draw_bullet(SDL_Surface *surface, Bullet bullet);
