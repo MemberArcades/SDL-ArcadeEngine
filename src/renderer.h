@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include "SDL.h"
+#include "block.h"
 
 #include "imageloader.h"
 
@@ -21,6 +22,10 @@ void draw_line(SDL_Surface *surface, Point begin, Point end, Uint32 color);
 
 void draw_background();
 
-void draw_block_offset(BlockColor blockColor, Point dst, Point offset);
+void draw_block_offset(enum BlockColor blockColor, Point dst, Point offset);
 
-void draw_block(BlockColor blockColor, Point dst);
+void draw_block(enum BlockColor blockColor, Point dst);
+
+void draw_number_offset(int count, Point dst, Point offset);
+
+void draw_number(int count, Point dst);

@@ -4,6 +4,7 @@
 SDL_Surface *background;
 SDL_Surface *blocks[NUMBER_OF_SKINS];
 SDL_Surface *gaveOverImg;
+SDL_Surface *numbersImage;
 
 
 static SDL_Surface *load_image(char *filename);
@@ -38,12 +39,14 @@ void load_images()
 	blocks[0] = load_image(DIR_IMAGE "tetris_block_new.png");
 	blocks[1] = load_image(DIR_IMAGE "tetris_block.png");
 	gaveOverImg = load_image(DIR_IMAGE "tetris_game_over.png");
+	numbersImage = load_image(DIR_IMAGE "numbers.png");
 }
 
 void destroy_image()
 {
 	SDL_FreeSurface(background);
 	SDL_FreeSurface(gaveOverImg);
+	SDL_FreeSurface(numbersImage);
 
 	for (int i = 0; i < NUMBER_OF_SKINS; ++i)
 	{
@@ -64,4 +67,9 @@ SDL_Surface* get_background_image()
 SDL_Surface* get_game_over_image()
 {
 	return gaveOverImg;
+}
+
+SDL_Surface* get_numbers_image()
+{
+	return numbersImage;
 }

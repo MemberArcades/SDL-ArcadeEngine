@@ -8,11 +8,11 @@ static void cleaned_field();
 
 static void draw_sqare();
 
-static void draw_line(Direction direction);
+static void draw_line(enum Direction direction);
 
-static void draw_jt(Direction direction, BlockType type);
+static void draw_jt(enum Direction direction, enum BlockType type);
 
-static void draw_n(Direction direction, BlockType type);
+static void draw_n(enum Direction direction, enum BlockType type);
 
 
 void draw_next_block()

@@ -105,3 +105,23 @@ void draw_block(BlockColor blockColor, Point dst)
 {
 	draw_block_offset(blockColor, dst, (Point) { 0, 0 });
 }
+
+void draw_number_offset(int count, Point dst, Point offset)
+{
+	dst.x += offset.x;
+	dst.y += offset.y;
+
+	SDL_Rect dstrect = { (int)dst.x, (int)dst.y };
+
+	SDL_Rect imgrect = { 14 * count, 0, 14, 20 };
+
+	SDL_Rect backrect = { (int)dst.x, (int)dst.y, 14, 20 };
+
+	SDL_BlitSurface(get_background_image(), &backrect, get_screen(), &dstrect);
+	SDL_BlitSurface(get_numbers_image(), &imgrect, get_screen(), &dstrect);
+}
+
+void draw_number(int count, Point dst)
+{
+	draw_number_offset(count, dst, (Point) { 0, 0 });
+}
