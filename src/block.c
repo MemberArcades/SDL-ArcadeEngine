@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 
+
 BlockArr mainField[X_MAIN_FIELD_SIZE][Y_MAIN_FIELD_SIZE];
 
 
