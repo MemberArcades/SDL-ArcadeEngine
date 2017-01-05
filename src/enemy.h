@@ -17,7 +17,7 @@ void enemy_init(Enemy *enemy, Vector position, Vector direction, double velocity
 
 void enemies_init(Enemy enemies[], int n);
 
-void enemy_reset_to_position(Enemy enemies[], Vector position);
+int enemy_boom(Enemy *enemy, Enemy enemies[]);
 
 void enemy_remove(Enemy *enemy);
 

@@ -14,9 +14,6 @@ static void process_bullets(Bullet *bullets);
 
 static void process_enemies(Game *game);
 
-/* Кол-во астероидов на уровне */
-static int waves[5] = {3, 5, 8, 13, 21};
-
 void game_tick(Game *game)
 {
 	switch (game->game_state)
@@ -61,8 +58,8 @@ void game_init(Game *game)
 
 	player_init(&game->player);
 
-	enemies_init(game->enemy, waves[game->lvl]);
-	game->enemies_count = waves[game->lvl];
+	enemies_init(game->enemy, ENEMIES);
+	game->enemies_count = ENEMIES;
 
 	game->game_state = GamePlayState;
 }
@@ -146,16 +143,19 @@ static void process_enemies(Game *game)
 		if (!enemy->alive)
 			continue;
 
-		add_vector(&enemy->body.position, enemy->body.direction);
+		Vector temp = enemy->body.direction;
+		mul_vector(&temp, enemy->body.velocity);
+
+		add_vector(&enemy->body.position, temp);
 
 		inf_screen(&enemy->body);
 
 		/* Столкновение с игроком */
-		if (enemy_collision_with(*enemy, game->player.body))
+		/*if (enemy_collision_with(*enemy, game->player.body))
 		{
 			enemy_remove(enemy);
 			--game->enemies_count;
-		}
+		}*/
 
 		/* Столкновение с пулями */
 		for (int j = 0; j < MAX_BULLETS; ++j)
@@ -171,21 +171,15 @@ static void process_enemies(Game *game)
 			{
 				bullet_remove(bullet);
 
-				enemy_remove(enemy);
-				--game->enemies_count;
+				game->enemies_count += enemy_boom(enemy, &game->enemy);
 			}
 		}
 	}
 
 	/* Новый уровень */
 	if (game->enemies_count < 1)
-	{
-		printf("%d\n", game->lvl);
-		if (game->lvl < 4)
-			++game->lvl;
-		
-		int new_wave = waves[game->lvl];
-		enemies_init(game->enemy, new_wave);
-		game->enemies_count = new_wave;
+	{	
+		enemies_init(game->enemy, ENEMIES);
+		game->enemies_count = ENEMIES;
 	}
 }

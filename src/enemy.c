@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 Vector bodies[3][12] = {
 	{ { 0, 10 },{ 12, 0 },{ 23, 13 },{ 32, 0 },{ 45, 10 },{ 36, 20 },{ 45, 30 },{ 30, 40 },{ 13, 40 },{ 0, 30 },{ 0, 30 },{ 0, 30 } },
@@ -24,6 +25,12 @@ void enemy_init(Enemy *enemy, Vector position, Vector direction, double velocity
 
 	for (int i = 0; i < 12; ++i){
 		Vector temp = bodies[body_type][i]; 
+
+		if (size == 2)
+			mul_vector(&temp, 0.61);
+		else if (size == 1)
+			mul_vector(&temp, 0.37);
+
 		enemy->body.collider.points[i] = temp;
 	}
 }
@@ -33,7 +40,7 @@ void enemies_init(Enemy enemies[], int n)
 	int nStartValue = time(NULL);
 	srand(nStartValue);
 	
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
 		int pos_rand = rand() % 2;
 		Vector pos;
@@ -66,43 +73,64 @@ void enemies_init(Enemy enemies[], int n)
 
 		int body_type = rand() % 3;
 
-		enemy_init(&enemies[i], pos, dir, 1, body_type, 2);
+		enemy_init(&enemies[i], pos, dir, 0.41, body_type, 3);
+
+		if (i >= n)
+			enemies[i].alive = false;
 	}
 }
 
-void enemy_reset_to_position(Enemy enemies[], Vector position)
+int enemy_boom(Enemy *shoted_enemy, Enemy enemies[])
 {
+	int nStartValue = time(NULL);
+	srand(nStartValue);
+
+	enemy_remove(shoted_enemy);
+
+	int shoted_enemy_size = shoted_enemy->size;
+	double shoted_enemy_vel = shoted_enemy->body.velocity;
+
+	if (shoted_enemy_size <= 1)
+		return -1;
+
 	/* Найти первую свободную ячейку */
-	int i = 0;
-	for (i = 0; (enemies[i].alive ||  enemies[i].size < 1) && i < MAX_ENEMIES; ++i);
+	int needed = (shoted_enemy_size == 3) ? (rand() % 5) : (rand() % 3);
+	int count = 0;
 
-	/* Нет свободных ячеек */
-	if (enemies[i].alive || enemies[i].size < 1)
-		return;
+	for (int i = 0; i < MAX_ENEMIES; ++i)
+	{
+		if (needed == count)
+			break;
 
-	/* Вернуть астероид в указаное место */
-	enemies[i].alive = true;
-	enemies[i].body.position = position;
-	
+		if (!enemies[i].alive)
+		{ 
+			printf("new (%d): %d\n", count, i);
 
-	
+			int sign_rand_x = (rand() % 2 == 1) ? (1) : (-1);
+			int sign_rand_y = (rand() % 2 == 1) ? (1) : (-1);
+
+			Vector dir = { (rand() % 100) / 100.0 * sign_rand_x, (rand() % 100) / 100.0 * sign_rand_y };
+			normalise_vector(&dir);
+
+			enemy_init(&enemies[i], shoted_enemy->body.position, dir, shoted_enemy_vel * 1.62, shoted_enemy->body_type, shoted_enemy_size - 1);
+			
+			++count;
+		}
+	}
+
+	return count - 1;
 }
 
 void enemy_remove(Enemy *enemy)
 {
 	enemy->alive = false;
-
-	enemy->size -= 1;
-	
-	for (int j = 0; j < enemy->body.collider.points_count; ++j)
-		mul_vector(&enemy->body.collider.points[j], 0.75);
 }
 
 /* Тут я поленился реализовывать crossing number (count) algorithm.
-* Поэтому разбил врагов (благо, что их всего 3 типа) на 9 треугольников
-* и проверял их на принадлежность точки.
-* \triangles - индексы вершин треугольника в ps.body.collider.points[]
-*/
+ * Поэтому разбил врагов (благо, что их всего 3 типа) на 9 треугольников
+ * и проверял их на принадлежность точки.
+ * \triangles - индексы вершин треугольника в ps.body.collider.points[]
+ */
 bool enemy_collision_with(Enemy enemy, PhysicsBody body)
 {
 	if (!enemy.alive)

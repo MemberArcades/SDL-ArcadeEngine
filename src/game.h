@@ -3,6 +3,8 @@
 #include "player.h"
 #include "enemy.h"
 
+#define ENEMIES 4
+
 typedef enum
 {
 	GameBeginState,
