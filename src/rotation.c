@@ -10,7 +10,7 @@ static void block_rotation();
 
 static void rotation_line();
 
-static void rotation_j();
+static void rotation_jt();
 
 
 BlockState* get_state_rotation()
@@ -29,7 +29,8 @@ static void block_rotation()
 		break;
 	case JL:
 	case JR:
-		rotation_j();
+	case T:
+		rotation_jt();
 		break;
 	}
 }
@@ -101,7 +102,7 @@ void key_rotation()
 	}
 }
 
-static void rotation_j()
+static void rotation_jt()
 {
 	int i = stateRotation.i;
 	int j = stateRotation.j;
@@ -110,24 +111,23 @@ static void rotation_j()
 	{
 	case Up:
 	{
-		if (check_create(i, j, i + 1, j + 2))
+		for (int k = 0; k < 1; ++k)
 		{
-			create_j(BackgroundColor, Background, i, j, Up, stateRotation.type);
-			create_j(stateRotation.color, Moves, i, j, Right, stateRotation.type);
-
-			stateRotation.direction = Right;
-		}
-		else
-		{
-			if (check_create(i - 1, j, i, j + 2))
+			if (check_create(i - k, j, i + 1 - k, j + 2))
 			{
-				create_j(BackgroundColor, Background, i, j, Up, stateRotation.type);
-				create_j(stateRotation.color, Moves, i - 1, j, Right, stateRotation.type);
+				if (stateRotation.type != T)
+				{
+					create_j(BackgroundColor, Background, i, j, Up, stateRotation.type);
+					create_j(stateRotation.color, Moves, i, j, Right, stateRotation.type);
+				}
 
-				stateRotation.i -= 1;
+				stateRotation.i -= k;
 				stateRotation.direction = Right;
+
+				break;
 			}
 		}
+		
 
 		break;
 	}

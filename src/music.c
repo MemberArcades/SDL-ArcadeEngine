@@ -51,8 +51,8 @@ static void sound_pause()
 	if (Mix_PlayingMusic() == 0)
 	{
 		Mix_PlayMusic(currentSound, -1);
-		Mix_VolumeMusic(15);
-		volume = 15;
+		Mix_VolumeMusic(VOLUME_START);
+		volume = VOLUME_START;
 	}
 	else
 	{

@@ -7,6 +7,7 @@
 #define DIR_SOUND "sound/"
 
 #define VOLUME_STEP 5
+#define VOLUME_START 5
 
 
 void load_sound();

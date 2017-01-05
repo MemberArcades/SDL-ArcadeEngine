@@ -10,7 +10,7 @@ static void draw_sqare();
 
 static void draw_line(Direction direction);
 
-static void draw_j(Direction direction, BlockType type);
+static void draw_jt(Direction direction, BlockType type);
 
 
 void draw_next_block()
@@ -27,8 +27,10 @@ void draw_next_block()
 		break;
 	case JL:
 	case JR:
-		draw_j(get_next_block()->direction, get_next_block()->type);
+	case T:
+		draw_jt(get_next_block()->direction, get_next_block()->type);
 		break;
+
 	}
 }
 
@@ -62,10 +64,7 @@ static void draw_line(Direction direction)
 	case Down:
 		for (int i = 0; i < X_FIELD_NEXT_BLOCK_SIZE  - 1; ++i)
 		{
-			for (int j = 4; j < Y_FIELD_NEXT_BLOCK_SIZE; ++j)
-			{
-				draw_block_offset(get_next_block()->color, (Point) { i * 32 + 16, j * 32 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
-			}
+			draw_block_offset(get_next_block()->color, (Point) { i * 32 + 16, 64 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 		}
 
 		break;
@@ -73,85 +72,117 @@ static void draw_line(Direction direction)
 	case Left:
 			for (int j = 1; j < Y_FIELD_NEXT_BLOCK_SIZE; ++j)
 			{
-				draw_block_offset(get_next_block()->color, (Point) { 64 , j * 32 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+				draw_block_offset(get_next_block()->color, (Point) { 64 , j * 32 - 16 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 			}
 
 		break;
 	}
 }
 
-static void draw_j(Direction direction, BlockType type)
+static void draw_jt(Direction direction, BlockType type)
 {
 	switch (direction)
 	{
 	case Up:
 		for (int i = 1; i < 4; ++i)
 		{
-				draw_block_offset(get_next_block()->color, (Point) { i * 32, 128 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { i * 32, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 		}
 
-		if (type == JL)
+		switch (type)
 		{
-			draw_block_offset(get_next_block()->color, (Point) { 32, 96 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
-		}
-		else
-		{
-			draw_block_offset(get_next_block()->color, (Point) { 96, 96 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		case JL:
+			draw_block_offset(get_next_block()->color, (Point) { 32, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			
+			break;
+		case JR:
+			draw_block_offset(get_next_block()->color, (Point) { 96, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+
+			break;
+		case T:
+			draw_block_offset(get_next_block()->color, (Point) { 64, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+
+			break;
 		}
 
 		break;
 	case Right:
 	case Left:
-		for (int j = 2; j < Y_FIELD_NEXT_BLOCK_SIZE; ++j)
-		{
-			draw_block_offset(get_next_block()->color, (Point) { 64, j * 32 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
-		}
-
-		int i, j;
+	{
+		int i, j, rot;
 
 		if (direction == Right)
 		{
 			i = 3;
+			rot = -16;
 
-			if (type == JR)
+			switch (type)
 			{
-				j = 4;
-			}
-			else
-			{
+			case JL:
 				j = 2;
+
+				break;
+			case JR:
+				j = 4;
+
+				break;
+			case T:
+				j = 3;
+
+				break;
 			}
 		}
 		else
 		{
 			i = 1;
+			rot = 16;
 
-			if (type == JR)
+			switch (type)
 			{
-				j = 2;
-			}
-			else
-			{
+			case JL:
 				j = 4;
+
+				break;
+			case JR:
+				j = 2;
+
+				break;
+			case T:
+				j = 3;
+
+				break;
 			}
 		}
 
-		draw_block_offset(get_next_block()->color, (Point) { i * 32, j * 32 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		for (int j = 1; j < Y_FIELD_NEXT_BLOCK_SIZE - 1; ++j)
+		{
+			draw_block_offset(get_next_block()->color, (Point) { 64 + rot, j * 32 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		}
+
+		draw_block_offset(get_next_block()->color, (Point) { i * 32 + rot, j * 32 - 32}, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 
 		break;
+	}
 	case Down:
 		for (int i = 1; i < 4; ++i)
 		{
-			draw_block_offset(get_next_block()->color, (Point) { i * 32, 96 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { i * 32, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 		}
 
-		if (type == JR)
+		switch (type)
 		{
-			draw_block_offset(get_next_block()->color, (Point) { 32, 128 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
-		}
-		else
-		{
-			draw_block_offset(get_next_block()->color, (Point) { 96, 128 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+		case JL:
+			draw_block_offset(get_next_block()->color, (Point) { 96, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+
+			break;
+		case JR:
+			draw_block_offset(get_next_block()->color, (Point) { 32, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+
+			break;
+		case T:
+			draw_block_offset(get_next_block()->color, (Point) { 64, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+
+			break;
 		}
 
 		break;

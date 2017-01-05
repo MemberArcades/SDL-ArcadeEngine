@@ -20,3 +20,5 @@ bool create_j(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, i
 bool create_j_l(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, int j, enum Direction direction);
 
 bool create_j_r(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, int j, enum Direction direction);
+
+bool create_t(enum BlockColor blockColor, enum BlockStatus blockStatus, int i, int j, enum Direction direction);
