@@ -8,6 +8,7 @@
 #include "fieldnextblock.h"
 #include "randomizer.h"
 #include "gamescore.h"
+#include "music.h"
 
 static int delaySize = 0;
 

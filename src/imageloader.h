@@ -5,7 +5,9 @@
 
 #include "block.h"
 
-SDL_Surface *load_image(char *filename);
+
+#define DIR_IMAGE "image/"
+
 
 void load_images();
 

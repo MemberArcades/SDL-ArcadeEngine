@@ -13,6 +13,7 @@
 #include "input.h"
 #include "game.h"
 #include "gamescore.h"
+#include "music.h"
 
 /* Иницализация всех ресурсов */
 static void resource_init(void);
@@ -125,6 +126,7 @@ static void process_events(void)
 			break;
 		case SDL_KEYDOWN:
 			handle_keydown(event.key.keysym.sym);
+			sound_key(event.key.keysym.sym);
 
 			break;
 		case SDL_KEYUP:
@@ -140,6 +142,7 @@ static void resource_init(void)
 	init_window(SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	load_images();
+	load_sound();
 
 	fps_init(60);
 

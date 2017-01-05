@@ -1,12 +1,15 @@
 #include "imageloader.h"
 
-#define DIR_IMAGE "image/"
 
 SDL_Surface *background;
 SDL_Surface *blocks[2];
 SDL_Surface *gaveOverImg;
 
-SDL_Surface *load_image(char *filename)
+
+static SDL_Surface *load_image(char *filename);
+
+
+static SDL_Surface *load_image(char *filename)
 {
 	SDL_Surface *inputImage = NULL;
 	SDL_Surface *resultImage = NULL;
