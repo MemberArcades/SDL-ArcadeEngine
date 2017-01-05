@@ -3,8 +3,6 @@
 #include "player.h"
 #include "enemy.h"
 
-#define MAX_ENEMIES 16
-
 typedef enum
 {
 	GameBeginState,
@@ -15,8 +13,12 @@ typedef enum
 typedef struct
 {
 	GameState game_state;
+	
 	Player player;
-	Enemy enemy[16];
+	Enemy enemy[MAX_ENEMIES];
+
+	int enemies_count;
+	int lvl;
 } Game;
 
 void game_init(Game *game);

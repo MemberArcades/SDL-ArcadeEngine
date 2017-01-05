@@ -5,11 +5,15 @@
 #include "window.h"
 #include "renderer.h"
 #include "player.h"
+#include "enemy.h"
 #include "input.h"
 
 static void process_player(Game *game);
 
-static void process_enemies(Game *game, int n);
+static void process_enemies(Game *game);
+
+/* Кол-во астероидов на уровне */
+static int waves[5] = {3, 5, 8, 13, 21};
 
 void game_tick(Game *game)
 {
@@ -20,7 +24,7 @@ void game_tick(Game *game)
 
 	case GamePlayState:
 		process_player(game);
-		process_enemies(game, MAX_ENEMIES);
+		process_enemies(game);
 
 		break;
 
@@ -51,9 +55,12 @@ void game_render(Game *game)
 
 void game_init(Game *game)
 {
+	game->lvl = 0;
+
 	player_init(&game->player);
 
-	enemies_init(&game->enemy, MAX_ENEMIES);
+	enemies_init(game->enemy, waves[game->lvl]);
+	game->enemies_count = waves[game->lvl];
 
 	game->game_state = GamePlayState;
 }
@@ -98,9 +105,9 @@ static void process_player(Game *game)
 	inf_screen(&player->body);
 }
 
-static void process_enemies(Game *game, int n)
+static void process_enemies(Game *game)
 {
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
 		Enemy *enemy = &game->enemy[i];
 
@@ -110,5 +117,21 @@ static void process_enemies(Game *game, int n)
 		add_vector(&enemy->body.position, enemy->body.direction);
 
 		inf_screen(&enemy->body);
+
+		/* Столкновение с игроком */
+		if (enemy_collision_with(*enemy, game->player.body))
+		{
+			enemy_remove(enemy);
+			--game->enemies_count;
+		}
+
+		/* Новый уровень */
+		if (game->enemies_count == 0)
+		{
+			++game->lvl;
+
+			enemies_init(game->enemy, waves[game->lvl]);
+			game->enemies_count = waves[game->lvl];
+		}
 	}
 }
