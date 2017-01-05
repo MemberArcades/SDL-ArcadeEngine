@@ -24,3 +24,5 @@ void move_physics_body(PhysicsBody *body);
 void rotate_physics_body(PhysicsBody *body, double degrees);
 
 void inf_screen(PhysicsBody *body);
+
+bool out_of_screen(PhysicsBody body);

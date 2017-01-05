@@ -19,7 +19,6 @@ void rotate_collider(PhysicsBody *body, double degrees)
 void rotate_physics_body(PhysicsBody *body, double degrees)
 {
 	rotate_vector(&body->direction, degrees);
-
 	rotate_collider(body, degrees);
 }
 
@@ -36,4 +35,15 @@ void inf_screen(PhysicsBody *body)
 		body->position.y = SCREEN_HEIGHT;
 	if (y > SCREEN_HEIGHT)
 		body->position.y = 0;
+}
+
+bool out_of_screen(PhysicsBody body)
+{
+	double x = body.position.x;
+	double y = body.position.y;
+
+	if ((x < 0) || (x > SCREEN_WIDTH) || (y < 0) || (y > SCREEN_HEIGHT))
+		return true;
+
+	return false;
 }
