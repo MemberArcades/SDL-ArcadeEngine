@@ -9,7 +9,6 @@ void bullet_init(Bullet *bullet, double velocity)
 
 	bullet->body.collider.points_count = 1;
 	bullet->body.collider.points[0] = (Vector) { 0, 0 };
-	bullet->body.collider.points[1] = (Vector) { 0, 0 };
 }
 
 void bullets_init(Bullet bullets[], int n)

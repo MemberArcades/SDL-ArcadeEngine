@@ -10,6 +10,8 @@
 
 static void process_player(Game *game);
 
+static void process_bullets(Bullet *bullets);
+
 static void process_enemies(Game *game);
 
 /* Кол-во астероидов на уровне */
@@ -80,6 +82,10 @@ static void process_player(Game *game)
 	if (key_held(SDLK_RIGHT))
 		rotate_player(player, 2.0);
 
+	if (key_held(SDLK_x))
+		player_shoot(player);
+
+	/* Передвижение */
 	if (player->thrust)
 	{ 
 		Vector punch = { 0, 1 };
@@ -102,7 +108,31 @@ static void process_player(Game *game)
 
 	add_vector(&player->body.position, player->body.direction);
 
+	/* Пули */
+	process_bullets(&player->bullets);
+
 	inf_screen(&player->body);
+}
+
+static void process_bullets(Bullet *bullets)
+{
+	for (int i = 0; i < MAX_BULLETS; ++i)
+	{
+		Bullet *bullet = &bullets[i];
+
+		if (!bullet->alive)
+		{
+			continue;
+		}
+
+		add_vector(&bullet->body.position, bullet->body.direction);
+	
+		if (out_of_screen(bullet->body))
+		{
+			bullet_remove(bullet);
+		}
+	
+	}
 }
 
 static void process_enemies(Game *game)
@@ -125,13 +155,33 @@ static void process_enemies(Game *game)
 			--game->enemies_count;
 		}
 
-		/* Новый уровень */
-		if (game->enemies_count == 0)
+		/* Столкновение с пулями */
+		for (int j = 0; j < MAX_BULLETS; ++j)
 		{
-			++game->lvl;
+			Bullet *bullet = &game->player.bullets[j];
 
-			enemies_init(game->enemy, waves[game->lvl]);
-			game->enemies_count = waves[game->lvl];
+			if (!bullet->alive)
+			{
+				continue;
+			}
+
+			if (enemy_collision_with(*enemy, bullet->body))
+			{
+				bullet_remove(bullet);
+
+				enemy_remove(enemy);
+				--game->enemies_count;
+				printf("enemies left: %d\n", game->enemies_count);
+			}
 		}
+	}
+
+	/* Новый уровень */
+	if (game->enemies_count == 0)
+	{
+		++game->lvl;
+
+		enemies_init(game->enemy, waves[game->lvl]);
+		game->enemies_count = waves[game->lvl];
 	}
 }

@@ -80,6 +80,10 @@ void draw_player(SDL_Surface *surface, Player player)
 		draw_physics_body(surface, exhaust);
 	}
 
+	for (int i = 0; i < MAX_BULLETS; ++i)
+	{
+		draw_bullet(get_screen(), player.bullets[i]);
+	}
 }
 
 void draw_enemy(SDL_Surface *surface, Enemy enemy)
