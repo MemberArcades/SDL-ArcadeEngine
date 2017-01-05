@@ -68,31 +68,9 @@ bool generation_blocks(BlockColor blockColor, BlockType blockType, Direction dir
 		break;
 	}
 	case JL:
-		if (!create_j_l(blockColor, Moves, 4, 0, direction))
-		{
-			opportunityCreateBlock = false;
-
-			return false;
-		}
-
-		get_state_rotation()->i = 4;
-		get_state_rotation()->j = 0;
-
-		break;
 	case JR:
-		if (!create_j_r(blockColor, Moves, 4, 0, direction))
-		{
-			opportunityCreateBlock = false;
-
-			return false;
-		}
-
-		get_state_rotation()->i = 4;
-		get_state_rotation()->j = 0;
-
-		break;
 	case T:
-		if (!create_t(blockColor, Moves, 4, 0, direction))
+		if (!create_jt(blockColor, Moves, 4, 0, direction, blockType))
 		{
 			opportunityCreateBlock = false;
 
@@ -183,119 +161,55 @@ bool create_line(BlockColor blockColor, BlockStatus blockStatus, int i, int j, D
 	return false;
 }
 
-bool create_j(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction, BlockType blockType)
-{
-	switch (blockType)
-	{
-	case JR:
-		if (create_j_r(blockColor, blockStatus, i, j, direction))
-		{
-			return true;
-		}
-
-		break;
-	case JL:
-		if (create_j_l(blockColor, blockStatus, i, j, direction))
-		{
-			return true;
-		}
-
-		break;
-	}
-
-	return false;
-}
-
-bool create_j_l(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
+bool create_jt(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction, BlockType blockType)
 {
 	switch (direction)
 	{
 	case Up:
-	case Down:
 		if (check_create(i, j, i + 2, j + 1))
 		{
-			if (direction == Up)
+			switch (blockType)
 			{
+			case JL:
 				recolor_block_main_field(blockColor, blockStatus, i, j);
-
-				for (int x = 0; x < 3; ++x)
-				{
-					recolor_block_main_field(blockColor, blockStatus, i + x, j + 1);
-				}
+				break;
+			case T:
+				recolor_block_main_field(blockColor, blockStatus, i + 1, j);
+				break;
+			case JR:
+				recolor_block_main_field(blockColor, blockStatus, i + 2, j);
+				break;
 			}
-			else
+
+			for (int x = 0; x < 3; ++x)
 			{
+				recolor_block_main_field(blockColor, blockStatus, i + x, j + 1);
+			}
+
+			return true;
+		}
+
+		break;
+	case Down:
+		if (check_create(i, j, i + 2, j + 1))
+		{			
+			switch (blockType)
+			{
+			case JL:
 				recolor_block_main_field(blockColor, blockStatus, i + 2, j + 1);
-
-				for (int x = 0; x < 3; ++x)
-				{
-					recolor_block_main_field(blockColor, blockStatus, i + x, j);
-				}
+				break;
+			case T:
+				recolor_block_main_field(blockColor, blockStatus, i + 1, j + 1);
+				break;
+			case JR:
+				recolor_block_main_field(blockColor, blockStatus, i, j + 1);
+				break;
 			}
-
-			return true;
-		}
-
-		break;
-	case Right:
-		if (check_create(i, j, i + 1, j + 2))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i + 1, j);
-
-			for (int y = 0; y < 3; ++y)
-			{
-				recolor_block_main_field(blockColor, blockStatus, i, j + y);
-			}
-
-			return true;
-		}
-	case Left:
-		if (check_create(i, j, i + 1, j + 2))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i, j + 2);
-
-			for (int y = 0; y < 3; ++y)
-			{
-				recolor_block_main_field(blockColor, blockStatus, i + 1, j + y);
-			}
-
-
-			return true;
-		}
-
-		break;
-	}
-
-	return false;
-}
-
-bool create_j_r(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
-{
-	switch (direction)
-	{
-	case Up:
-		if (check_create(i, j, i + 2, j + 1))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i + 2, j);
-
-			for (int x = 0; x < 3; ++x)
-			{
-				recolor_block_main_field(blockColor, blockStatus, i + x, j + 1);
-			}
-			
-			return true;
-		}
-
-		break;
-	case Down:
-		if (check_create(i, j, i + 2, j + 1))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i, j + 1);
 
 			for (int x = 0; x < 3; ++x)
 			{
 				recolor_block_main_field(blockColor, blockStatus, i + x, j);
-			}
+			}	
 
 			return true;
 		}
@@ -304,7 +218,18 @@ bool create_j_r(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Di
 	case Right:
 		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(blockColor, blockStatus, i + 1, j + 2);
+			switch (blockType)
+			{
+			case JL:
+				recolor_block_main_field(blockColor, blockStatus, i + 1, j);
+				break;
+			case T:
+				recolor_block_main_field(blockColor, blockStatus, i + 1, j + 1);
+				break;
+			case JR:
+				recolor_block_main_field(blockColor, blockStatus, i + 1, j + 2);
+				break;
+			}
 
 			for (int y = 0; y < 3; ++y)
 			{
@@ -313,82 +238,27 @@ bool create_j_r(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Di
 
 			return true;
 		}
-
-		break;
 	case Left:
 		if (check_create(i, j, i + 1, j + 2))
 		{
-			recolor_block_main_field(blockColor, blockStatus, i, j);
+			switch (blockType)
+			{
+			case JL:
+				recolor_block_main_field(blockColor, blockStatus, i, j + 2);
+				break;
+			case T:
+				recolor_block_main_field(blockColor, blockStatus, i, j + 1);
+				break;
+			case JR:
+				recolor_block_main_field(blockColor, blockStatus, i, j);
+				break;
+			}
 
 			for (int y = 0; y < 3; ++y)
 			{
 				recolor_block_main_field(blockColor, blockStatus, i + 1, j + y);
 			}
 
-			return true;
-		}
-
-		break;
-	}
-
-	return false;
-}
-
-bool create_t(BlockColor blockColor, BlockStatus blockStatus, int i, int j, Direction direction)
-{
-	switch (direction)
-	{
-	case Up:
-		if (check_create(i, j, i + 2, j + 1))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i + 1, j);
-
-			for (int x = 0; x < 3; ++x)
-			{
-				recolor_block_main_field(blockColor, blockStatus, i + x, j + 1);
-			}
-
-			return true;
-		}
-
-		break;
-	case Right:
-		if (check_create(i, j, i + 1, j + 2))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i + 1, j + 1);
-
-			for (int y = 0; y < 3; ++y)
-			{
-				recolor_block_main_field(blockColor, blockStatus, i, j + y);
-			}
-
-			return true;
-		}
-
-		break;
-	case Down:
-		if (check_create(i, j, i + 2, j + 1))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i + 1, j + 1);
-
-			for (int x = 0; x < 3; ++x)
-			{
-				recolor_block_main_field(blockColor, blockStatus, i + x, j);
-			}
-
-			return true;
-		}
-
-		break;
-	case Left:
-		if (check_create(i, j, i + 1, j + 2))
-		{
-			recolor_block_main_field(blockColor, blockStatus, i, j + 1);
-
-			for (int y = 0; y < 3; ++y)
-			{
-				recolor_block_main_field(blockColor, blockStatus, i + 1, j + y);
-			}
 
 			return true;
 		}
