@@ -9,7 +9,7 @@
 #define DOWN_SPEED 30
 #define MAX_SPEED 6
 
-#define BOOST 3000
+#define BOOST 6000
 
 typedef enum
 {
