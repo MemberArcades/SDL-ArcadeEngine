@@ -35,9 +35,35 @@ void enemies_init(Enemy enemies[], int n)
 	
 	for (int i = 0; i < n; ++i)
 	{
-		Vector pos = { rand() % SCREEN_WIDTH, rand() % SCREEN_WIDTH };
-		Vector dir = { (rand() % 10) / 10.0, (rand() % 10) / 10.0 };
+		int pos_rand = rand() % 2;
+		Vector pos;
+
+		switch (pos_rand)
+		{
+		case 0:
+			pos = (Vector) { rand() % SCREEN_WIDTH, 0 };
+			break;
+		case 1:
+			pos = (Vector) { SCREEN_WIDTH, rand() % SCREEN_HEIGHT };
+			break;
+		case 2:
+			pos = (Vector) { rand() % SCREEN_WIDTH, SCREEN_HEIGHT };
+			break;
+		case 3	:
+			pos = (Vector) { 0, rand() % SCREEN_HEIGHT };
+			break;
+		default:
+			pos = (Vector) { rand() % SCREEN_WIDTH, rand() % SCREEN_HEIGHT };
+			break;
+		}
+		
+
+		int sign_rand_x = (rand() % 2 == 1) ? (1) : (-1);
+		int sign_rand_y = (rand() % 2 == 1) ? (1) : (-1);
+		
+		Vector dir = { (rand() % 100) / 100.0 * sign_rand_x, (rand() % 100) / 100.0 * sign_rand_y };
 		normalise_vector(&dir);
+
 		int body_type = rand() % 3;
 
 		enemy_init(&enemies[i], pos, dir, 1, body_type, 2);

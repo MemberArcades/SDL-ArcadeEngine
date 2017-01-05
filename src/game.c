@@ -173,17 +173,19 @@ static void process_enemies(Game *game)
 
 				enemy_remove(enemy);
 				--game->enemies_count;
-				printf("enemies left: %d\n", game->enemies_count);
 			}
 		}
 	}
 
 	/* Новый уровень */
-	if (game->enemies_count == 0)
+	if (game->enemies_count < 1)
 	{
-		++game->lvl;
-
-		enemies_init(game->enemy, waves[game->lvl]);
-		game->enemies_count = waves[game->lvl];
+		printf("%d\n", game->lvl);
+		if (game->lvl < 4)
+			++game->lvl;
+		
+		int new_wave = waves[game->lvl];
+		enemies_init(game->enemy, new_wave);
+		game->enemies_count = new_wave;
 	}
 }

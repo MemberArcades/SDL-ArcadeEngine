@@ -1,6 +1,4 @@
 #include "player.h"
-#include "input.h"
-#include "vector.h"
 
 void player_init(Player *player)
 {
@@ -36,7 +34,7 @@ void player_shoot(Player *player)
 	unsigned cur_time = SDL_GetTicks();
 	
 	/* Ограничение скорострельности */
-	if (cur_time - player->last_bullet < 200)
+	if (cur_time - player->last_bullet < 300)
 	{
 		return;
 	}
