@@ -13,6 +13,7 @@
 #include "input.h"
 #include "player.h"
 #include "game.h"
+#include "randomizer.h"
 
 /* Иницализация всех ресурсов */
 static void resource_init(void);
@@ -128,6 +129,8 @@ static void resource_init(void)
 
 	fps_init(125);
 
+	randomizer_init();
+	
 	/* TODO: load_images(), load_sounds(), load_text().*/
 }
 
