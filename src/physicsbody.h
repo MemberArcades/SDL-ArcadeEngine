@@ -19,6 +19,8 @@ typedef struct
 	double velocity;
 } PhysicsBody;
 
+void rotate_collider(PhysicsBody *body, double degrees);
+
 void move_physics_body(PhysicsBody *body);
 
 void rotate_physics_body(PhysicsBody *body, double degrees);
