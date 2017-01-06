@@ -25,10 +25,12 @@ typedef struct
 
 void player_init(Player *player);
 
-void move_player(Player *player, double pwr);
 void player_remove(Player *player);
 
+void player_movement(Player *player, double pwr);
 
 void rotate_player(Player *player, double degrees);
+
+void player_shoot(Player *player);
 
 void player_hyper_jump(Player *player);

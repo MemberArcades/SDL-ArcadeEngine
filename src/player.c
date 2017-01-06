@@ -84,7 +84,7 @@ void player_hyper_jump(Player *player)
 {
 	unsigned cur_time = SDL_GetTicks();
 
-	/* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+	/* Ограничение прыжков */
 	if (cur_time - player->last_jump < 1000)
 	{
 		return;

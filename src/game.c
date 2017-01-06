@@ -8,9 +8,9 @@
 #include "enemy.h"
 #include "input.h"
 
-static void process_player(Game *game);
+static void process_player(Player *player);
 
-static void process_bullets(Bullet *bullets);
+static void process_bullets(Bullet bullets[]);
 
 static void process_enemies(Game *game);
 
@@ -22,7 +22,7 @@ void game_tick(Game *game)
 		break;
 
 	case GamePlayState:
-		process_player(game);
+		process_player(&game->player);
 		process_enemies(game);
 
 		break;
@@ -64,10 +64,8 @@ void game_init(Game *game)
 	game->game_state = GamePlayState;
 }
 
-static void process_player(Game *game)
+static void process_player(Player *player)
 {
-	Player *player = &game->player;
-
 	player->thrust = false;
 
 	if (key_held(SDLK_UP))
@@ -82,38 +80,19 @@ static void process_player(Game *game)
 	if (key_held(SDLK_x))
 		player_shoot(player);
 
-	/* Передвижение */
-	if (player->thrust)
-	{ 
-		Vector punch = { 0, 1 };
-		rotate_vector(&punch, player->angle);
-		mul_vector(&punch, 0.2);
-
-		add_vector(&player->body.direction, punch);
-	}
-	else {
-		mul_vector(&player->body.direction, 0.99);
-	}
-
-	double max_speed = 2.1;
-	double speed = sqrt(player->body.direction.x * player->body.direction.x + player->body.direction.y * player->body.direction.y);
 	if (key_held(SDLK_c))
 		player_hyper_jump(player);
 
-	if (speed > max_speed)
-	{
-		mul_vector(&player->body.direction, max_speed / speed);
-	}
-
-	add_vector(&player->body.position, player->body.direction);
+	/* Передвижение */
+	player_movement(player, 0.2);
 
 	/* Пули */
-	process_bullets(&player->bullets);
+	process_bullets(player->bullets);
 
 	inf_screen(&player->body);
 }
 
-static void process_bullets(Bullet *bullets)
+static void process_bullets(Bullet bullets[])
 {
 	for (int i = 0; i < MAX_BULLETS; ++i)
 	{
@@ -153,11 +132,13 @@ static void process_enemies(Game *game)
 		inf_screen(&enemy->body);
 
 		/* Столкновение с игроком */
-		/*if (enemy_collision_with(*enemy, game->player.body))
+		if (enemy_collision_with(*enemy, game->player.body))
 		{
-			enemy_remove(enemy);
-			--game->enemies_count;
-		}*/
+			player_remove(&game->player);
+
+			if (game->player.lives < 0)
+				game->game_state = GameOverState;
+		}
 
 		/* Столкновение с пулями */
 		for (int j = 0; j < MAX_BULLETS; ++j)
@@ -173,7 +154,7 @@ static void process_enemies(Game *game)
 			{
 				bullet_remove(bullet);
 
-				game->enemies_count += enemy_boom(enemy, &game->enemy);
+				game->enemies_count += enemy_boom(enemy, game->enemy);
 			}
 		}
 	}
