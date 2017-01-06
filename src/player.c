@@ -16,6 +16,8 @@ void player_init(Player *player)
 
 	bullets_init(player->bullets, MAX_BULLETS);
 	player->last_bullet = SDL_GetTicks();
+
+	player->last_jump = SDL_GetTicks();
 }
 
 void move_player(Player *player, double pwr)
@@ -45,4 +47,19 @@ void player_shoot(Player *player)
 	bullet_shot(player->bullets, player->body.position, bullet_dir);
 
 	player->last_bullet = cur_time;
+
+void player_hyper_jump(Player *player)
+{
+	unsigned cur_time = SDL_GetTicks();
+
+	/* ����������� ������� */
+	/* ����������� ������� */
+	if (cur_time - player->last_jump < 1000)
+	{
+		return;
+	}
+
+	player->body.position = rand_pos();
+
+	player->last_jump = cur_time;
 }

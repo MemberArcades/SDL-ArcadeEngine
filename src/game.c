@@ -97,6 +97,8 @@ static void process_player(Game *game)
 
 	double max_speed = 2.1;
 	double speed = sqrt(player->body.direction.x * player->body.direction.x + player->body.direction.y * player->body.direction.y);
+	if (key_held(SDLK_c))
+		player_hyper_jump(player);
 
 	if (speed > max_speed)
 	{
