@@ -48,7 +48,7 @@ void draw_physics_body(SDL_Surface *surface, PhysicsBody body)
 	Vector first_point = sum_vector(pos, body.collider.points[0]);
 	Vector last_point = sum_vector(pos, body.collider.points[total - 1]);
 
-	for (size_t i = 1; i < total; ++i)
+	for (int i = 1; i < total; ++i)
 	{
 		draw_line
 		(
@@ -60,6 +60,22 @@ void draw_physics_body(SDL_Surface *surface, PhysicsBody body)
 	}
 
 	draw_line(surface, first_point, last_point, 0xFFFFFFFF);
+}
+
+void draw_lives(SDL_Surface *surface, Player player)
+{
+	int x_offset = 25;
+	int y_offset = 35;
+	int period = 15;
+
+	for (int i = 0; i < player.lives; ++i)
+	{
+		draw_line(surface, (Vector) { x_offset + 0, y_offset + -15 }, (Vector) { x_offset + -5, y_offset + 0 }, 0xFFFFFFFF);
+		draw_line(surface, (Vector) { x_offset + 0, y_offset + -15 }, (Vector) { x_offset + 5, y_offset + 0 }, 0xFFFFFFFF);
+		draw_line(surface, (Vector) { x_offset + 5, y_offset + 0 }, (Vector) { x_offset + -5, y_offset + 0 }, 0xFFFFFFFF);
+
+		x_offset += period;
+	}
 }
 
 void draw_player(SDL_Surface *surface, Player player)
@@ -82,8 +98,10 @@ void draw_player(SDL_Surface *surface, Player player)
 
 	for (int i = 0; i < MAX_BULLETS; ++i)
 	{
-		draw_bullet(get_screen(), player.bullets[i]);
+		draw_bullet(surface, player.bullets[i]);
 	}
+
+	draw_lives(surface, player);
 }
 
 void draw_enemy(SDL_Surface *surface, Enemy enemy)
