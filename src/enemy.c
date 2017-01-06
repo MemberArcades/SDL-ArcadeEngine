@@ -1,5 +1,4 @@
 #include "enemy.h"
-#include "vector.h"
 
 #include <time.h>
 #include <stdlib.h>
@@ -37,41 +36,46 @@ void enemy_init(Enemy *enemy, Vector position, Vector direction, double velocity
 
 void enemies_init(Enemy enemies[], int n)
 {
-	int nStartValue = time(NULL);
+	time_t nStartValue = time(NULL);
 	srand(nStartValue);
 	
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
-		int pos_rand = rand() % 2;
+		int pos_rand = rand_int(4);
 		Vector pos;
-
+		/* Астероиды должны появляться только по краям экрана, чтобы случайно не убить игрока*/
 		switch (pos_rand)
 		{
 		case 0:
-			pos = (Vector) { rand() % SCREEN_WIDTH, 0 };
+			pos = rand_pos();
+			pos.y = 0;
+
 			break;
 		case 1:
-			pos = (Vector) { SCREEN_WIDTH, rand() % SCREEN_HEIGHT };
+			pos = rand_pos();
+			pos.x = SCREEN_WIDTH;
+
 			break;
 		case 2:
-			pos = (Vector) { rand() % SCREEN_WIDTH, SCREEN_HEIGHT };
+			pos = rand_pos();
+			pos.y = SCREEN_HEIGHT;
+
 			break;
 		case 3	:
-			pos = (Vector) { 0, rand() % SCREEN_HEIGHT };
+			pos = rand_pos();
+			pos.x = 0;
+
 			break;
 		default:
-			pos = (Vector) { rand() % SCREEN_WIDTH, rand() % SCREEN_HEIGHT };
+			pos = rand_pos();
+
 			break;
 		}
 		
 
-		int sign_rand_x = (rand() % 2 == 1) ? (1) : (-1);
-		int sign_rand_y = (rand() % 2 == 1) ? (1) : (-1);
-		
-		Vector dir = { (rand() % 100) / 100.0 * sign_rand_x, (rand() % 100) / 100.0 * sign_rand_y };
-		normalise_vector(&dir);
+		Vector dir = rand_dir();
 
-		int body_type = rand() % 3;
+		int body_type = rand_int(3);
 
 		enemy_init(&enemies[i], pos, dir, 0.41, body_type, 3);
 
@@ -82,9 +86,6 @@ void enemies_init(Enemy enemies[], int n)
 
 int enemy_boom(Enemy *shoted_enemy, Enemy enemies[])
 {
-	int nStartValue = time(NULL);
-	srand(nStartValue);
-
 	enemy_remove(shoted_enemy);
 
 	int shoted_enemy_size = shoted_enemy->size;
@@ -94,7 +95,7 @@ int enemy_boom(Enemy *shoted_enemy, Enemy enemies[])
 		return -1;
 
 	/* Найти первую свободную ячейку */
-	int needed = (shoted_enemy_size == 3) ? (rand() % 5) : (rand() % 3);
+	int needed = 2; /*(shoted_enemy_size == 3) ? (2 + rand_int(3)) : (rand_int(4)); */
 	int count = 0;
 
 	for (int i = 0; i < MAX_ENEMIES; ++i)
@@ -104,13 +105,7 @@ int enemy_boom(Enemy *shoted_enemy, Enemy enemies[])
 
 		if (!enemies[i].alive)
 		{ 
-			printf("new (%d): %d\n", count, i);
-
-			int sign_rand_x = (rand() % 2 == 1) ? (1) : (-1);
-			int sign_rand_y = (rand() % 2 == 1) ? (1) : (-1);
-
-			Vector dir = { (rand() % 100) / 100.0 * sign_rand_x, (rand() % 100) / 100.0 * sign_rand_y };
-			normalise_vector(&dir);
+			Vector dir = rand_dir();
 
 			enemy_init(&enemies[i], shoted_enemy->body.position, dir, shoted_enemy_vel * 1.62, shoted_enemy->body_type, shoted_enemy_size - 1);
 			

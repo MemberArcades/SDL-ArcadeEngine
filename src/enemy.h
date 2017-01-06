@@ -1,6 +1,8 @@
 #pragma once
 
 #include "physicsbody.h"
+#include "vector.h"
+#include "randomizer.h"
 
 #define MAX_ENEMIES 32
 
@@ -17,7 +19,7 @@ void enemy_init(Enemy *enemy, Vector position, Vector direction, double velocity
 
 void enemies_init(Enemy enemies[], int n);
 
-int enemy_boom(Enemy *enemy, Enemy enemies[]);
+int enemy_boom(Enemy *shoted_enemy, Enemy enemies[]);
 
 void enemy_remove(Enemy *enemy);
 
