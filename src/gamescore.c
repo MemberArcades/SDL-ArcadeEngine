@@ -78,7 +78,7 @@ void init_game_score()
 	}
 
 	draw_text("High score:", (Point) { 13, 13 });
-	draw_text(highScore, (Point) { 102, 14 });
+	draw_high_score();
 
 	draw_text("You score:", (Point) { 13, 35 });
 	draw_text("0", (Point) { 102, 35 });
@@ -113,10 +113,14 @@ static bool record_high_score()
 	}
 
 	fprintf(file, "%llu", score.high);
-	sprintf(highScore, "%llu", score.high);
 
 	fclose(file);
 
 	return true;
 }
 
+void draw_high_score()
+{
+	sprintf(highScore, "%llu", score.high);
+	draw_text(highScore, (Point) { 102, 14 });
+}
