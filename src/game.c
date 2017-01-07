@@ -32,7 +32,7 @@ void game_tick(Game *game)
 
 		move_down();
 
-		destroy_full_line(game);
+		destroy_full_line();
 
 		break;
 
@@ -68,8 +68,6 @@ void game_init(Game *game)
 	*get_sum_boost() = 0;
 
 	game->game_state = GamePlayState;
-
-	printf("High score: %llu\n", get_score()->high);
 }
 
 bool game_over(Game *game)

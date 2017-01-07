@@ -21,6 +21,4 @@ SDL_Surface* get_background_image();
 
 SDL_Surface* get_game_over_image();
 
-SDL_Surface* get_numbers_image();
-
-SDL_Surface* get_letters_image();
+SDL_Surface* get_symbols_image();

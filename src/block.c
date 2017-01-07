@@ -93,19 +93,15 @@ static bool check_full_line(int *y)
 	return false;
 }
 
-void destroy_full_line(struct Game *game)
+void destroy_full_line()
 {
 	int j;
 
 	unsigned long long score = 100 + 100 * (*get_sum_boost());
 	unsigned long long sumScore = 0;
 
-	bool flag = false;
-
 	while (check_full_line(&j))
 	{
-		flag = true;
-
 		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
 		{
 			recolor_block_main_field(BackgroundColor, Background, i, j);
@@ -125,10 +121,4 @@ void destroy_full_line(struct Game *game)
 		sumScore += score;
 		score += 100 + 100 * (*get_sum_boost());
 	}
-
-	if (flag)
-	{
-		printf("Added points: %llu, You score: %llu\n", sumScore, get_score()->current);
-	}
-
 }

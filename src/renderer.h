@@ -26,6 +26,6 @@ void draw_block_offset(enum BlockColor blockColor, Point dst, Point offset);
 
 void draw_block(enum BlockColor blockColor, Point dst);
 
-void draw_number_offset(int count, Point dst, Point offset);
+void draw_text_offset(char *text, Point dst, Point offset);
 
-void draw_number(int count, Point dst);
+void draw_text(char *text, Point dst);

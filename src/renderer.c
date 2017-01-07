@@ -106,22 +106,159 @@ void draw_block(BlockColor blockColor, Point dst)
 	draw_block_offset(blockColor, dst, (Point) { 0, 0 });
 }
 
-void draw_number_offset(int count, Point dst, Point offset)
+void draw_text_offset(char *text, Point dst, Point offset)
 {
 	dst.x += offset.x;
 	dst.y += offset.y;
 
 	SDL_Rect dstrect = { (int)dst.x, (int)dst.y };
+	SDL_Rect backrect = { 0, (int)dst.y, 0, 9 };
+	SDL_Rect imgrect;
 
-	SDL_Rect imgrect = { 14 * count, 0, 14, 20 };
+	int i = 0;
 
-	SDL_Rect backrect = { (int)dst.x, (int)dst.y, 14, 20 };
+	while (text[i])
+	{
+		if (('0' <= text[i]) && (text[i] <= '9'))
+		{
+			imgrect.x = 10 * (text[i] - '0');
+			imgrect.y = 0;
 
-	SDL_BlitSurface(get_background_image(), &backrect, get_screen(), &dstrect);
-	SDL_BlitSurface(get_numbers_image(), &imgrect, get_screen(), &dstrect);
+			backrect.w = imgrect.w = 10;
+			backrect.h = imgrect.h = 13;
+
+			backrect.x = dstrect.x;
+
+			SDL_BlitSurface(get_background_image(), &backrect, get_screen(), &dstrect);
+			SDL_BlitSurface(get_symbols_image(), &imgrect, get_screen(), &dstrect);
+
+			dstrect.x += 10;
+			++i;
+
+			continue;
+		}
+
+		if (('a' <= text[i]) && (text[i] <= 'z'))
+		{
+			imgrect.x = (text[i] - 'a') * 9;
+			imgrect.y = 13;
+
+			backrect.h = imgrect.h = 18;
+
+			int index = 0;
+
+			switch (text[i])
+			{
+			case 'i':
+			case 'l':
+				backrect.w = index = imgrect.w = 4;
+				break;
+			case 'm':
+				backrect.w = index = imgrect.w = 12;
+				imgrect.x = ('l' - 'a') * 9 + 4;
+				break;
+			default:
+				backrect.w = index = imgrect.w = 9;
+				break;
+			}
+
+			backrect.x = dstrect.x;
+
+			SDL_BlitSurface(get_background_image(), &backrect, get_screen(), &dstrect);
+			SDL_BlitSurface(get_symbols_image(), &imgrect, get_screen(), &dstrect);
+
+			dstrect.x += index;
+			++i;
+
+			continue;
+		}
+
+		if (('A' <= text[i]) && (text[i] <= 'Z'))
+		{
+			imgrect.x = 11 * (text[i] - 'A');
+			imgrect.y = 31;
+
+			backrect.w = imgrect.w = 11;
+			backrect.h = imgrect.h = 17;
+
+			backrect.x = dstrect.x;
+
+			SDL_BlitSurface(get_background_image(), &backrect, get_screen(), &dstrect);
+			SDL_BlitSurface(get_symbols_image(), &imgrect, get_screen(), &dstrect);
+
+			dstrect.x += 11;
+			++i;
+
+			continue;
+		}
+
+		if (text[i] == ' ')
+		{
+			backrect.x = dstrect.x;
+			backrect.h = 5;
+			backrect.w = 5;
+
+			SDL_BlitSurface(get_background_image(), &backrect, get_screen(), &dstrect);
+
+			dstrect.x += 5;
+			++i;
+
+			continue;
+		}
+
+		imgrect.w = 5;
+		imgrect.h = 18;
+		imgrect.y = 48;
+
+		bool flag = false;
+
+		switch (text[i])
+		{
+		case ':':
+			imgrect.x = 0;
+			flag = true;
+
+			break;
+		case '.':
+			imgrect.x = 10;
+			flag = true;
+
+			break;
+		case ',':
+			imgrect.x = 15;
+			flag = true;
+
+			break;
+		case '!':
+			imgrect.x = 5;
+			flag = true;
+
+			break;
+		case '?':
+			imgrect.x = 20;
+			imgrect.w = 8;
+			flag = true;
+
+			break;
+		}
+
+		if (flag)
+		{
+			backrect.x = dstrect.x;
+			backrect.w = imgrect.w;
+			backrect.h = imgrect.h;
+
+			SDL_BlitSurface(get_background_image(), &backrect, get_screen(), &dstrect);
+			SDL_BlitSurface(get_symbols_image(), &imgrect, get_screen(), &dstrect);
+
+			dstrect.x += imgrect.w;
+		}
+
+		++i;
+	}
 }
 
-void draw_number(int count, Point dst)
+void draw_text(char *text, Point dst)
 {
-	draw_number_offset(count, dst, (Point) { 0, 0 });
+	draw_text_offset(text, dst, (Point) { 0, 0 });
 }

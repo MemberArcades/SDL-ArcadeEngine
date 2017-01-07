@@ -17,6 +17,9 @@ static bool initScore = true;
 
 static FILE *file;
 
+static char highScore[30];
+static char currentScore[30];
+
 
 static bool open_file_score();
 
@@ -30,7 +33,17 @@ static bool open_file_score()
 		return false;
 	}
 
-	fscanf(file, "%llu", &score.high);
+	fread(highScore, sizeof(char), 20, file);
+
+	int i = 0;
+
+	score.high = 0;
+
+	while (highScore[i] && (highScore[i] <= '9') && ('0' <= highScore[i]))
+	{
+		score.high = score.high * 10 + highScore[i] - '0';
+		++i;
+	}
 
 	fclose(file);
 
@@ -45,32 +58,9 @@ void add_game_score(unsigned long long points)
 	{
 		score.newHigh = true;
 	}
-}
 
-void draw_high_score(Point dst, Point offset)
-{
-	unsigned long long copyScore = score.high;
-
-	int k = 0;
-
-	while (copyScore)
-	{
-		dst.x -= 14;
-
-		draw_number_offset(copyScore % 10, dst, offset);
-
-		copyScore /= 10;
-		++k;
-	}
-
-	while (k < 20)
-	{
-		dst.x -= 14;
-		draw_number_offset(0, dst, offset);
-
-		++k;
-	}
-	
+	sprintf(currentScore, "%llu", score.current);
+	draw_text(currentScore, (Point) { 102, 35 });
 }
 
 void init_game_score()
@@ -87,7 +77,11 @@ void init_game_score()
 		initScore = false;
 	}
 
-	draw_high_score((Point) { 325, 18 }, (Point) { 0, 0 });
+	draw_text("High score:", (Point) { 13, 13 });
+	draw_text(highScore, (Point) { 102, 14 });
+
+	draw_text("You score:", (Point) { 13, 35 });
+	draw_text("0", (Point) { 102, 35 });
 
 	score.newHigh = false;
 }
@@ -105,7 +99,7 @@ void check_high_score()
 
 		record_high_score();
 
-		draw_high_score((Point) { 325, 18 }, (Point) { 0, 0 });
+		draw_text(highScore, (Point) { 102, 14 });
 	}
 }
 
@@ -119,6 +113,7 @@ static bool record_high_score()
 	}
 
 	fprintf(file, "%llu", score.high);
+	sprintf(highScore, "%llu", score.high);
 
 	fclose(file);
 
