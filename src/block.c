@@ -93,7 +93,7 @@ static bool check_full_line(int *y)
 	return false;
 }
 
-void destroy_full_line(Game *game)
+void destroy_full_line(struct Game *game)
 {
 	int j;
 

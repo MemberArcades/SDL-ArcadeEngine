@@ -51,19 +51,26 @@ void draw_high_score(Point dst, Point offset)
 {
 	unsigned long long copyScore = score.high;
 
-	if (copyScore)
-	{
-		for (int k = 0; copyScore > 0; copyScore /= 10, k += 1)
-		{
-			dst.x -= 14;
+	int k = 0;
 
-			draw_number_offset(copyScore % 10, dst, offset);
-		}
-	}
-	else
+	while (copyScore)
 	{
-		draw_number_offset(0, dst, offset);
+		dst.x -= 14;
+
+		draw_number_offset(copyScore % 10, dst, offset);
+
+		copyScore /= 10;
+		++k;
 	}
+
+	while (k < 20)
+	{
+		dst.x -= 14;
+		draw_number_offset(0, dst, offset);
+
+		++k;
+	}
+	
 }
 
 void init_game_score()

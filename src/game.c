@@ -9,6 +9,7 @@
 #include "randomizer.h"
 #include "gamescore.h"
 #include "music.h"
+#include "main.h"
 
 static int delaySize = 0;
 

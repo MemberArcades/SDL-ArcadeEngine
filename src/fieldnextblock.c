@@ -207,13 +207,13 @@ static void draw_n(Direction direction, BlockType type)
 
 		if (type == NL)
 		{
-			draw_block_offset(get_next_block()->color, (Point) { 32, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
-			draw_block_offset(get_next_block()->color, (Point) { 96, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 96, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 32, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 		}
 		else
 		{
-			draw_block_offset(get_next_block()->color, (Point) { 96, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
-			draw_block_offset(get_next_block()->color, (Point) { 32, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 32, 48 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
+			draw_block_offset(get_next_block()->color, (Point) { 96, 80 }, (Point) { X_FIELD_NEXT_BLOCK, Y_FIELD_NEXT_BLOCK });
 		}
 
 		break;
