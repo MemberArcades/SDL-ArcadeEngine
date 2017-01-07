@@ -9,6 +9,7 @@ typedef enum
 {
 	GameBeginState,
 	GamePlayState,
+	GameDeathState,
 	GameOverState
 } GameState;
 

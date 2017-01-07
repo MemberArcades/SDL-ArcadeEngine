@@ -19,11 +19,21 @@ void game_tick(Game *game)
 	switch (game->game_state)
 	{
 	case GameBeginState:
+		process_player(&game->player);
+
 		break;
 
 	case GamePlayState:
 		process_player(&game->player);
 		process_enemies(game);
+
+		break;
+
+	case GameDeathState:
+		/*
+		 * Обработка столкновений и управления
+		 * на время отключена
+		 */
 
 		break;
 
@@ -37,11 +47,23 @@ void game_render(Game *game)
 	switch (game->game_state)
 	{
 	case GameBeginState:
+		draw_player(get_screen(), game->player);
+
 		break;
 
 	case GamePlayState:
 		draw_player(get_screen(), game->player);
 
+		for (int i = 0; i < MAX_ENEMIES; ++i)
+			draw_enemy(get_screen(), game->enemy[i]);
+
+		break;
+
+	case GameDeathState:
+		/*
+		 * Анимация поломки корабля
+		 * Отрисовка врагов не прекращается
+		 */
 		for (int i = 0; i < MAX_ENEMIES; ++i)
 			draw_enemy(get_screen(), game->enemy[i]);
 

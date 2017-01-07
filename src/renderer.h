@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "SDL.h"
 
+#include "imageloader.h"
 #include "player.h"
 #include "enemy.h"
 #include "vector.h"
@@ -20,3 +21,5 @@ void draw_player(SDL_Surface *surface, Player player);
 void draw_enemy(SDL_Surface *surface, Enemy enemy);
 
 void draw_bullet(SDL_Surface *surface, Bullet bullet);
+
+void draw_logo();

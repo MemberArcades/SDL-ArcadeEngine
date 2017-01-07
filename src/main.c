@@ -13,6 +13,7 @@
 #include "input.h"
 #include "player.h"
 #include "game.h"
+#include "menu.h"
 #include "randomizer.h"
 
 /* Иницализация всех ресурсов */
@@ -33,7 +34,8 @@ static void internal_render(void);
 /* Обработка ввода */
 static void process_events(void);
 
-static ProgramState state = Play;
+static ProgramState state;
+static MenuSystem menu;
 static Game game;
 
 static bool gameRunning = true;
@@ -70,6 +72,14 @@ static void internal_tick(void)
 	switch (state)
 	{
 	case Menu:
+		menu_tick(&menu);
+
+		if (menu.action == GoToGame)
+		{
+			state = Play;
+			game_init(&game);
+		}
+
 		break;
 	case Play:
 		game_tick(&game);
@@ -87,6 +97,8 @@ static void internal_render(void)
 	switch (state)
 	{
 	case Menu:
+		menu_render(&menu);
+
 		break;
 	case Play:
 		game_render(&game);
@@ -127,8 +139,12 @@ static void resource_init(void)
 {
 	init_window(SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	fps_init(125);
+	load_images();
 
+	state = Menu;
+	menu_init(&menu);
+
+	fps_init(125);
 	randomizer_init();
 	
 	/* TODO: load_images(), load_sounds(), load_text().*/
@@ -137,6 +153,7 @@ static void resource_init(void)
 static void clean_up(void)
 {
 	dispose_window();
+	destroy_image();
 	/* TODO: dispose_ */
 
 	SDL_Quit();

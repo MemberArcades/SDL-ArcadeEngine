@@ -115,3 +115,13 @@ void draw_bullet(SDL_Surface *surface, Bullet bullet)
 	if (bullet.alive)
 		draw_physics_body(surface, bullet.body);
 }
+
+void draw_logo()
+{
+	draw_image_coord(get_logo_image(), (Vector) { 40, 100 });
+}
+
+void draw_instruction()
+{
+	draw_image_coord(get_instruction_image(), (Vector) { 180, 400 });
+}
