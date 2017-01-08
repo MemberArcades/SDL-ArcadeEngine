@@ -65,6 +65,9 @@ void game_init(Game *game)
 	init_generation_block();
 	init_game_score();
 
+	draw_text("Press plus or minus", (Point) { 360, 200 });
+	draw_text("to music.", (Point) { 400, 218 });
+
 	*get_sum_boost() = 0;
 
 	game->game_state = GamePlayState;

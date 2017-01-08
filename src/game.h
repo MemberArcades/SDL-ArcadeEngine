@@ -7,7 +7,8 @@ typedef enum
 {
 	GameBeginState,
 	GamePlayState,
-	GameOverState
+	GameOverState,
+	GamePauseState
 } GameState;
 
 typedef struct

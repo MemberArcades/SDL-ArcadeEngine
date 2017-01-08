@@ -14,6 +14,7 @@
 #include "game.h"
 #include "gamescore.h"
 #include "music.h"
+#include "menu.h"
 
 /* Иницализация всех ресурсов */
 static void resource_init(void);
@@ -33,7 +34,7 @@ static void internal_render(void);
 /* Обработка ввода */
 static void process_events(void);
 
-static ProgramState state = Play;
+static ProgramState state = Menu;
 static Game game;
 
 static bool gameRunning = true;
@@ -70,6 +71,7 @@ static void internal_tick(void)
 	switch (state)
 	{
 	case Menu:
+		
 		break;
 	case Play:
 		game_tick(&game);
@@ -84,11 +86,15 @@ static void internal_tick(void)
 	case Pause:
 		break;
 	case End:
-		if (game_delay())
+		if (key_held(SDLK_RETURN))
 		{
 			game_init(&game);
 			state = Play;
 		}
+
+		break;
+	case Out:
+		gameRunning = false;
 
 		break;
 	}
@@ -99,12 +105,16 @@ static void internal_render(void)
 	switch (state)
 	{
 	case Menu:
+		draw_menu();
+
 		break;
 	case Play:
 		game_render(&game);
 
 		break;
 	case Pause:
+		draw_menu();
+
 		break;
 	}
 
@@ -125,7 +135,10 @@ static void process_events(void)
 			break;
 		case SDL_KEYDOWN:
 			handle_keydown(event.key.keysym.sym);
+
 			sound_key(event.key.keysym.sym);
+
+			menu_key(event.key.keysym.sym, &state, &game);
 
 			break;
 		case SDL_KEYUP:
@@ -144,15 +157,12 @@ static void resource_init(void)
 	load_sound();
 
 	fps_init(60);
-
-	/* TODO: load_sounds(), load_text().*/
 }
 
 static void clean_up(void)
 {
 	dispose_window();
 	destroy_image();
-	/* TODO: dispose_ */
 
 	SDL_Quit();
 }

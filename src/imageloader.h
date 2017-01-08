@@ -22,3 +22,7 @@ SDL_Surface* get_background_image();
 SDL_Surface* get_game_over_image();
 
 SDL_Surface* get_symbols_image();
+
+SDL_Surface* get_menu_background_image();
+
+SDL_Surface* get_menu_text_image();

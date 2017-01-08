@@ -6,6 +6,8 @@ static void check_keycode(int keycode);
 
 static KeyState keysHeld[MAX_KEYS];
 
+bool pauseFlag = false;
+
 void init_keys_state()
 {
 	for (int k = 0; k < MAX_KEYS; ++k)
@@ -82,7 +84,20 @@ static void check_keycode(int keycode)
 
 void key_tick()
 {
-	movement_dir_button();
+	if (pauseFlag)
+	{
+		keysHeld[SDLK_SPACE] = KeyUp;
+		pauseFlag = false;
+	}
+	else
+	{
+		movement_dir_button();
 
-	key_rotation();
+		key_rotation();
+	}
+}
+
+bool* get_key_flag()
+{
+	return &pauseFlag;
 }
