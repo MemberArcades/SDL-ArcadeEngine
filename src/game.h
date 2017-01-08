@@ -18,9 +18,12 @@ typedef struct
 	GameState game_state;
 	
 	Player player;
-	Enemy enemy[MAX_ENEMIES];
 
+	Enemy enemy[MAX_ENEMIES];
 	int enemies_count;
+
+	unsigned last_gamestate_change;
+	
 	int lvl;
 } Game;
 

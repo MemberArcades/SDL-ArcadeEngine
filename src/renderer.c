@@ -62,7 +62,7 @@ void draw_physics_body(SDL_Surface *surface, PhysicsBody body)
 	draw_line(surface, first_point, last_point, 0xFFFFFFFF);
 }
 
-void draw_lives(SDL_Surface *surface, Player player)
+void draw_hud(SDL_Surface *surface, Player player)
 {
 	int x_offset = 25;
 	int y_offset = 35;
@@ -100,8 +100,49 @@ void draw_player(SDL_Surface *surface, Player player)
 	{
 		draw_bullet(surface, player.bullets[i]);
 	}
+}
 
-	draw_lives(surface, player);
+void draw_player_crash(SDL_Surface *surface, Player player)
+{
+	unsigned cur_time = SDL_GetTicks();
+	unsigned delta = 1 + (cur_time - player.crash_time) * 0.01;
+
+	PhysicsBody first_fragment;
+	first_fragment.collider.points_count = 2;
+	first_fragment.collider.points[0] = player.body.collider.points[0];
+	first_fragment.collider.points[1] = player.body.collider.points[1];
+	first_fragment.position = player.body.position;
+		
+	Vector first_fragment_dir = player.body.collider.points[0];
+	normalise_vector(&first_fragment_dir);
+	mul_vector(&first_fragment_dir, delta);
+	add_vector(&first_fragment.position, first_fragment_dir);
+
+	PhysicsBody second_fragment;
+	second_fragment.collider.points_count = 2;
+	second_fragment.collider.points[0] = player.body.collider.points[1];
+	second_fragment.collider.points[1] = player.body.collider.points[2];
+	second_fragment.position = player.body.position;
+
+	Vector second_fragment_dir = player.body.collider.points[1];
+	normalise_vector(&second_fragment_dir);
+	mul_vector(&second_fragment_dir, delta);
+	add_vector(&second_fragment.position, second_fragment_dir);
+
+	PhysicsBody third_fragment;
+	third_fragment.collider.points_count = 2;
+	third_fragment.collider.points[0] = player.body.collider.points[2];
+	third_fragment.collider.points[1] = player.body.collider.points[0];
+	third_fragment.position = player.body.position;
+
+	Vector third_fragment_dir = player.body.collider.points[2];
+	normalise_vector(&third_fragment_dir);
+	mul_vector(&third_fragment_dir, delta);
+	add_vector(&third_fragment.position, third_fragment_dir);
+
+	draw_physics_body(surface, first_fragment);
+	draw_physics_body(surface, second_fragment);
+	draw_physics_body(surface, third_fragment);
 }
 
 void draw_enemy(SDL_Surface *surface, Enemy enemy)

@@ -21,6 +21,8 @@ typedef struct
 	unsigned last_bullet;
 
 	unsigned last_jump;
+
+	unsigned crash_time;
 } Player;
 
 void player_init(Player *player);

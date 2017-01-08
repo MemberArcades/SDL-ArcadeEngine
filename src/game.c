@@ -19,7 +19,16 @@ void game_tick(Game *game)
 	switch (game->game_state)
 	{
 	case GameBeginState:
+		enemies_init(game->enemy, ENEMIES);
+		game->enemies_count = ENEMIES;
+
 		process_player(&game->player);
+
+		if (SDL_GetTicks() - game->last_gamestate_change > 1400)
+		{
+			game->game_state = GamePlayState;
+			game->last_gamestate_change = SDL_GetTicks();
+		}
 
 		break;
 
@@ -34,6 +43,15 @@ void game_tick(Game *game)
 		 * Обработка столкновений и управления
 		 * на время отключена
 		 */
+		process_enemies(game);
+
+		if (SDL_GetTicks() - game->last_gamestate_change > 2000)
+		{
+			player_remove(&game->player);
+
+			game->game_state = GamePlayState;
+			game->last_gamestate_change = SDL_GetTicks();
+		}
 
 		break;
 
@@ -47,11 +65,13 @@ void game_render(Game *game)
 	switch (game->game_state)
 	{
 	case GameBeginState:
-		draw_player(get_screen(), game->player);
+		draw_hud(get_screen(), game->player);
+		draw_player(get_screen(), game->player);	
 
 		break;
 
 	case GamePlayState:
+		draw_hud(get_screen(), game->player);
 		draw_player(get_screen(), game->player);
 
 		for (int i = 0; i < MAX_ENEMIES; ++i)
@@ -64,6 +84,9 @@ void game_render(Game *game)
 		 * Анимация поломки корабля
 		 * Отрисовка врагов не прекращается
 		 */
+		draw_hud(get_screen(), game->player);
+		draw_player_crash(get_screen(), game->player);
+
 		for (int i = 0; i < MAX_ENEMIES; ++i)
 			draw_enemy(get_screen(), game->enemy[i]);
 
@@ -80,10 +103,8 @@ void game_init(Game *game)
 
 	player_init(&game->player);
 
-	enemies_init(game->enemy, ENEMIES);
-	game->enemies_count = ENEMIES;
-
-	game->game_state = GamePlayState;
+	game->game_state = GameBeginState;
+	game->last_gamestate_change = SDL_GetTicks();
 }
 
 static void process_player(Player *player)
@@ -154,12 +175,12 @@ static void process_enemies(Game *game)
 		inf_screen(&enemy->body);
 
 		/* Столкновение с игроком */
-		if (enemy_collision_with(*enemy, game->player.body))
+		if (enemy_collision_with(*enemy, game->player.body) && game->game_state == GamePlayState)
 		{
-			player_remove(&game->player);
-
-			if (game->player.lives < 0)
-				game->game_state = GameOverState;
+			/* player_remove(&game->player); */
+			game->last_gamestate_change = SDL_GetTicks();
+			game->player.crash_time = SDL_GetTicks();
+			game->game_state = GameDeathState;
 		}
 
 		/* Столкновение с пулями */
@@ -184,7 +205,7 @@ static void process_enemies(Game *game)
 	/* Новый уровень */
 	if (game->enemies_count < 1)
 	{	
-		enemies_init(game->enemy, ENEMIES);
-		game->enemies_count = ENEMIES;
+		game->game_state = GameBeginState;
+		game->last_gamestate_change = SDL_GetTicks();
 	}
 }

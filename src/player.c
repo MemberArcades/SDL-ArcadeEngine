@@ -27,7 +27,6 @@ void player_remove(Player *player)
 {
 	--player->lives;
 
-	player->body.position = (Vector) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
 	player->body.direction = (Vector) { 0, 0 };
 }
 

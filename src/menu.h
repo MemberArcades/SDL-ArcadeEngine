@@ -2,7 +2,7 @@
 
 #include "enemy.h"
 
-#define ENEMIES 4
+#define ENEMIES 8
 
 //Defines what action we should take at a particular time while on the menu.
 typedef enum
