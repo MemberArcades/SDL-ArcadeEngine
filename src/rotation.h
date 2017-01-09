@@ -14,6 +14,6 @@ typedef struct
 
 BlockState* get_state_rotation();
 
-void key_rotation();
+void rotation();
 
 void reboot_rotatoin_index(enum Direction direction);

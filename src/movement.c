@@ -1,6 +1,7 @@
 #include "movement.h"
 #include "input.h"
 #include "rotation.h"
+#include "menu.h"
 
 static int speed = 0;
 
@@ -14,8 +15,6 @@ static int boost = 0;
 
 static int sumBoost = 0;
 
-
-static Direction get_movement_dir_button();
 
 static void dir_move(Move *move, Direction direction);
 
@@ -183,6 +182,11 @@ static bool add_speed()
 
 void move_down()
 {
+	if (key_held(SDLK_DOWN) || key_held(SDLK_s))
+	{
+		speed += 10;
+	}
+
 	if (add_speed())
 	{
 		move_toward(Down);
@@ -191,121 +195,16 @@ void move_down()
 	add_boost();
 }
 
-static Direction get_movement_dir_button()
+void movement_dir_button(int key)
 {
-	if (key_held(SDLK_w) == KeyDown || key_held(SDLK_UP) == KeyDown)
-	{
-		if (key_held(SDLK_w) == KeyDown)
+		if (pushed_right(key))
 		{
-			handle_keydown(SDLK_w);
-		}
-		else
-		{
-			handle_keydown(SDLK_UP);
+			move_toward(Right);
 		}
 
-		return Up;
-	}
-
-	if (key_held(SDLK_d) == KeyDown || key_held(SDLK_RIGHT) == KeyDown)
-	{
-		if (key_held(SDLK_d) == KeyDown)
+		if (pushed_left(key))
 		{
-			handle_keydown(SDLK_d);
+			move_toward(Left);
 		}
-		else
-		{
-			handle_keydown(SDLK_RIGHT);
-		}
-
-		return Right;
-	}
-
-	if (key_held(SDLK_a) == KeyDown || key_held(SDLK_LEFT) == KeyDown)
-	{
-		if (key_held(SDLK_a) == KeyDown)
-		{
-			handle_keydown(SDLK_a);
-		}
-		else
-		{
-			handle_keydown(SDLK_LEFT);
-		}
-
-		return Left;
-	}
-
-	if (key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown)
-	{
-		/* Отключение ограничение на движение вниз */
-		/*if (key_held(SDLK_s) == KeyDown)
-		{
-			handle_keydown(SDLK_s);
-		}
-		else
-		{
-			handle_keydown(SDLK_DOWN);
-		}*/
-
-		speed += sumSpeed * 5;
-
-		return Down;
-	}
-
-	printf("get_movement_dir_button Error\n");
-	exit(1);
 }
 
-void movement_dir_button()
-{
-	if (check_key_movement_pressed())
-	{
-		if (key_held(SDLK_d) == KeyDown || key_held(SDLK_RIGHT) == KeyDown)
-		{
-			if (rightSpeed <= SIDES_SPEED)
-			{
-				++rightSpeed;
-			}
-			else
-			{
-				rightSpeed = 0;
-				move_toward(Right);
-			}
-		}
-
-		if (key_held(SDLK_a) == KeyDown || key_held(SDLK_LEFT) == KeyDown)
-		{
-			if (leftSpeed <= SIDES_SPEED)
-			{
-				++leftSpeed;
-			}
-			else
-			{
-				leftSpeed = 0;
-				move_toward(Left);
-			}
-		}
-
-		if (key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown)
-		{
-			speed += sumSpeed + 2;
-
-			move_toward(Down);
-		}
-		//move_toward(get_movement_dir_button());
-	}
-}
-
-void blocks_to_moves(int border)
-{
-	for (int j = 0; j < border; ++j)
-	{
-		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
-		{
-			if (get_main_field()[i][j].status != Background)
-			{
-				get_main_field()[i][j].status = Moves;
-			}
-		}
-	}
-}

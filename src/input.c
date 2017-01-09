@@ -1,6 +1,8 @@
 #include "input.h"
 #include "rotation.h"
 #include "movement.h"
+#include "menu.h"
+#include "main.h"
 
 static void check_keycode(int keycode);
 
@@ -18,17 +20,8 @@ void init_keys_state()
 
 void unpress_keys()
 {
-	keysHeld[SDLK_w] = KeyUp;
-	keysHeld[SDLK_UP] = KeyUp;
-
-	/*keysHeld[SDLK_d] = KeyUp;
-	keysHeld[SDLK_RIGHT] = KeyUp;*/
-
 	keysHeld[SDLK_s] = KeyUp;
 	keysHeld[SDLK_DOWN] = KeyUp;
-
-	/*keysHeld[SDLK_a] = KeyUp;
-	keysHeld[SDLK_LEFT] = KeyUp;*/
 }
 
 void handle_keydown(int keycode)
@@ -60,17 +53,14 @@ KeyState key_held(int keycode)
 	return  keysHeld[keycode];
 }
 
-KeyState check_key_movement_pressed()
+bool check_key_down_pressed()
 {
-	if (/*key_held(SDLK_w) == KeyDown || key_held(SDLK_UP) == KeyDown ||*/
-		key_held(SDLK_d) == KeyDown || key_held(SDLK_RIGHT) == KeyDown ||
-		key_held(SDLK_s) == KeyDown || key_held(SDLK_DOWN) == KeyDown ||
-		key_held(SDLK_a) == KeyDown || key_held(SDLK_LEFT) == KeyDown)
+	if (keysHeld[SDLK_s] || keysHeld[SDLK_DOWN])		
 	{
-		return KeyDown;
+		return true;
 	}
 
-	return KeyUp;
+	return false;
 }
 
 static void check_keycode(int keycode)
@@ -82,22 +72,77 @@ static void check_keycode(int keycode)
 	}
 }
 
-void key_tick()
+void key_tick(int key, ProgramState *state)
 {
-	if (pauseFlag)
+	if (*state == Play)
 	{
-		keysHeld[SDLK_SPACE] = KeyUp;
-		pauseFlag = false;
-	}
-	else
-	{
-		movement_dir_button();
+		movement_dir_button(key);
 
-		key_rotation();
+		if (SDLK_SPACE == key)
+		{
+			if (!pauseFlag)
+			{
+				rotation();
+			}
+			else
+			{
+				pauseFlag = false;
+			}
+		}
 	}
 }
 
 bool* get_key_flag()
 {
 	return &pauseFlag;
+}
+
+bool pushed_enter(int key)
+{
+	if (key == SDLK_RETURN || key == SDLK_SPACE)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool pushed_up(int key)
+{
+	if (key == SDLK_UP || key == SDLK_w)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool pushed_down(int key)
+{
+	if (key == SDLK_DOWN || key == SDLK_s)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool pushed_right(int key)
+{
+	if (key == SDLK_RIGHT || key == SDLK_d)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool pushed_left(int key)
+{
+	if (key == SDLK_LEFT || key == SDLK_a)
+	{
+		return true;
+	}
+
+	return false;
 }

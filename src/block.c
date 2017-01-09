@@ -5,6 +5,7 @@
 #include "window.h"
 #include "game.h"
 #include "main.h"
+#include "gamescore.h"
 
 #include <stdlib.h>
 
@@ -120,5 +121,19 @@ void destroy_full_line()
 
 		sumScore += score;
 		score += 100 + 100 * (*get_sum_boost());
+	}
+}
+
+void blocks_to_moves(int border)
+{
+	for (int j = 0; j < border; ++j)
+	{
+		for (int i = 0; i < X_MAIN_FIELD_SIZE; ++i)
+		{
+			if (mainField[i][j].status != Background)
+			{
+				mainField[i][j].status = Moves;
+			}
+		}
 	}
 }

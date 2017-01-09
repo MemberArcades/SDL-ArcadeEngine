@@ -69,3 +69,5 @@ void recolor_block_main_field(BlockColor blockColor, BlockStatus blockStatus, in
 void moves_to_basis();
 
 void destroy_full_line();
+
+void blocks_to_moves(int j);

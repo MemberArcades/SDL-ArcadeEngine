@@ -28,8 +28,6 @@ void game_tick(Game *game)
 			generation_random_block();
 		}
 
-		key_tick();
-
 		move_down();
 
 		destroy_full_line();

@@ -38,6 +38,4 @@ void move_down();
 
 void move_toward(Direction direction);
 
-void movement_dir_button();
-
-void blocks_to_moves(int j);
+void movement_dir_button(int key);

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdbool.h>
-#include "gamescore.h"
 
 typedef enum
 {

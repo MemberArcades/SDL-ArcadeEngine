@@ -6,8 +6,6 @@
 static BlockState stateRotation;
 
 
-static void block_rotation();
-
 static void rotation_line(Direction direction, BlockColor blockColor, int i, int j);
 
 static void rotation_jt(Direction direction, BlockColor blockColor, int i, int j, BlockType blockType);
@@ -16,25 +14,6 @@ static void rotation_jt(Direction direction, BlockColor blockColor, int i, int j
 BlockState* get_state_rotation()
 {
 	return &stateRotation;
-}
-
-static void block_rotation()
-{
-	switch (stateRotation.type)
-	{
-	case Square:
-		break;
-	case Line:
-		rotation_line(stateRotation.direction, stateRotation.color, stateRotation.i, stateRotation.j);
-		break;
-	case JL:
-	case JR:
-	case T:
-	case NL:
-	case NR:
-		rotation_jt(stateRotation.direction, stateRotation.color, stateRotation.i, stateRotation.j, stateRotation.type);
-		break;
-	}
 }
 
 static void rotation_line(Direction direction, BlockColor blockColor, int i, int j)
@@ -91,13 +70,22 @@ void reboot_rotatoin_index(Direction direction)
 	}
 }
 
-void key_rotation()
+void rotation()
 {
-	if (key_held(SDLK_SPACE) == KeyDown)
+	switch (stateRotation.type)
 	{
-		handle_keydown(SDLK_SPACE);
-
-		block_rotation();
+	case Square:
+		break;
+	case Line:
+		rotation_line(stateRotation.direction, stateRotation.color, stateRotation.i, stateRotation.j);
+		break;
+	case JL:
+	case JR:
+	case T:
+	case NL:
+	case NR:
+		rotation_jt(stateRotation.direction, stateRotation.color, stateRotation.i, stateRotation.j, stateRotation.type);
+		break;
 	}
 }
 

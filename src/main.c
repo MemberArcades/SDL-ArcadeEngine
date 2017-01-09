@@ -140,6 +140,7 @@ static void process_events(void)
 
 			menu_key(event.key.keysym.sym, &state, &game);
 
+			key_tick(event.key.keysym.sym, &state);
 			break;
 		case SDL_KEYUP:
 			handle_keyup(event.key.keysym.sym);

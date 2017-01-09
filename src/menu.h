@@ -28,10 +28,4 @@ typedef enum
 
 void draw_menu();
 
-void menu_key(int key, enum ProgramState *state, Game *game);
-
-bool pushed_enter(int key);
-
-bool pushed_up(int key);
-
-bool pushed_down(int key);
+void menu_key(int key, enum ProgramState *state, struct Game *game);

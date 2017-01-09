@@ -18,15 +18,16 @@ static void draw_menu_exit(int pos);
 
 static void draw_menu_background();
 
-static void menu_actions_play(int key, enum ProgramState *state, Game *game);
+static void menu_game_continue(enum ProgramState *state, struct Game *game);
 
-static void menu_actions_menu(int key, enum ProgramState *state, Game *game);
+static void menu_actions_play(int key, enum ProgramState *state, struct Game *game);
 
-static void menu_actions_pause(int key, enum ProgramState *state, Game *game);
+static void menu_actions_menu(int key, enum ProgramState *state, struct Game *game);
+
+static void menu_actions_pause(int key, enum ProgramState *state, struct Game *game);
 
 static void menu_actions_motion(int key);
 
-static void menu_game_continue(enum ProgramState *state, Game *game);
 
 
 static void draw_menu_start(int pos)
@@ -82,20 +83,12 @@ void draw_menu()
 	draw_menu_exit(2);
 }
 
-void menu_key(int key, ProgramState *state, Game *game)
+static void menu_game_continue(ProgramState *state, Game *game)
 {
-	switch (*state)
-	{
-	case Play:
-		menu_actions_play(key, state, game);
-		break;
-	case Pause:
-		menu_actions_pause(key, state, game);
-		break;
-	case Menu:
-		menu_actions_menu(key, state, game);
-		break;
-	}
+	*state = Play;
+	game->game_state = GamePlayState;
+
+	recolor_main_field();
 }
 
 static void menu_actions_play(int key, ProgramState *state, Game *game)
@@ -186,40 +179,18 @@ static void menu_actions_motion(int key)
 	}
 }
 
-static void menu_game_continue(ProgramState *state, Game *game)
+void menu_key(int key, ProgramState *state, Game *game)
 {
-	*state = Play;
-	game->game_state = GamePlayState;
-
-	recolor_main_field();
-}
-
-bool pushed_enter(int key)
-{
-	if (key == SDLK_RETURN || key == SDLK_SPACE)
+	switch (*state)
 	{
-		return true;
+	case Play:
+		menu_actions_play(key, state, game);
+		break;
+	case Pause:
+		menu_actions_pause(key, state, game);
+		break;
+	case Menu:
+		menu_actions_menu(key, state, game);
+		break;
 	}
-
-	return false;
-}
-
-bool pushed_up(int key)
-{
-	if (key == SDLK_UP || key == SDLK_w)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-bool pushed_down(int key)
-{
-	if (key == SDLK_DOWN || key == SDLK_s)
-	{
-		return true;
-	}
-
-	return false;
 }
