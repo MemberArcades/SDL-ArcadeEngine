@@ -11,6 +11,9 @@
 #define X_SHIFT 138
 #define Y_SHIFT 28
 
+#define X_SHIFT_NEW 150
+#define X_OFFSET 276
+
 #define X_MENU_POS 100
 #define Y_MENU_POS 300
 
@@ -23,9 +26,10 @@ typedef enum
 	NewGame,
 	Options,
 	Exit,
+	Music
 } MainMenu;
 
 
 void draw_menu();
 
-void menu_key(int key, enum ProgramState *state, struct Game *game);
+void menu_key(int key, enum ProgramState *state, Game *game);

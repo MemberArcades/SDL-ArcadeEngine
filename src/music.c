@@ -7,14 +7,6 @@ static int volume = MIX_MAX_VOLUME;
 
 static Mix_Music* load_music(char *filename);
 
-static void sound_volum_minus();
-
-static void sound_volum_plus();
-
-static void sound_off();
-
-static void sound_pause();
-
 
 static Mix_Music* load_music(char *filename)
 {
@@ -43,18 +35,12 @@ void load_sound()
 
 	currentSound = load_music(DIR_SOUND "tetris.wav");
 
-	sound_pause();
+	sound();
 }
 
-static void sound_pause()
+void sound_pause()
 {
-	if (Mix_PlayingMusic() == 0)
-	{
-		Mix_PlayMusic(currentSound, -1);
-		Mix_VolumeMusic(VOLUME_START);
-		volume = VOLUME_START;
-	}
-	else
+	if (Mix_PlayingMusic())
 	{
 		if (Mix_PausedMusic() == 1)
 		{
@@ -67,12 +53,19 @@ static void sound_pause()
 	}
 }
 
-static void sound_off()
+void sound()
 {
-	Mix_HaltMusic();
+	if (Mix_PlayingMusic())
+	{
+		Mix_HaltMusic();
+	}
+	else
+	{
+		Mix_PlayMusic(currentSound, -1);
+	}
 }
 
-static void sound_volum_plus()
+void sound_volum_plus()
 {
 	if (volume < MIX_MAX_VOLUME - VOLUME_STEP)
 	{
@@ -82,7 +75,7 @@ static void sound_volum_plus()
 	Mix_VolumeMusic(volume);
 }
 
-static void sound_volum_minus()
+void sound_volum_minus()
 {
 	if (volume > VOLUME_STEP - 1)
 	{
@@ -97,7 +90,7 @@ void sound_key(int key)
 	switch (key)
 	{
 	case SDLK_0:
-		sound_off();
+		sound();
 		break;
 	case SDLK_KP_PLUS:
 		sound_volum_plus();

@@ -3,6 +3,7 @@
 #include "block.h"
 #include "input.h"
 #include "game.h"
+#include "music.h"
 
 
 static MainMenu menu = Start;
@@ -16,19 +17,21 @@ static void draw_menu_options(int pos);
 
 static void draw_menu_exit(int pos);
 
+static void draw_menu_music(int pos);
+
 static void draw_menu_background();
 
-static void menu_game_continue(enum ProgramState *state, struct Game *game);
+static void menu_game_continue(enum ProgramState *state, Game *game);
 
-static void menu_actions_play(int key, enum ProgramState *state, struct Game *game);
+static void menu_actions_play(int key, enum ProgramState *state, Game *game);
 
-static void menu_actions_menu(int key, enum ProgramState *state, struct Game *game);
+static void menu_actions_menu(int key, enum ProgramState *state, Game *game);
 
-static void menu_actions_pause(int key, enum ProgramState *state, struct Game *game);
+static void menu_actions_pause(int key, enum ProgramState *state, Game *game);
 
 static void menu_actions_motion(int key);
 
-
+static bool style = true;
 
 static void draw_menu_start(int pos)
 {
@@ -66,6 +69,15 @@ static void draw_menu_exit(int pos)
 	SDL_BlitSurface(get_menu_text_image(), &imgrect, get_screen(), &dstrect);
 }
 
+static void draw_menu_music(int pos)
+{
+	SDL_Rect imgrect = { (Music == menu) * X_SHIFT, 4 * Y_SHIFT, X_SHIFT, Y_SHIFT };
+
+	DST_RECT(X_MENU_POS, Y_MENU_POS + pos * Y_SHIFT)
+
+	SDL_BlitSurface(get_menu_text_image(), &imgrect, get_screen(), &dstrect);
+}
+
 static void draw_menu_background()
 {
 	SDL_Rect dstrect = { X_MAIN_FIELD, Y_MAIN_FIELD };
@@ -79,7 +91,8 @@ void draw_menu()
 
 	draw_menu_start(0);
 	//draw_menu_new_game();
-	draw_menu_options(1);
+	//draw_menu_options(1);
+	draw_menu_music(1);
 	draw_menu_exit(2);
 }
 
@@ -119,6 +132,13 @@ static void menu_actions_pause(int key, ProgramState *state, Game *game)
 
 		return;
 	}
+
+	if (pushed_enter(key) && (menu == Music))
+	{
+		sound();
+
+		return;
+	}
 }
 
 static void menu_actions_menu(int key, ProgramState *state, Game *game)
@@ -131,14 +151,17 @@ static void menu_actions_menu(int key, ProgramState *state, Game *game)
 		{
 		case Start:
 			*state = Play;
+
 			recolor_main_field();
 
 			break;
-		case Options:
+		case Music:
+			sound();
 
 			break;
 		case Exit:
 			*state = Out;
+
 			break;
 		}
 	}
@@ -151,13 +174,16 @@ static void menu_actions_motion(int key)
 		switch (menu)
 		{
 		case Start:
-			menu = Options;
+			menu = Music;
+
 			break;
-		case Options:
+		case Music:
 			menu = Exit;
+
 			break;
 		case Exit:
 			menu = Start;
+
 			break;
 		}
 	}
@@ -168,12 +194,15 @@ static void menu_actions_motion(int key)
 		{
 		case Start:
 			menu = Exit;
+
 			break;
-		case Options:
+		case Music:
 			menu = Start;
+
 			break;
 		case Exit:
-			menu = Options;
+			menu = Music;
+
 			break;
 		}
 	}
