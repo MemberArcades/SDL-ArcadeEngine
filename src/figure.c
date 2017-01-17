@@ -1,7 +1,9 @@
 #include "figure.h"
+
 #include "randomizer.h"
 #include "rotation.h"
 #include "block.h"
+
 
 static bool opportunityCreateBlock;
 

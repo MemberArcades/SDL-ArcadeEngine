@@ -1,18 +1,16 @@
 #pragma once
 
 #include "SDL.h"
-#include <stdbool.h>
+
 #include "main.h"
 #include "menu.h"
+#include "game.h"
+
+#include <stdbool.h>
+
 
 #define MAX_KEYS 323
 
-typedef enum
-{
-	KeyUp,
-	KeyDown,
-	KeyUsed
-} KeyState;
 
 void init_keys_state();
 
@@ -25,13 +23,11 @@ void handle_keydown(int keycode);
 void handle_keyup(int keycode);
 
 /* Проверяет, нажата ли заданная кнопка. */
-KeyState key_held(int keycode);
+bool key_held(int keycode);
 
 bool check_key_down_pressed();
 
-void key_tick(int key, enum ProgramState *state);
-
-bool* get_key_flag();
+void key_tick(int key, enum ProgramState *state, struct Game *game);
 
 bool pushed_enter(int key);
 

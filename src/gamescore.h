@@ -5,6 +5,7 @@
 
 #include <stdbool.h>
 
+
 #define FILE_SCORE "gamescore.txt"
 
 

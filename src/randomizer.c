@@ -1,8 +1,11 @@
 #include "randomizer.h"
+
 #include "fieldnextblock.h"
 #include "block.h"
+
 #include <time.h>
 #include <stdlib.h>
+
 
 static NextBlock nextBlock;
 

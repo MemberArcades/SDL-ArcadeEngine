@@ -2,11 +2,10 @@
 
 #include <stdbool.h>
 
+
 typedef enum
 {
-	GameBeginState,
 	GamePlayState,
-	GameOverState,
 	GamePauseState
 } GameState;
 
@@ -15,12 +14,9 @@ typedef struct
 	GameState game_state;
 } Game;
 
+
 void game_init(Game *game);
 
 void game_tick(Game *game);
 
-void game_render(Game *game);
-
 bool game_over(Game *game);
-
-bool game_delay();

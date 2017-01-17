@@ -1,12 +1,13 @@
 #pragma once
 
-#include <stdbool.h>
-
 #include "movement.h"
 #include "figure.h"
 #include "rotation.h"
 #include "game.h"
 #include "randomizer.h"
+
+#include <stdbool.h>
+
 
 #define X_MAIN_FIELD 12
 #define Y_MAIN_FIELD 90

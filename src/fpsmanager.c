@@ -2,7 +2,9 @@
 
 #include "SDL_framerate.h"
 
+
 static FPSmanager fps_manager;
+
 
 void fps_init(int frequency)
 {

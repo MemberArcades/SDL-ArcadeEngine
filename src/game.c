@@ -11,17 +11,11 @@
 #include "music.h"
 #include "main.h"
 
-static int delaySize = 0;
 
 void game_tick(Game *game)
 {
-	switch (game->game_state)
+	if (game->game_state == GamePlayState)
 	{
-	case GameBeginState:
-
-		break;
-
-	case GamePlayState:
 		if (!check_movement())
 		{
 			unpress_keys();
@@ -31,27 +25,6 @@ void game_tick(Game *game)
 		move_down();
 
 		destroy_full_line();
-
-		break;
-
-	case GameOverState:
-		break;
-	}
-}
-
-void game_render(Game *game)
-{
-	switch (game->game_state)
-	{
-	case GameBeginState:
-		break;
-
-	case GamePlayState:
-		
-		break;
-
-	case GameOverState:
-		break;
 	}
 }
 
@@ -65,6 +38,9 @@ void game_init(Game *game)
 
 	draw_text("Press plus or minus", (Point) { 360, 200 });
 	draw_text("to music.", (Point) { 400, 218 });
+
+	draw_text("Press c to swap", (Point) { 360, 270 });
+	draw_text("texture.", (Point) { 400, 288 });
 
 	*get_sum_boost() = 0;
 
@@ -86,20 +62,3 @@ bool game_over(Game *game)
 		return false;
 	}
 }
-
-bool game_delay()
-{
-	if (delaySize <= 100)
-	{
-		++delaySize;
-
-		return false;
-	}
-	else
-	{
-		delaySize = 0;
-
-		return true;
-	}
-}
-

@@ -14,4 +14,3 @@ typedef enum
 	End,
 	Out
 } ProgramState;
-

@@ -26,3 +26,5 @@ SDL_Surface* get_symbols_image();
 SDL_Surface* get_menu_background_image();
 
 SDL_Surface* get_menu_text_image();
+
+void swap_block_texture();

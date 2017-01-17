@@ -1,54 +1,45 @@
 #include "input.h"
+
 #include "rotation.h"
 #include "movement.h"
 #include "menu.h"
 #include "main.h"
+#include "music.h"
+#include "game.h"
 
 static void check_keycode(int keycode);
 
-static KeyState keysHeld[MAX_KEYS];
-
-bool pauseFlag = false;
+static bool keysHeld[MAX_KEYS];
 
 void init_keys_state()
 {
 	for (int k = 0; k < MAX_KEYS; ++k)
 	{
-		keysHeld[k] = KeyUp;
+		keysHeld[k] = false;
 	}
 }
 
 void unpress_keys()
 {
-	keysHeld[SDLK_s] = KeyUp;
-	keysHeld[SDLK_DOWN] = KeyUp;
+	keysHeld[SDLK_s] = false;
+	keysHeld[SDLK_DOWN] = false;
 }
 
 void handle_keydown(int keycode)
 {
 	check_keycode(keycode);
 
-	switch (keysHeld[keycode])
-	{
-	case KeyUp:
-		keysHeld[keycode] = KeyDown;
-		break;
-	case KeyDown:
-		keysHeld[keycode] = KeyUsed;
-		break;
-	case KeyUsed:
-		break;
-	}
+	keysHeld[keycode] = true;
 }
 
 void handle_keyup(int keycode)
 {
 	check_keycode(keycode);
 
-	keysHeld[keycode]= KeyUp;
+	keysHeld[keycode]= false;
 }
 
-KeyState key_held(int keycode)
+bool key_held(int keycode)
 {
 	return  keysHeld[keycode];
 }
@@ -72,29 +63,28 @@ static void check_keycode(int keycode)
 	}
 }
 
-void key_tick(int key, ProgramState *state)
+void key_tick(int key, ProgramState *state, Game *game)
 {
+	handle_keydown(key);
+
+	sound_key(key);
+
+	menu_key(key, state, game);
+
+	if (SDLK_c == key)
+	{
+		swap_block_texture();
+	}
+
 	if (*state == Play)
 	{
 		movement_dir_button(key);
 
-		if (SDLK_SPACE == key)
+		if (pushed_up(key))
 		{
-			if (!pauseFlag)
-			{
-				rotation();
-			}
-			else
-			{
-				pauseFlag = false;
-			}
+			rotation();
 		}
 	}
-}
-
-bool* get_key_flag()
-{
-	return &pauseFlag;
 }
 
 bool pushed_enter(int key)

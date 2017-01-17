@@ -1,6 +1,8 @@
 #include "window.h"
 
+
 static SDL_Surface *screen;
+
 
 bool init_window(const char* title, int width, int height)
 {

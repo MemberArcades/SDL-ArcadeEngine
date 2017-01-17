@@ -1,13 +1,11 @@
 #include "movement.h"
+
 #include "input.h"
 #include "rotation.h"
 #include "menu.h"
 
+
 static int speed = 0;
-
-static int leftSpeed = 0;
-
-static int rightSpeed = 0;
 
 static int sumSpeed = 1;
 
@@ -21,6 +19,7 @@ static void dir_move(Move *move, Direction direction);
 static bool add_boost();
 
 static bool add_speed();
+
 
 int* get_sum_boost()
 {
@@ -207,4 +206,3 @@ void movement_dir_button(int key)
 			move_toward(Left);
 		}
 }
-

@@ -1,7 +1,9 @@
 #include "rotation.h"
+
 #include "block.h"
 #include "fieldnextblock.h"
 #include "figure.h"
+
 
 static BlockState stateRotation;
 

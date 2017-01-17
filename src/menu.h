@@ -8,11 +8,8 @@
 #include <stdbool.h>
 
 
-#define X_SHIFT 138
+#define X_SHIFT 150
 #define Y_SHIFT 28
-
-#define X_SHIFT_NEW 150
-#define X_OFFSET 276
 
 #define X_MENU_POS 100
 #define Y_MENU_POS 300

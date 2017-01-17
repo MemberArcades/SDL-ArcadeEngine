@@ -25,13 +25,15 @@ static void menu_game_continue(enum ProgramState *state, Game *game);
 
 static void menu_actions_play(int key, enum ProgramState *state, Game *game);
 
-static void menu_actions_menu(int key, enum ProgramState *state, Game *game);
+static void menu_actions_menu(int key, enum ProgramState *state);
 
 static void menu_actions_pause(int key, enum ProgramState *state, Game *game);
 
 static void menu_actions_motion(int key);
 
+
 static bool style = true;
+
 
 static void draw_menu_start(int pos)
 {
@@ -119,8 +121,6 @@ static void menu_actions_pause(int key, ProgramState *state, Game *game)
 
 	if ((key == SDLK_ESCAPE) || (pushed_enter(key) && (menu == Start)))
 	{
-		*get_key_flag() = true;
-
 		menu_game_continue(state, game);
 
 		return;
@@ -141,7 +141,7 @@ static void menu_actions_pause(int key, ProgramState *state, Game *game)
 	}
 }
 
-static void menu_actions_menu(int key, ProgramState *state, Game *game)
+static void menu_actions_menu(int key, ProgramState *state)
 {
 	menu_actions_motion(key);
 
@@ -219,7 +219,7 @@ void menu_key(int key, ProgramState *state, Game *game)
 		menu_actions_pause(key, state, game);
 		break;
 	case Menu:
-		menu_actions_menu(key, state, game);
+		menu_actions_menu(key, state);
 		break;
 	}
 }

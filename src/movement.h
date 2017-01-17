@@ -5,11 +5,13 @@
 
 #include <stdbool.h>
 
+
 #define SIDES_SPEED 2
 #define DOWN_SPEED 30
 #define MAX_SPEED 6
 
-#define BOOST 6000
+#define BOOST 10000
+
 
 typedef enum
 {
@@ -27,6 +29,7 @@ typedef struct
 	int d;
 	int l;
 } Move;
+
 
 int* get_sum_boost();
 

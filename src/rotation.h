@@ -2,6 +2,7 @@
 
 #include "block.h"
 
+
 typedef struct
 {
 	enum BlockType type;

@@ -1,5 +1,8 @@
 #include "imageloader.h"
 
+#include "block.h"
+#include "fieldnextblock.h"
+
 
 SDL_Surface *background;
 SDL_Surface *blocks[NUMBER_OF_SKINS];
@@ -7,6 +10,8 @@ SDL_Surface *gaveOverImg;
 SDL_Surface *symbolsImage;
 SDL_Surface *menuBackgroundImage;
 SDL_Surface *menuTextImage;
+
+static int blockNumber = 0;
 
 
 static SDL_Surface *load_image(char *filename);
@@ -62,7 +67,7 @@ void destroy_image()
 
 SDL_Surface* get_block_image()
 {
-	return blocks[0];
+	return blocks[blockNumber];
 }
 
 SDL_Surface* get_background_image()
@@ -88,4 +93,12 @@ SDL_Surface* get_menu_background_image()
 SDL_Surface* get_menu_text_image()
 {
 	return menuTextImage;
+}
+
+void swap_block_texture()
+{
+	blockNumber = (blockNumber + 1) % NUMBER_OF_SKINS;
+
+	recolor_main_field();
+	draw_next_block();
 }

@@ -1,5 +1,6 @@
 #include "music.h"
 
+
 static Mix_Music *currentSound = NULL;
 
 static int volume = MIX_MAX_VOLUME;
@@ -102,4 +103,9 @@ void sound_key(int key)
 		sound_pause();
 		break;
 	}
+}
+
+void destroy_sound()
+{
+	Mix_FreeMusic(currentSound);
 }

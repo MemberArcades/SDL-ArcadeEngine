@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <stdbool.h>
-
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_gfxPrimitives.h"
@@ -15,6 +13,16 @@
 #include "gamescore.h"
 #include "music.h"
 #include "menu.h"
+
+#include <stdbool.h>
+
+
+static ProgramState state = Menu;
+
+static Game game;
+
+static bool gameRunning = true;
+
 
 /* Иницализация всех ресурсов */
 static void resource_init(void);
@@ -34,10 +42,6 @@ static void internal_render(void);
 /* Обработка ввода */
 static void process_events(void);
 
-static ProgramState state = Menu;
-static Game game;
-
-static bool gameRunning = true;
 
 int main(int argc, char* args[])
 {
@@ -70,20 +74,14 @@ static void internal_tick(void)
 {
 	switch (state)
 	{
-	case Menu:
-		
-		break;
 	case Play:
 		game_tick(&game);
-
 
 		if (game_over(&game))
 		{
 			state = End;
 		}
 
-		break;
-	case Pause:
 		break;
 	case End:
 		if (key_held(SDLK_RETURN))
@@ -102,20 +100,9 @@ static void internal_tick(void)
 
 static void internal_render(void)
 {
-	switch (state)
+	if (state == Menu || state == Pause)
 	{
-	case Menu:
 		draw_menu();
-
-		break;
-	case Play:
-		game_render(&game);
-
-		break;
-	case Pause:
-		draw_menu();
-
-		break;
 	}
 
 	flip_screen();
@@ -134,13 +121,8 @@ static void process_events(void)
 
 			break;
 		case SDL_KEYDOWN:
-			handle_keydown(event.key.keysym.sym);
+			key_tick(event.key.keysym.sym, &state, &game);
 
-			sound_key(event.key.keysym.sym);
-
-			menu_key(event.key.keysym.sym, &state, &game);
-
-			key_tick(event.key.keysym.sym, &state);
 			break;
 		case SDL_KEYUP:
 			handle_keyup(event.key.keysym.sym);
@@ -164,6 +146,7 @@ static void clean_up(void)
 {
 	dispose_window();
 	destroy_image();
+	destroy_sound();
 
 	SDL_Quit();
 }

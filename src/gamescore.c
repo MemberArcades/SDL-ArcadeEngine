@@ -1,14 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include "gamescore.h"
-
 
 #include "renderer.h"
 
-
 #include <stdio.h>
 #include <stdbool.h>
-
 
 
 static Score score;

@@ -1,8 +1,9 @@
 #pragma once
 
+#include "SDL.h"
+
 #include <stdbool.h>
 
-#include "SDL.h"
 
 /* ... */
 bool init_window(const char* title, int width, int height);
