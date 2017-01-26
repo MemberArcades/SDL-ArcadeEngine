@@ -1,5 +1,9 @@
 #pragma once
 
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "physicsbody.h"
 #include "vector.h"
 #include "randomizer.h"

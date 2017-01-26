@@ -1,9 +1,10 @@
 #pragma once
 
+#include <time.h>
+
 #include "main.h"
 #include "vector.h"
 
-#include <time.h>
 
 void randomizer_init();
 

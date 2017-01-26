@@ -1,8 +1,5 @@
 #include "enemy.h"
 
-#include <time.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 Vector bodies[3][12] = {
 	{ { 0, 10 },{ 12, 0 },{ 23, 13 },{ 32, 0 },{ 45, 10 },{ 36, 20 },{ 45, 30 },{ 30, 40 },{ 13, 40 },{ 0, 30 },{ 0, 30 },{ 0, 30 } },

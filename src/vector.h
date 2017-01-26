@@ -1,8 +1,11 @@
 #pragma once
 
-#include <stdbool.h>
-
 #define _USE_MATH_DEFINES
+
+#include <stdbool.h>
+#include <math.h>
+#include <stdio.h>
+
 
 typedef struct 
 {

@@ -1,11 +1,5 @@
 #include "menu.h"
 
-#include <stdbool.h>
-
-#include "input.h"
-#include "main.h"
-#include "renderer.h"
-#include "window.h"
 
 static void draw_info_screen(void);
 

@@ -1,6 +1,5 @@
 #include "fpsmanager.h"
 
-#include "SDL_framerate.h"
 
 static FPSmanager fps_manager;
 

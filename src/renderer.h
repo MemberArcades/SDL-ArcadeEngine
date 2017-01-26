@@ -1,8 +1,15 @@
 #pragma once
 
 #include <stdbool.h>
-#include "SDL.h"
+#include <math.h>
 
+
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_gfxPrimitives.h"
+
+#include "window.h"
+#include "player.h"
 #include "imageloader.h"
 #include "player.h"
 #include "enemy.h"

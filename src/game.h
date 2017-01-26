@@ -1,7 +1,12 @@
 #pragma once
 
+#include <math.h>
+
 #include "player.h"
 #include "enemy.h"
+#include "window.h"
+#include "renderer.h"
+#include "input.h"
 
 #define ENEMIES 4
 
@@ -24,6 +29,7 @@ typedef struct
 
 	unsigned last_gamestate_change;
 	
+	int score;
 	int lvl;
 } Game;
 

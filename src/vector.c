@@ -1,8 +1,5 @@
 #include "vector.h"
 
-#include <math.h>
-#include <stdio.h>
-#include <stdbool.h>
 
 void print_vector(Vector v)
 {

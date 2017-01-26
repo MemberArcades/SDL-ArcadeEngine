@@ -1,13 +1,5 @@
 #include "renderer.h"
 
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_gfxPrimitives.h"
-
-#include <math.h>
-
-#include "window.h"
-#include "player.h"
 
 void draw_image_coord(SDL_Surface *surface, Vector dst) 
 {
@@ -115,6 +107,7 @@ void draw_player_crash(SDL_Surface *surface, Player player)
 		
 	Vector first_fragment_dir = player.body.collider.points[0];
 	normalise_vector(&first_fragment_dir);
+	rotate_vector(&first_fragment_dir, -45);
 	mul_vector(&first_fragment_dir, delta);
 	add_vector(&first_fragment.position, first_fragment_dir);
 
@@ -124,8 +117,9 @@ void draw_player_crash(SDL_Surface *surface, Player player)
 	second_fragment.collider.points[1] = player.body.collider.points[2];
 	second_fragment.position = player.body.position;
 
-	Vector second_fragment_dir = player.body.collider.points[1];
+	Vector second_fragment_dir = player.body.collider.points[0];
 	normalise_vector(&second_fragment_dir);
+	rotate_vector(&second_fragment_dir, 180);
 	mul_vector(&second_fragment_dir, delta);
 	add_vector(&second_fragment.position, second_fragment_dir);
 
@@ -135,8 +129,9 @@ void draw_player_crash(SDL_Surface *surface, Player player)
 	third_fragment.collider.points[1] = player.body.collider.points[0];
 	third_fragment.position = player.body.position;
 
-	Vector third_fragment_dir = player.body.collider.points[2];
+	Vector third_fragment_dir = player.body.collider.points[0];
 	normalise_vector(&third_fragment_dir);
+	rotate_vector(&third_fragment_dir, 45);
 	mul_vector(&third_fragment_dir, delta);
 	add_vector(&third_fragment.position, third_fragment_dir);
 

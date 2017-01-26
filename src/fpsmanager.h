@@ -1,5 +1,8 @@
 #pragma once
 
+#include "SDL_framerate.h"
+
+
 /* Запускает контроль частоты кадров. */
 void fps_init(int frequency);
 

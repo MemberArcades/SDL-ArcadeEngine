@@ -1,13 +1,5 @@
 #include "game.h"
 
-#include <math.h>
-
-#include "window.h"
-#include "renderer.h"
-#include "player.h"
-#include "enemy.h"
-#include "input.h"
-
 static void process_player(Player *player);
 
 static void process_bullets(Bullet bullets[]);
@@ -39,23 +31,29 @@ void game_tick(Game *game)
 		break;
 
 	case GameDeathState:
-		/*
-		 * Обработка столкновений и управления
-		 * на время отключена
-		 */
+		/* Обработка столкновений и управленияна время отключаются */
 		process_enemies(game);
 
 		if (SDL_GetTicks() - game->last_gamestate_change > 2000)
 		{
-			player_remove(&game->player);
+			if (game->player.lives <= 0)
+			{ 
+				game->game_state = GameOverState;
+			}
+			else
+			{ 
+				player_remove(&game->player);
 
-			game->game_state = GamePlayState;
-			game->last_gamestate_change = SDL_GetTicks();
+				game->game_state = GamePlayState;
+				game->last_gamestate_change = SDL_GetTicks();
+			}
 		}
 
 		break;
 
 	case GameOverState:
+		exit(0);
+
 		break;
 	}
 }
@@ -80,10 +78,7 @@ void game_render(Game *game)
 		break;
 
 	case GameDeathState:
-		/*
-		 * Анимация поломки корабля
-		 * Отрисовка врагов не прекращается
-		 */
+		/* Анимация поломки корабля, отрисовка врагов не прекращается */
 		draw_hud(get_screen(), game->player);
 		draw_player_crash(get_screen(), game->player);
 
@@ -100,11 +95,11 @@ void game_render(Game *game)
 void game_init(Game *game)
 {
 	game->lvl = 0;
-
-	player_init(&game->player);
-
+	game->score = 0;
 	game->game_state = GameBeginState;
 	game->last_gamestate_change = SDL_GetTicks();
+	
+	player_init(&game->player);
 }
 
 static void process_player(Player *player)
@@ -129,7 +124,6 @@ static void process_player(Player *player)
 	/* Передвижение */
 	player_movement(player, 0.2);
 
-	/* Пули */
 	process_bullets(player->bullets);
 
 	inf_screen(&player->body);
@@ -177,7 +171,6 @@ static void process_enemies(Game *game)
 		/* Столкновение с игроком */
 		if (enemy_collision_with(*enemy, game->player.body) && game->game_state == GamePlayState)
 		{
-			/* player_remove(&game->player); */
 			game->last_gamestate_change = SDL_GetTicks();
 			game->player.crash_time = SDL_GetTicks();
 			game->game_state = GameDeathState;
@@ -196,6 +189,15 @@ static void process_enemies(Game *game)
 			if (enemy_collision_with(*enemy, bullet->body))
 			{
 				bullet_remove(bullet);
+				
+				if (enemy->size == 3)
+					game->score += 20;
+				else if (enemy->size == 2)
+					game->score += 50;
+				else if (enemy->size == 1)
+					game->score += 100;
+
+				printf("Score: %d\n", game->score);
 
 				game->enemies_count += enemy_boom(enemy, game->enemy);
 			}
